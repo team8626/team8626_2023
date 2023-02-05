@@ -4,8 +4,11 @@
 
 package frc.robot;
 
+import org.xml.sax.SAXException;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.PS4Controller.Button;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -13,8 +16,17 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.IOControls;
+import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.KitbotDriveSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 
+/**
+ * Drive Types
+ */
+enum DriveType {
+  SWERVE,
+  KITBOT
+}
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -23,23 +35,34 @@ import frc.robot.subsystems.SwerveDriveSubsystem;
  */
 public class RobotContainer {
   // The robot's subsystems
-  private final SwerveDriveSubsystem m_robotDrive = new SwerveDriveSubsystem();
+  private DriveSubsystem m_robotDrive = null;
+  private final static DriveType m_driveType = DriveType.SWERVE; // SWERVE or KITBOT
+  //private final SwerveDriveSubsystem m_robotDrive = new SwerveDriveSubsystem();
+  //private final KitBotDriveSubsystem m_robotDrive = new SwerveDriveSubsystem();
 
   // Define controllers
-  XboxController m_driverController = new XboxController(IOControls.kDriverControllerPort);
+  // private final XboxController m_xBoxController = new XboxController(IOControls.kXboxControllerPort);
+  private final PS4Controller m_xBoxController = new PS4Controller(IOControls.kXboxControllerPort);
+  private final Joystick m_joystickController = new Joystick(IOControls.kJoystickControllerPort);
 
-  // TODO: Ned
-  //private final Joystick m_flightJoystick = new Joystick(Controller.kJoystickPort);
-  //private final XboxController m_gameController = new XboxController(Controller.kGamepadPort); 
-  
-  // Autonomous Mode
+  // Autonomous Mode Selection
   // TODO: Add Autonomous dashboard and controls here
   
   /** 
-   * The container for the robot. Contains subsystems, IO devices, and commands.
+   * The container for the robot. 
+   * Contains subsystems, IO devices, and commands.
    */
-
   public RobotContainer() {
+    // Instantiate the drivetrain
+    switch(m_driveType){
+      case SWERVE /*kSwerve*/: 
+        m_robotDrive = new SwerveDriveSubsystem();
+        break;
+
+      case KITBOT /*kKitBot*/: 
+        m_robotDrive = new KitbotDriveSubsystem();
+        break;
+    }
     configureButtonBindings();
     configureDefaultCommands();
   }
@@ -54,11 +77,23 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     
-    // 
-    new JoystickButton(m_driverController, Button.kR1.value)
-    .whileTrue(new RunCommand(
-        () -> m_robotDrive.setX(),
-        m_robotDrive));
+    //
+    // Swerve Drive Train Specific Bindings
+    //
+    if(m_robotDrive.isSwerve()){
+      // Pressing Right Bumper set Swerve Modules to Cross (X) Position
+      new JoystickButton(m_xBoxController, Button.kR1.value)
+      .whileTrue(new RunCommand(
+          () -> m_robotDrive.setX(),
+          m_robotDrive));
+    }
+
+    //
+    // KitBot Drive Train Specific Bindings
+    //
+    if(m_robotDrive.isKitBot()){
+
+    }
 
 
         // Toggle Auto-Balancing mode ON/OFF
@@ -83,25 +118,35 @@ public class RobotContainer {
    */
   public void configureTeleopDefaultCommands(){
 
-    m_robotDrive.setDefaultCommand(
+    //
+    // Swerve Drive Train Specific Bindings
+    //
+    if(m_robotDrive.isSwerve()){
+      m_robotDrive.setDefaultCommand(
       // The left stick controls translation of the robot.
       // Turning is controlled by the X axis of the right stick.
       new RunCommand(
           () -> m_robotDrive.drive(
-              MathUtil.applyDeadband(-m_driverController.getLeftY(), 0.06),
-              MathUtil.applyDeadband(-m_driverController.getLeftX(), 0.06),
-              MathUtil.applyDeadband(-m_driverController.getRightX(), 0.06),
+              MathUtil.applyDeadband(-m_xBoxController.getLeftY(), 0.06),
+              MathUtil.applyDeadband(-m_xBoxController.getLeftX(), 0.06),
+              MathUtil.applyDeadband(-m_xBoxController.getRightX(), 0.06),
               true),
           m_robotDrive));
+    }
 
-    // TODO: Cleanup This? or Keep for Ensign Drive
-    // m_drivetrain.setDefaultCommand(    
-    // new ArcadeDriveCommand(
-    //   () -> -m_flightJoystick.getX(), 
-    //   () -> m_flightJoystick.getY(),
-    //   // () -> m_gameController.getRightY(), 
-    //   // () -> m_gameController.getRightX(),
-    //   m_drivetrain));
+    //
+    // KitBot Drive Train Specific Bindings
+    //
+    if(m_robotDrive.isKitBot()){
+      m_robotDrive.setDefaultCommand(
+      // Joystick controls the robot.
+      // Speed is controlled by Y axis, Rotation is controlled by Y Axis, 
+      new RunCommand(
+          () -> m_robotDrive.drive(
+              MathUtil.applyDeadband(-m_joystickController.getY(), 0.06),
+              MathUtil.applyDeadband(-m_joystickController.getX(), 0.06)),
+          m_robotDrive));
+    }
   }
 
 

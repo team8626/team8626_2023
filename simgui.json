@@ -1,4 +1,48 @@
 {
+  "HALProvider": {
+    "Other Devices": {
+      "SPARK MAX [41]": {
+        "header": {
+          "open": true
+        }
+      },
+      "SPARK MAX [43]": {
+        "header": {
+          "open": true
+        }
+      },
+      "SPARK MAX [51]": {
+        "header": {
+          "open": true
+        }
+      },
+      "SPARK MAX [54]": {
+        "header": {
+          "open": true
+        }
+      },
+      "Victor SPX[1]": {
+        "header": {
+          "open": true
+        }
+      },
+      "Victor SPX[2]": {
+        "header": {
+          "open": true
+        }
+      },
+      "Victor SPX[3]": {
+        "header": {
+          "open": true
+        }
+      },
+      "Victor SPX[4]": {
+        "header": {
+          "open": true
+        }
+      }
+    }
+  },
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo"

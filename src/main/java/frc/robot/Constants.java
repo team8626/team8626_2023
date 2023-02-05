@@ -49,8 +49,8 @@ public final class Constants {
     
         public static final int kFrontLeftTurningCanId = 41;
         public static final int kRearLeftTurningCanId = 42;
-        public static final int kFrontRightTurningCanId = 43;
-        public static final int kRearRightTurningCanId = 44;
+        public static final int kFrontRightTurningCanId = 44;
+        public static final int kRearRightTurningCanId = 43;
     
         public static final boolean kGyroReversed = false;
       }
@@ -112,8 +112,49 @@ public final class Constants {
       }
 
     // Ensign driveTrain (AM14U) subsystem constants
-    public final static class EnsignDriveTrain {
-    }
+    public final static class KitbotDriveTrain {
+        // CAN Bus addresses for motors
+        public static int kCANMotorFL = 3;  // USING Victor SPX
+        public static int kCANMotorRL = 1;  // USING Victor SPX
+        public static int kCANMotorFR = 4;  // USING Victor SPX
+        public static int kCANMotorRR = 2;  // USING Victor SPX
+
+        public static boolean kLeftMotorsInverted = false;
+        public static boolean kRightMotorsInverted = false;
+        
+        // Encoder Ports
+        public static int[] kLeftEncoderPorts = {0,1};
+        public static int[] kRightEncoderPorts = {2,3};
+
+        public static boolean kLeftEncoderReversed = true;
+        public static boolean kRightEncoderReversed = false;
+
+        // Power Multiplicators
+        public static double kPowerRatioLowSpeed = 0.5;
+        public static double kPowerRatioHighSpeed = 1.0;
+
+        // Drivetrain Characteristics
+        public static double kWheelDiameter = Units.inchesToMeters(6.0) ;
+        public static int kEncoderPulsesPerRev = 8192; // Through bore Encoder
+        public static double kEncoderMetersPerPulse = kWheelDiameter * Math.PI / kEncoderPulsesPerRev;
+        public static final double kTrackwidthMeters = Units.inchesToMeters(21.75);
+
+        // TODO update placeholder values _ NEED TO DO CHARACTERIZATION
+        public static final double ks = 1;
+        public static final double kv = 3;
+
+        // public static final double ksVolts = 0.22;
+        // public static final double kvVoltSecondsPerMeter = 1.98;
+        // public static final double kaVoltSecondsSquaredPerMeter = 0.2;
+        // public static final double kMaxAvailableVoltage = 10.5; // Assumes Battery "sag" for PID/Ramsete Controllers
+        // public static final double kPDriveVel = 8.5;
+
+        // public static final double kMaxSpeedMetersPerSecond = 3;
+        // public static final double kMaxAccelerationMetersPerSecondSquared = 3;
+
+        // Reasonable baseline values for a RAMSETE follower in units of meters and seconds
+        public static final double kRamseteB = 2;
+        public static final double kRamseteZeta = 0.7;    }
 
     // Elevator subsystem constants
     public final static class Elevator {
@@ -133,7 +174,8 @@ public final class Constants {
 
     // IO Controls
     public final static class IOControls {
-        public static final int kDriverControllerPort = 0;
+        public static final int kXboxControllerPort = 0;
+        public static final int kJoystickControllerPort = 1;
     }
 
 

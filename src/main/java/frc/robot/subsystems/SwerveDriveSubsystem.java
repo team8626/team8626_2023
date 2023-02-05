@@ -13,13 +13,13 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj.ADIS16470_IMU;
 import edu.wpi.first.wpilibj.SPI;
 import frc.robot.Constants.SwerveDriveConstants;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class SwerveDriveSubsystem extends SubsystemBase {
-  // Create MAXSwerveModules
+//public class SwerveDriveSubsystem extends SubsystemBase /*implements DriveSubsystem*/  {
+public class SwerveDriveSubsystem extends DriveSubsystem   {
+    // Create MAXSwerveModules
   private final MAXSwerveModule m_frontLeft = new MAXSwerveModule(
       SwerveDriveConstants.kFrontLeftDrivingCanId,
       SwerveDriveConstants.kFrontLeftTurningCanId,
@@ -40,8 +40,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
       SwerveDriveConstants.kRearRightTurningCanId,
       SwerveDriveConstants.kBackRightChassisAngularOffset);
 
-  // The gyro sensor
-  //private final ADIS16470_IMU m_gyro = new ADIS16470_IMU();
+  // Gyro Sensor (Unsing NAVx Module)
   private final AHRS m_gyro = new AHRS(SPI.Port.kMXP);
 
   // Odometry class for tracking robot pose
@@ -55,8 +54,15 @@ public class SwerveDriveSubsystem extends SubsystemBase {
           m_rearRight.getPosition()
       });
 
-  /** Creates a new DriveSubsystem. */
+  /** Creates a new SwerveDriveSubsystem. */
   public SwerveDriveSubsystem() {
+      // TODO: Should we do this here (Done in KitBot, not in Swerve...)
+      // // Reset Encoders
+      // resetEncoders();;
+
+      // // Reset Gyrometer
+      // m_gyro.calibrate();
+      // m_gyro.reset();      
   }
 
   @Override
@@ -107,6 +113,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
    * @param fieldRelative Whether the provided x and y speeds are relative to the
    *                      field.
    */
+  @Override
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
     // Adjust input based on max speed
     xSpeed *= SwerveDriveConstants.kMaxSpeedMetersPerSecond;
@@ -149,7 +156,9 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     m_rearRight.setDesiredState(desiredStates[3]);
   }
 
-  /** Resets the drive encoders to currently read a position of 0. */
+  /** 
+   * Resets the drive encoders to currently read a position of 0. 
+   **/
   public void resetEncoders() {
     m_frontLeft.resetEncoders();
     m_rearLeft.resetEncoders();
@@ -157,7 +166,9 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     m_rearRight.resetEncoders();
   }
 
-  /** Zeroes the heading of the robot. */
+  /** 
+   * Zeroes the heading of the robot. 
+   **/
   public void zeroHeading() {
     m_gyro.reset();
   }
@@ -178,5 +189,15 @@ public class SwerveDriveSubsystem extends SubsystemBase {
    */
   public double getTurnRate() {
     return m_gyro.getRate() * (SwerveDriveConstants.kGyroReversed ? -1.0 : 1.0);
+  }
+
+  /**
+   * Returns Drivetrain Type...
+   */
+  public boolean isSwerve(){
+    return true;
+  }
+  public boolean isKitBot(){
+    return !isSwerve();
   }
 }
