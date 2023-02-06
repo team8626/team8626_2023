@@ -1,0 +1,41 @@
+{
+  "NetworkTables": {
+    "types": {
+      "/FMSInfo": "FMSInfo",
+      "/SmartDashboard/Field": "Field2d"
+    },
+    "windows": {
+      "/FMSInfo": {
+        "window": {
+          "visible": true
+        }
+      },
+      "/SmartDashboard/Field": {
+        "height": 8.013679504394531,
+        "image": "/Users/sylvain/PathWeaver/Games/2023/2023-field.png",
+        "width": 16.541748046875,
+        "window": {
+          "name": "Charged-Up",
+          "visible": true
+        }
+      }
+    }
+  },
+  "NetworkTables Info": {
+    "Clients": {
+      "open": true
+    },
+    "Connections": {
+      "open": true
+    },
+    "Server": {
+      "open": true
+    },
+    "visible": true
+  },
+  "NetworkTables Settings": {
+    "listenAddress": "localhost",
+    "mode": "Client (NT4)",
+    "serverTeam": "localhost"
+  }
+}

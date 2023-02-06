@@ -107,9 +107,20 @@ public final class Constants {
         public static final int kTurningMotorCurrentLimit = 20; // amps
     }
 
+    public static final class SwerveDriveAutonomousConstants {
+        public static final double kMaxSpeedMetersPerSecond = 3;
+        public static final double kMaxAccelerationMetersPerSecondSquared = 3;
+        public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
+        public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
+
+        public static final double kPXController = 1;
+        public static final double kPYController = 1;
+        public static final double kPThetaController = 1;
+    }
+
     public static final class NeoMotorConstants {
         public static final double kFreeSpeedRpm = 5676;
-      }
+    }
 
     // Ensign driveTrain (AM14U) subsystem constants
     public final static class KitbotDriveTrain {

@@ -1,5 +1,8 @@
 package frc.robot.subsystems;
   
+import edu.wpi.first.hal.SimDevice;
+import edu.wpi.first.hal.SimDouble;
+import edu.wpi.first.hal.simulation.SimDeviceDataJNI;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -7,10 +10,18 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.math.numbers.N2;
+import edu.wpi.first.math.system.LinearSystem;
+import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim;
+import edu.wpi.first.wpilibj.simulation.EncoderSim;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -24,8 +35,8 @@ import frc.robot.Constants.KitbotDriveTrain;
 **
 */
 
-//public class KitbotDriveSubsystem extends SubsystemBase, DriveSubsystem  {
-  public class KitbotDriveSubsystem extends DriveSubsystem   {
+public class KitbotDriveSubsystem extends SubsystemBase  {
+  // public class KitbotDriveSubsystem extends DriveSubsystem   {
 
     private final WPI_VictorSPX m_motorFrontLeft  = new WPI_VictorSPX(KitbotDriveTrain.kCANMotorFL);
     private final WPI_VictorSPX m_motorRearLeft   = new WPI_VictorSPX(KitbotDriveTrain.kCANMotorRL);
@@ -62,6 +73,22 @@ import frc.robot.Constants.KitbotDriveTrain;
     private final DifferentialDriveKinematics m_kinematics = new DifferentialDriveKinematics(KitbotDriveTrain.kTrackwidthMeters);
     private final DifferentialDriveOdometry m_odometry;
     private final SimpleMotorFeedforward m_feedforward = new SimpleMotorFeedforward(KitbotDriveTrain.ks, KitbotDriveTrain.kv);
+
+    // Simulation Objects
+    // TODO: Simulation Drivetrain Support
+    private EncoderSim m_leftEncoderSim = new EncoderSim(m_leftEncoder);
+    private EncoderSim m_rightEncoderSim = new EncoderSim(m_rightEncoder);
+    private final Field2d m_fieldSim = new Field2d();
+    private final LinearSystem<N2, N2, N2> m_drivetrainSystem =
+        LinearSystemId.identifyDrivetrainSystem(1.98, 0.2, 1.5, 0.3);
+    private final DifferentialDrivetrainSim m_drivetrainSimulator =
+      new DifferentialDrivetrainSim(
+          m_drivetrainSystem, DCMotor.getCIM(2), // 2 CIMs per side.
+          10.71,                                   // 10.71:1 Gearing (14T/50T/16T/48T)
+          KitbotDriveTrain.kTrackwidthMeters,               // Track Width (meters)
+          KitbotDriveTrain.kWheelDiameter/2,                // Wheels Radius (meters)
+          null                          // No measurement noise.
+      );
 
     /**
      * Constructs a differential drive object. 
@@ -121,7 +148,7 @@ import frc.robot.Constants.KitbotDriveTrain;
      * @param xSpeed Linear velocity in m/s.
      * @param rot Angular velocity in rad/s.
      */
-    @Override
+    //@Override
     public void drive(double xSpeed, double rot) {
       var wheelSpeeds = m_kinematics.toWheelSpeeds(new ChassisSpeeds(xSpeed, 0.0, rot));
       setSpeeds(wheelSpeeds);
@@ -183,6 +210,10 @@ import frc.robot.Constants.KitbotDriveTrain;
   public void periodic() {
     // Update the odometry in the periodic block
     this.updateOdometry();
+    m_fieldSim.setRobotPose(m_odometry.getPoseMeters());
+   
+    // Push Field to Dashboard
+    SmartDashboard.putData(m_fieldSim);
   }
 
   /**
@@ -192,7 +223,6 @@ import frc.robot.Constants.KitbotDriveTrain;
    */
   public Pose2d getPose() {
     return m_odometry.getPoseMeters();
-
   }
 
   /**
@@ -291,6 +321,30 @@ import frc.robot.Constants.KitbotDriveTrain;
    */
   public void setHighSpeed() {
     m_drive.setMaxOutput(KitbotDriveTrain.kPowerRatioHighSpeed);
+  }
+
+  /** 
+   * Update our simulation. This should be run every robot loop in simulation. 
+   **/
+  public void simulationPeriodic() {
+    // To update our simulation, we set motor voltage inputs, update the
+    // simulation, and write the simulated positions and velocities to our
+    // simulated encoder and gyro. We negate the right side so that positive
+    // voltages make the right side move forward.
+    m_drivetrainSimulator.setInputs(
+      m_motorControllerLeft.get() * RobotController.getInputVoltage(),
+      m_motorControllerRight.get() * RobotController.getInputVoltage());
+    m_drivetrainSimulator.update(0.02);
+
+    m_leftEncoderSim.setDistance(m_drivetrainSimulator.getLeftPositionMeters());
+    m_leftEncoderSim.setRate(m_drivetrainSimulator.getLeftVelocityMetersPerSecond());
+    m_rightEncoderSim.setDistance(m_drivetrainSimulator.getRightPositionMeters());
+    m_rightEncoderSim.setRate(m_drivetrainSimulator.getRightVelocityMetersPerSecond());
+
+    SimDouble angle = new SimDouble(SimDeviceDataJNI.getSimValueHandle(
+      SimDeviceDataJNI.getSimDeviceHandle("navX-Sensor[0]"), 
+      "Yaw"));
+    angle.set(-m_drivetrainSimulator.getHeading().getDegrees());
   }
 
   /**

@@ -18,9 +18,9 @@ public abstract class DriveSubsystem extends SubsystemBase{
     public void setX(){};
 
     // Drive Command for Swerve
-    public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative){};
+    //public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative){};
 
     // Drive Command for KitBot
-    public void drive(double xSpeed, double rot){};
+    //public void drive(double xSpeed, double rot){};
     
 }

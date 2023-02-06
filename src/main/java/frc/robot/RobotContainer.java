@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.PS4Controller.Button;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.IOControls;
 import frc.robot.subsystems.DriveSubsystem;
@@ -35,7 +36,9 @@ enum DriveType {
  */
 public class RobotContainer {
   // The robot's subsystems
-  private DriveSubsystem m_robotDrive = null;
+  // private DriveSubsystem m_robotDrive = null;
+  private SubsystemBase m_robotDrive = null;
+
   private final static DriveType m_driveType = DriveType.SWERVE; // SWERVE or KITBOT
   //private final SwerveDriveSubsystem m_robotDrive = new SwerveDriveSubsystem();
   //private final KitBotDriveSubsystem m_robotDrive = new SwerveDriveSubsystem();
@@ -80,23 +83,23 @@ public class RobotContainer {
     //
     // Swerve Drive Train Specific Bindings
     //
-    if(m_robotDrive.isSwerve()){
+    if(m_robotDrive instanceof SwerveDriveSubsystem){
       // Pressing Right Bumper set Swerve Modules to Cross (X) Position
       new JoystickButton(m_xBoxController, Button.kR1.value)
       .whileTrue(new RunCommand(
-          () -> m_robotDrive.setX(),
+          () -> ((SwerveDriveSubsystem)m_robotDrive).setX(),
           m_robotDrive));
     }
 
     //
     // KitBot Drive Train Specific Bindings
     //
-    if(m_robotDrive.isKitBot()){
+    if(m_robotDrive instanceof KitbotDriveSubsystem){
 
     }
 
 
-        // Toggle Auto-Balancing mode ON/OFF
+    // Toggle Auto-Balancing mode ON/OFF
     // TODO: Ned's code goes here
 
     // Grab (Close Claw)
@@ -121,12 +124,13 @@ public class RobotContainer {
     //
     // Swerve Drive Train Specific Bindings
     //
-    if(m_robotDrive.isSwerve()){
+    // if(m_robotDrive.isSwerve()){
+    if(m_robotDrive instanceof SwerveDriveSubsystem){
       m_robotDrive.setDefaultCommand(
       // The left stick controls translation of the robot.
       // Turning is controlled by the X axis of the right stick.
       new RunCommand(
-          () -> m_robotDrive.drive(
+          () -> ((SwerveDriveSubsystem)m_robotDrive).drive(
               MathUtil.applyDeadband(-m_xBoxController.getLeftY(), 0.06),
               MathUtil.applyDeadband(-m_xBoxController.getLeftX(), 0.06),
               MathUtil.applyDeadband(-m_xBoxController.getRightX(), 0.06),
@@ -137,12 +141,12 @@ public class RobotContainer {
     //
     // KitBot Drive Train Specific Bindings
     //
-    if(m_robotDrive.isKitBot()){
+    if(m_robotDrive instanceof KitbotDriveSubsystem){
       m_robotDrive.setDefaultCommand(
       // Joystick controls the robot.
       // Speed is controlled by Y axis, Rotation is controlled by Y Axis, 
       new RunCommand(
-          () -> m_robotDrive.drive(
+        () -> ((KitbotDriveSubsystem)m_robotDrive).drive(
               MathUtil.applyDeadband(-m_joystickController.getY(), 0.06),
               MathUtil.applyDeadband(-m_joystickController.getX(), 0.06)),
           m_robotDrive));
