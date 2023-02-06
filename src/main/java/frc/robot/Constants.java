@@ -125,10 +125,11 @@ public final class Constants {
     // Ensign driveTrain (AM14U) subsystem constants
     public final static class KitbotDriveTrain {
         // CAN Bus addresses for motors
-        public static int kCANMotorFL = 3;  // USING Victor SPX
-        public static int kCANMotorRL = 1;  // USING Victor SPX
-        public static int kCANMotorFR = 4;  // USING Victor SPX
-        public static int kCANMotorRR = 2;  // USING Victor SPX
+        public static int kCANMotorFL = 10;  // USING Victor SPX
+        public static int kCANMotorRL = 11;  // USING Victor SPX
+        public static int kCANMotorFR = 22;  // USING Victor SPX
+        public static int kCANMotorRR = 7;  // USING Victor SPX
+     
 
         public static boolean kLeftMotorsInverted = false;
         public static boolean kRightMotorsInverted = false;
