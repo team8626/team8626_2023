@@ -131,9 +131,10 @@ public class RobotContainer {
       // Turning is controlled by the X axis of the right stick.
       new RunCommand(
           () -> ((SwerveDriveSubsystem)m_robotDrive).drive(
-              MathUtil.applyDeadband(-m_xBoxController.getLeftY(), 0.06),
-              MathUtil.applyDeadband(-m_xBoxController.getLeftX(), 0.06),
-              MathUtil.applyDeadband(-m_xBoxController.getRightX(), 0.06),
+              MathUtil.applyDeadband(-m_xBoxController.getLeftY(), IOControls.kDriveDeadband),
+              MathUtil.applyDeadband(-m_xBoxController.getLeftX(), IOControls.kDriveDeadband),
+              MathUtil.applyDeadband(-m_xBoxController.getRightX(), IOControls.kDriveDeadband),
+              true,
               true),
           m_robotDrive));
     }
@@ -147,8 +148,8 @@ public class RobotContainer {
       // Speed is controlled by Y axis, Rotation is controlled by Y Axis, 
       new RunCommand(
         () -> ((KitbotDriveSubsystem)m_robotDrive).drive(
-              MathUtil.applyDeadband(-m_joystickController.getY(), 0.06),
-              MathUtil.applyDeadband(-m_joystickController.getX(), 0.06)),
+              MathUtil.applyDeadband(-m_joystickController.getY(), IOControls.kDriveDeadband),
+              MathUtil.applyDeadband(-m_joystickController.getX(), IOControls.kDriveDeadband)),
           m_robotDrive));
     }
   }
