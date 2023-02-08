@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import java.io.IOException;
+
 import org.xml.sax.SAXException;
 
 import edu.wpi.first.math.MathUtil;
@@ -37,7 +39,8 @@ enum DriveType {
 public class RobotContainer {
   // The robot's subsystems
   // private DriveSubsystem m_robotDrive = null;
-  private SubsystemBase m_robotDrive = null;
+  private static SubsystemBase m_robotDrive = null;
+  
 
   private final static DriveType m_driveType = DriveType.SWERVE; // SWERVE or KITBOT
   //private final SwerveDriveSubsystem m_robotDrive = new SwerveDriveSubsystem();
@@ -50,7 +53,8 @@ public class RobotContainer {
 
   // Autonomous Mode Selection
   // TODO: Add Autonomous dashboard and controls here
-  
+  private final static DashBoard m_dashboard = new DashBoard();
+  private final static Autonomous m_autoControl = new Autonomous(m_dashboard, m_robotDrive);
   /** 
    * The container for the robot. 
    * Contains subsystems, IO devices, and commands.
@@ -159,6 +163,13 @@ public class RobotContainer {
    * TODO: Insert Last year's code here
    */
   public Command getAutonomousCommand() {
-    return Commands.print("No autonomous command configured");
+    Command retval = null;
+     try {
+       retval = m_autoControl.getStartCommand();
+     } catch (IOException e) {
+       // TODO Auto-generated catch block
+       e.printStackTrace();
+     }
+    return retval;
   }
 }
