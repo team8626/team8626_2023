@@ -1,0 +1,55 @@
+{
+  "waypoints": [
+    {
+      "anchorPoint": {
+        "x": 2.05,
+        "y": 2.75
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 3.747557709202829,
+        "y": 2.75
+      },
+      "holonomicAngle": 0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [
+          "drop cube",
+          "Position 1"
+        ],
+        "executionBehavior": "parallel",
+        "waitBehavior": "after",
+        "waitTime": 1.0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 6.5,
+        "y": 2.75
+      },
+      "prevControl": {
+        "x": 5.078895181988271,
+        "y": 2.75
+      },
+      "nextControl": null,
+      "holonomicAngle": 0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [
+          "balance",
+          "Position 3"
+        ],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    }
+  ],
+  "markers": []
+}
