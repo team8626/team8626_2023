@@ -4,19 +4,25 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ArmElbowSubsystem extends SubsystemBase {
   // Declare our Motor(s)
+  private final WPI_VictorSPX m_elbowMotor = new WPI_VictorSPX(38);
   // TODO
-
   // Declare our Sensor(s)
   // TODO
-
+  private final Encoder m_elbowEncoder = new Encoder(21, 22);
   /** Class Constructor. */
   public ArmElbowSubsystem() {
+    m_elbowMotor.setInverted(false);
   }
-
+  public void setMotor(double speed){
+    m_elbowMotor.set(speed);
+  }
   @Override
   public void periodic() {
   }
