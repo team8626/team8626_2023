@@ -9,6 +9,9 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.ElevatorSubsystem;
 
 public class DashBoard {
 
@@ -37,19 +40,24 @@ public class DashBoard {
     static double m_shortOldTime = 0.0;
     static double m_longOldTime  = 0.0;   
 
-
-
+// private final SubsystemBase m_drive;
+// private final ElevatorSubsystem m_elevator;
     /**
      * Class Constructor
      * Initialize the Dashboard with defaul values of "settable" inputs.
      */
     public DashBoard() {
+    //public DashBoard(SubsystemBase drive, ElevatorSubsystem elevator) {
+        //     m_drive = drive;
+        // m_elevator = elevator;
         if(kEnableDashBoard){
             //SmartDashboard.putBoolean("Compressor ENABLE", true);
             //SmartDashboard.putBoolean("Limelight-LED Toggle", false);
 
             initAutonomousStrategy();
             initStartupPostion();
+
+            
         }
         m_thread.startPeriodic(kShortInterval);
 
@@ -115,8 +123,9 @@ public class DashBoard {
     }
 
     // Initialize Dashboard for all subsystems.
-    private static void initSubsystems() {
-    
+    private void initSubsystems() {
+      //  m_drive.initDashboard();
+      ElevatorSubsystem.initDashboard();
        
     }
 
@@ -126,6 +135,9 @@ public class DashBoard {
 
          // Pulsing to indicate Dashboard is updated
          dashboardFlash();
+
+        //  m_elevator.updateDashboard();
+         ElevatorSubsystem.updateDashboard();
     }
 
     // Update values that need low frequency refresh.
