@@ -26,6 +26,7 @@ import frc.robot.commands.MoveElevatorBottomCommand;
 import frc.robot.commands.MoveElevatorTopCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
+import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.KitbotDriveSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 
@@ -111,9 +112,9 @@ public class RobotContainer {
     if(m_robotDrive instanceof KitbotDriveSubsystem){
 
     }
-    /* (new Trigger(() -> m_flightJoystick.getTriggerPressed()))
-    .toggleOnTrue(new ElevatorTestCommand(m_elevator));
-*/
+    // (new Trigger(() -> m_flightJoystick.getTriggerPressed()))
+    // .toggleOnTrue(new ElevatorTestCommand(m_elevator));
+
     Trigger button11 = new JoystickButton(m_flightJoystick, 11);
     button11.toggleOnTrue(new MoveElevatorBottomCommand(m_elevator));
 
@@ -154,9 +155,10 @@ public class RobotContainer {
       // Turning is controlled by the X axis of the right stick.
       new RunCommand(
           () -> ((SwerveDriveSubsystem)m_robotDrive).drive(
-              MathUtil.applyDeadband(-m_xBoxController.getLeftY(), 0.06),
-              MathUtil.applyDeadband(-m_xBoxController.getLeftX(), 0.06),
-              MathUtil.applyDeadband(-m_xBoxController.getRightX(), 0.06),
+              MathUtil.applyDeadband(-m_xBoxController.getLeftY(), IOControls.kDriveDeadband),
+              MathUtil.applyDeadband(-m_xBoxController.getLeftX(), IOControls.kDriveDeadband),
+              MathUtil.applyDeadband(-m_xBoxController.getRightX(), IOControls.kDriveDeadband),
+              true,
               true),
           m_robotDrive));
     }
