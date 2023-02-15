@@ -177,7 +177,27 @@ public final class Constants {
     }
     
     // Arm subsystem constants
-    public final static class Arm {
+    public final static class ArmConstants {
+        public static final int kElbowCanId = 8;
+        public static final boolean kElbowEncoderInverted = false;
+
+        public static final double kElbowEncoderPositionFactor = (2 * Math.PI); // radians
+        public static final double kElbowEncoderVelocityFactor = (2 * Math.PI) / 60.0; // radians per second
+
+        public static final double kElbowEncoderPositionPIDMinInput = 0; // radians
+        public static final double kElbowEncoderPositionPIDMaxInput = kElbowEncoderPositionFactor; // radians
+    
+        public static final double kElbowP = 1;
+        public static final double kElbowI = 0;
+        public static final double kElbowD = 0;
+        public static final double kElbowFF = 0;
+        public static final double kElbowMinOutput = -1;
+        public static final double kElbowMaxOutput = 1;
+    
+        
+        public static final IdleMode kElbowMotorIdleMode = IdleMode.kBrake;
+        public static final int kElbowMotorCurrentLimit = 40; // amps
+        
     }
     
     // Claw subsystem constants
