@@ -81,6 +81,7 @@ startCommand = new PrintCommand("Delivering node, exiting Tarmac from the left s
 }
 break; 
         }
+        
         return startCommand;
     }  
 }
