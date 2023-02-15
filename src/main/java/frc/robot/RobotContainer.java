@@ -158,7 +158,7 @@ public class RobotContainer {
               MathUtil.applyDeadband(-m_xBoxController.getLeftY(), IOControls.kDriveDeadband),
               MathUtil.applyDeadband(-m_xBoxController.getLeftX(), IOControls.kDriveDeadband),
               MathUtil.applyDeadband(-m_xBoxController.getRightX(), IOControls.kDriveDeadband),
-              true,
+              false,
               true),
           m_robotDrive));
     }
