@@ -22,7 +22,6 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.IOControls;
 import frc.robot.commands.ElevatorMoveCommand;
-import frc.robot.commands.ElevatorTestCommand;
 import frc.robot.commands.MoveElevatorBottomCommand;
 import frc.robot.commands.MoveElevatorTopCommand;
 import frc.robot.subsystems.DriveSubsystem;
@@ -112,9 +111,9 @@ public class RobotContainer {
     if(m_robotDrive instanceof KitbotDriveSubsystem){
 
     }
-    (new Trigger(() -> m_flightJoystick.getTriggerPressed()))
+    /* (new Trigger(() -> m_flightJoystick.getTriggerPressed()))
     .toggleOnTrue(new ElevatorTestCommand(m_elevator));
-
+*/
     Trigger button11 = new JoystickButton(m_flightJoystick, 11);
     button11.toggleOnTrue(new MoveElevatorBottomCommand(m_elevator));
 
