@@ -182,6 +182,24 @@ public final class Constants {
     
     // Claw subsystem constants
     public final static class Claw {
+        // RoboRio/Can addresses
+        public static int kCANMotorClaw=1; // Talon SPX
+
+        public static int kLimitSwitch = 5; // DIO
+        public static int kEncoderA = 6;    // DIO
+        public static int kEncoderB = 7;    // DIO
+                
+        // Settings
+        public static double kTicksPerRev = 7.0 * 40.0 * (50/14); // quadrature cycles - 7 on motor, 40:1 for gearbox, Claw Gears: 50:14
+       
+        // TODO: These next two need to be calibrated
+        public static int kSoftCloseAngle = 10; // Degrees
+        public static int kHardCloseAngle = 20; // Degrees
+
+        // PID Controller Constants
+        public static double kP = 1.0;    
+        public static double kI = 0.0;    
+        public static double kD = 0.0;    
     }
     
     // LEDManager constants
