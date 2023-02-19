@@ -185,9 +185,9 @@ public final class Constants {
         // RoboRio/Can addresses
         public static int kCANMotorClaw=1; // Talon SPX
 
-        public static int kLimitSwitch = 5; // DIO
-        public static int kEncoderA = 6;    // DIO
-        public static int kEncoderB = 7;    // DIO
+        public static int kDIOLimitSwitch = 5; // DIO
+        public static int kDIOEncoderA = 6;    // DIO
+        public static int kDIOEncoderB = 7;    // DIO
                 
         // Settings
         public static double kTicksPerRev = 7.0 * 40.0 * (50/14); // quadrature cycles - 7 on motor, 40:1 for gearbox, Claw Gears: 50:14

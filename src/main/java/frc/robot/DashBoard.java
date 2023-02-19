@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.subsystems.ClawSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 
@@ -23,8 +24,8 @@ public class DashBoard {
        EXIT, EXIT_BALANCE, NODE_EXIT_BALANCE
     }
 
-    private static final Notifier m_thread = new Notifier(new dashboardThread());
-	
+    private static RobotContainer m_robotContainer;
+    private final Notifier m_thread = new Notifier(new dashboardThread());
 	public static final boolean kEnableDashBoard = true;
 	
     // private DesiredMode mCachedDesiredMode = null;
@@ -46,10 +47,11 @@ public class DashBoard {
      * Class Constructor
      * Initialize the Dashboard with defaul values of "settable" inputs.
      */
-    public DashBoard() {
+    public DashBoard(RobotContainer newRobotcontainer) {
     //public DashBoard(SubsystemBase drive, ElevatorSubsystem elevator) {
-        //     m_drive = drive;
+        // m_drive = drive;
         // m_elevator = elevator;
+        m_robotContainer = newRobotcontainer;
         if(kEnableDashBoard){
             //SmartDashboard.putBoolean("Compressor ENABLE", true);
             //SmartDashboard.putBoolean("Limelight-LED Toggle", false);
@@ -126,6 +128,7 @@ public class DashBoard {
     private void initSubsystems() {
       //  m_drive.initDashboard();
       ElevatorSubsystem.initDashboard();
+      m_robotContainer.m_claw.initDashboard();
        
     }
 
@@ -137,7 +140,8 @@ public class DashBoard {
          dashboardFlash();
 
         //  m_elevator.updateDashboard();
-         ElevatorSubsystem.updateDashboard();
+        ElevatorSubsystem.updateDashboard();
+        m_robotContainer.m_claw.updateDashboard();
     }
 
     // Update values that need low frequency refresh.

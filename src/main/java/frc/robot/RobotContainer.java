@@ -21,12 +21,15 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.IOControls;
+import frc.robot.commands.CloseClawCommand;
 import frc.robot.commands.ElevatorMoveCommand;
 import frc.robot.commands.MoveElevatorBottomCommand;
 import frc.robot.commands.MoveElevatorTopCommand;
+import frc.robot.commands.OpenClawCommand;
+import frc.robot.subsystems.ClawSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
-import frc.robot.subsystems.ElevatorSubsystem;
+import frc.robot.subsystems.ClawSubsystem;
 import frc.robot.subsystems.KitbotDriveSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 
@@ -48,29 +51,31 @@ public class RobotContainer {
   // private DriveSubsystem m_robotDrive = null;
   private static SubsystemBase m_robotDrive = null;
   private static final ElevatorSubsystem m_elevator = new ElevatorSubsystem();
+  public  final ClawSubsystem m_claw = new ClawSubsystem();
   
 
-  private final static DriveType m_driveType = DriveType.KITBOT; // SWERVE or KITBOT
+  private final static DriveType m_driveType = DriveType.SWERVE; // SWERVE or KITBOT
   //private final SwerveDriveSubsystem m_robotDrive = new SwerveDriveSubsystem();
   //private final KitBotDriveSubsystem m_robotDrive = new SwerveDriveSubsystem();
 
   // Define controllers
   // private final XboxController m_xBoxController = new XboxController(IOControls.kXboxControllerPort);
   private final PS4Controller m_xBoxController = new PS4Controller(IOControls.kXboxControllerPort);
-  // private final Joystick m_flightJoystick = new Joystick(IOControls.kJoystickControllerPort);
-  private final Joystick m_flightJoystick = new Joystick(1);
+  private final Joystick m_flightJoystick = new Joystick(IOControls.kJoystickControllerPort);
 
   // Autonomous Mode Selection
   // TODO: Add Autonomous dashboard and controls here
   
-  private final static DashBoard m_dashboard = new DashBoard();
-  private final static Autonomous m_autoControl = new Autonomous(m_dashboard, m_robotDrive);
+  private static DashBoard m_dashboard;
+  private static Autonomous m_autoControl = new Autonomous(m_dashboard, m_robotDrive);
  
   /** 
    * The container for the robot. 
    * Contains subsystems, IO devices, and commands.
    */
   public RobotContainer() {
+     m_dashboard = new DashBoard(this);
+
     // Instantiate the drivetrain
     switch(m_driveType){
       case SWERVE /*kSwerve*/: 
@@ -98,13 +103,13 @@ public class RobotContainer {
     //
     // Swerve Drive Train Specific Bindings
     //
-    if(m_robotDrive instanceof SwerveDriveSubsystem){
-      // Pressing Right Bumper set Swerve Modules to Cross (X) Position
-      new JoystickButton(m_xBoxController, Button.kR1.value)
-      .whileTrue(new RunCommand(
-          () -> ((SwerveDriveSubsystem)m_robotDrive).setX(),
-          m_robotDrive));
-    }
+    // if(m_robotDrive instanceof SwerveDriveSubsystem){
+    //   // Pressing Right Bumper set Swerve Modules to Cross (X) Position
+    //   new JoystickButton(m_xBoxController, Button.kR1.value)
+    //   .whileTrue(new RunCommand(
+    //       () -> ((SwerveDriveSubsystem)m_robotDrive).setX(),
+    //       m_robotDrive));
+    // }
 
     //
     // KitBot Drive Train Specific Bindings
@@ -114,6 +119,12 @@ public class RobotContainer {
     }
     // (new Trigger(() -> m_flightJoystick.getTriggerPressed()))
     // .toggleOnTrue(new ElevatorTestCommand(m_elevator));
+
+    Trigger button9 = new JoystickButton(m_flightJoystick, 9);
+    button9.toggleOnTrue(new OpenClawCommand(m_claw));
+
+    Trigger button10 = new JoystickButton(m_flightJoystick, 10);
+    button10.toggleOnTrue(new CloseClawCommand(m_claw));
 
     Trigger button11 = new JoystickButton(m_flightJoystick, 11);
     button11.toggleOnTrue(new MoveElevatorBottomCommand(m_elevator));

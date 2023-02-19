@@ -1,26 +1,21 @@
 {
   "HALProvider": {
+    "DIO": {
+      "window": {
+        "visible": true
+      }
+    },
+    "Encoders": {
+      "0": {
+        "header": {
+          "open": true
+        }
+      },
+      "window": {
+        "visible": true
+      }
+    },
     "Other Devices": {
-      "SPARK MAX [41]": {
-        "header": {
-          "open": true
-        }
-      },
-      "SPARK MAX [43]": {
-        "header": {
-          "open": true
-        }
-      },
-      "SPARK MAX [51]": {
-        "header": {
-          "open": true
-        }
-      },
-      "SPARK MAX [54]": {
-        "header": {
-          "open": true
-        }
-      },
       "Victor SPX[1]": {
         "header": {
           "open": true
