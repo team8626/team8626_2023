@@ -187,7 +187,7 @@ public final class Constants {
         public static final double kElbowEncoderPositionPIDMinInput = 0; // degrees
         public static final double kElbowEncoderPositionPIDMaxInput = kElbowEncoderPositionFactor; // degrees
     
-        public static final double kElbowP = 1;
+        public static final double kElbowP = 0.05;
         public static final double kElbowI = 0;
         public static final double kElbowD = 0;
         public static final double kElbowFF = 0;
