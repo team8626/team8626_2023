@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.subsystems.ArmElbowSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 
@@ -126,7 +127,7 @@ public class DashBoard {
     private void initSubsystems() {
       //  m_drive.initDashboard();
       ElevatorSubsystem.initDashboard();
-       
+      ArmElbowSubsystem.initDashboard();
     }
 
     // Update values that need high frequency refresh.
@@ -135,9 +136,11 @@ public class DashBoard {
 
          // Pulsing to indicate Dashboard is updated
          dashboardFlash();
-
+        
         //  m_elevator.updateDashboard();
          ElevatorSubsystem.updateDashboard();
+         ArmElbowSubsystem.updateDashboard();
+
     }
 
     // Update values that need low frequency refresh.
