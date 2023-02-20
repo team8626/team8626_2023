@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.IOControls;
 import frc.robot.commands.CloseClawCommand;
 import frc.robot.commands.ElevatorMoveCommand;
+import frc.robot.commands.MoveArmElbowCommand;
 import frc.robot.commands.MoveElevatorBottomCommand;
 import frc.robot.commands.MoveElevatorTopCommand;
 import frc.robot.commands.OpenClawCommand;
@@ -81,10 +82,12 @@ public class RobotContainer {
       case SWERVE /*kSwerve*/: 
         m_robotDrive = new SwerveDriveSubsystem();
         break;
+ 
+     // case KITBOT /*kKitBot*/: 
+      //  m_robotDrive = new KitbotDriveSubsystem();
+      //  break;
 
-      case KITBOT /*kKitBot*/: 
-        m_robotDrive = new KitbotDriveSubsystem();
-        break;
+    
     }
     configureButtonBindings();
     configureDefaultCommands();
@@ -117,8 +120,14 @@ public class RobotContainer {
     if(m_robotDrive instanceof KitbotDriveSubsystem){
 
     }
-    // (new Trigger(() -> m_flightJoystick.getTriggerPressed()))
-    // .toggleOnTrue(new ElevatorTestCommand(m_elevator));
+    
+    
+/* 
+    Trigger button3 = new JoystickButton(m_flightJoystick, 3);
+    button3.toggleOnTrue(new MoveArmElbowCommand(m_elbow, 90));
+
+    Trigger button4 = new JoystickButton(m_flightJoystick, 4);
+    button4.toggleOnTrue(new MoveArmElbowCommand(m_elbow, 180));
 
     Trigger button9 = new JoystickButton(m_flightJoystick, 9);
     button9.toggleOnTrue(new OpenClawCommand(m_claw));
@@ -131,7 +140,7 @@ public class RobotContainer {
 
     Trigger button12 = new JoystickButton(m_flightJoystick, 12);
     button12.toggleOnTrue(new MoveElevatorTopCommand(m_elevator));
-
+*/
 
 
     // Toggle Auto-Balancing mode ON/OFF
@@ -187,7 +196,7 @@ public class RobotContainer {
               MathUtil.applyDeadband(-m_flightJoystick.getX(), 0.06)),
           m_robotDrive));
     }
-    m_elevator.setDefaultCommand(new ElevatorMoveCommand(() ->  m_flightJoystick.getY(), m_elevator));
+    // m_elevator.setDefaultCommand(new ElevatorMoveCommand(() ->  m_flightJoystick.getY(), m_elevator));
   }
 
 

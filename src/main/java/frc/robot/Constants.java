@@ -181,11 +181,11 @@ public final class Constants {
         public static final int kElbowCanId = 8;
         public static final boolean kElbowEncoderInverted = false;
 
-        public static final double kElbowEncoderPositionFactor = (2 * Math.PI); // radians
-        public static final double kElbowEncoderVelocityFactor = (2 * Math.PI) / 60.0; // radians per second
+        public static final double kElbowEncoderPositionFactor = 360; // degrees
+        public static final double kElbowEncoderVelocityFactor = 360 / 60.0; // degrees per second
 
-        public static final double kElbowEncoderPositionPIDMinInput = 0; // radians
-        public static final double kElbowEncoderPositionPIDMaxInput = kElbowEncoderPositionFactor; // radians
+        public static final double kElbowEncoderPositionPIDMinInput = 0; // degrees
+        public static final double kElbowEncoderPositionPIDMaxInput = kElbowEncoderPositionFactor; // degrees
     
         public static final double kElbowP = 1;
         public static final double kElbowI = 0;
