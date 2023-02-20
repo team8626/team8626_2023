@@ -22,8 +22,10 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.IOControls;
 import frc.robot.commands.ElevatorMoveCommand;
+import frc.robot.commands.MoveArmElbowCommand;
 import frc.robot.commands.MoveElevatorBottomCommand;
 import frc.robot.commands.MoveElevatorTopCommand;
+import frc.robot.subsystems.ArmElbowSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
@@ -47,7 +49,8 @@ public class RobotContainer {
   // The robot's subsystems
   // private DriveSubsystem m_robotDrive = null;
   private static SubsystemBase m_robotDrive = null;
-  private static final ElevatorSubsystem m_elevator = new ElevatorSubsystem();
+  private final static ArmElbowSubsystem m_elbow = new ArmElbowSubsystem();
+  // private static final ElevatorSubsystem m_elevator = new ElevatorSubsystem();
   
 
   private final static DriveType m_driveType = DriveType.KITBOT; // SWERVE or KITBOT
@@ -65,6 +68,7 @@ public class RobotContainer {
   
   private final static DashBoard m_dashboard = new DashBoard();
   private final static Autonomous m_autoControl = new Autonomous(m_dashboard, m_robotDrive);
+   
  
   /** 
    * The container for the robot. 
@@ -76,10 +80,12 @@ public class RobotContainer {
       case SWERVE /*kSwerve*/: 
         m_robotDrive = new SwerveDriveSubsystem();
         break;
+ 
+     // case KITBOT /*kKitBot*/: 
+      //  m_robotDrive = new KitbotDriveSubsystem();
+      //  break;
 
-      case KITBOT /*kKitBot*/: 
-        m_robotDrive = new KitbotDriveSubsystem();
-        break;
+    
     }
     configureButtonBindings();
     configureDefaultCommands();
@@ -112,15 +118,21 @@ public class RobotContainer {
     if(m_robotDrive instanceof KitbotDriveSubsystem){
 
     }
-    // (new Trigger(() -> m_flightJoystick.getTriggerPressed()))
-    // .toggleOnTrue(new ElevatorTestCommand(m_elevator));
+    
+    
+/* 
+    Trigger button3 = new JoystickButton(m_flightJoystick, 3);
+    button3.toggleOnTrue(new MoveArmElbowCommand(m_elbow, 90));
+
+    Trigger button4 = new JoystickButton(m_flightJoystick, 4);
+    button4.toggleOnTrue(new MoveArmElbowCommand(m_elbow, 180));
 
     Trigger button11 = new JoystickButton(m_flightJoystick, 11);
     button11.toggleOnTrue(new MoveElevatorBottomCommand(m_elevator));
 
     Trigger button12 = new JoystickButton(m_flightJoystick, 12);
     button12.toggleOnTrue(new MoveElevatorTopCommand(m_elevator));
-
+*/
 
 
     // Toggle Auto-Balancing mode ON/OFF
@@ -176,7 +188,7 @@ public class RobotContainer {
               MathUtil.applyDeadband(-m_flightJoystick.getX(), 0.06)),
           m_robotDrive));
     }
-    m_elevator.setDefaultCommand(new ElevatorMoveCommand(() ->  m_flightJoystick.getY(), m_elevator));
+    // m_elevator.setDefaultCommand(new ElevatorMoveCommand(() ->  m_flightJoystick.getY(), m_elevator));
   }
 
 

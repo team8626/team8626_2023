@@ -39,8 +39,7 @@ public class ArmElbowSubsystem extends SubsystemBase {
     m_elbowPIDController.setFeedbackDevice(m_elbowEncoder);
     
     // Apply position and velocity conversion factors for the turning encoder. We
-    // want these in radians and radians per second to use with WPILib's swerve
-    // APIs.
+    // want these in degrees and degrees per second
     m_elbowEncoder.setPositionConversionFactor(ArmConstants.kElbowEncoderPositionFactor);
     m_elbowEncoder.setVelocityConversionFactor(ArmConstants.kElbowEncoderVelocityFactor);
 
@@ -52,9 +51,9 @@ public class ArmElbowSubsystem extends SubsystemBase {
     // controller to go through 0 to get to the setpoint i.e. going from 350 degrees
     // to 10 degrees will go through 0 rather than the other direction which is a
     // longer route.
-    m_elbowPIDController.setPositionPIDWrappingEnabled(true);
-    m_elbowPIDController.setPositionPIDWrappingMinInput(ArmConstants.kElbowEncoderPositionPIDMinInput);
-    m_elbowPIDController.setPositionPIDWrappingMaxInput(ArmConstants.kElbowEncoderPositionPIDMaxInput);
+    m_elbowPIDController.setPositionPIDWrappingEnabled(false);
+    // m_elbowPIDController.setPositionPIDWrappingMinInput(ArmConstants.kElbowEncoderPositionPIDMinInput);
+    // m_elbowPIDController.setPositionPIDWrappingMaxInput(ArmConstants.kElbowEncoderPositionPIDMaxInput);
 
     // Set the PID gains for the turning motor. Note these are example gains, and you
     // may need to tune them for your own robot!
@@ -62,8 +61,7 @@ public class ArmElbowSubsystem extends SubsystemBase {
     m_elbowPIDController.setI(ArmConstants.kElbowI);
     m_elbowPIDController.setD(ArmConstants.kElbowD);
     m_elbowPIDController.setFF(ArmConstants.kElbowFF);
-    m_elbowPIDController.setOutputRange(ArmConstants.kElbowMinOutput,
-    ArmConstants.kElbowMaxOutput);
+    m_elbowPIDController.setOutputRange(ArmConstants.kElbowMinOutput, ArmConstants.kElbowMaxOutput);
 
     m_elbowMotor.setIdleMode(ArmConstants.kElbowMotorIdleMode);
     m_elbowMotor.setSmartCurrentLimit(ArmConstants.kElbowMotorCurrentLimit);
