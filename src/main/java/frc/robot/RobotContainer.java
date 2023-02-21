@@ -28,6 +28,7 @@ import frc.robot.commands.MoveElevatorBottomCommand;
 import frc.robot.commands.MoveElevatorTopCommand;
 import frc.robot.commands.OpenClawCommand;
 import frc.robot.subsystems.ClawSubsystem;
+import frc.robot.subsystems.ArmElbowSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.ClawSubsystem;
@@ -51,8 +52,10 @@ public class RobotContainer {
   // The robot's subsystems
   // private DriveSubsystem m_robotDrive = null;
   private static SubsystemBase m_robotDrive = null;
-  private static final ElevatorSubsystem m_elevator = new ElevatorSubsystem();
-  public  final ClawSubsystem m_claw = new ClawSubsystem();
+  public final ElevatorSubsystem m_elevator = new ElevatorSubsystem();
+  public final ClawSubsystem m_claw = new ClawSubsystem();
+  public final static ArmElbowSubsystem m_elbow = new ArmElbowSubsystem();
+  // private static final ElevatorSubsystem m_elevator = new ElevatorSubsystem();
   
 
   private final static DriveType m_driveType = DriveType.SWERVE; // SWERVE or KITBOT
@@ -122,12 +125,12 @@ public class RobotContainer {
     }
     
     
-/* 
-    Trigger button3 = new JoystickButton(m_flightJoystick, 3);
-    button3.toggleOnTrue(new MoveArmElbowCommand(m_elbow, 90));
+ 
+    Trigger button7 = new JoystickButton(m_flightJoystick, 7);
+    button7.toggleOnTrue(new MoveArmElbowCommand(m_elbow, 90));
 
-    Trigger button4 = new JoystickButton(m_flightJoystick, 4);
-    button4.toggleOnTrue(new MoveArmElbowCommand(m_elbow, 180));
+    Trigger button8 = new JoystickButton(m_flightJoystick, 8);
+    button8.toggleOnTrue(new MoveArmElbowCommand(m_elbow, 180));
 
     Trigger button9 = new JoystickButton(m_flightJoystick, 9);
     button9.toggleOnTrue(new OpenClawCommand(m_claw));
@@ -140,17 +143,12 @@ public class RobotContainer {
 
     Trigger button12 = new JoystickButton(m_flightJoystick, 12);
     button12.toggleOnTrue(new MoveElevatorTopCommand(m_elevator));
-*/
+
 
 
     // Toggle Auto-Balancing mode ON/OFF
     // TODO: Ned's code goes here
 
-    // Grab (Close Claw)
-    // TODO: Ned's code goes here
-
-    // Release (Open Claw)
-    // TODO: Ned's code goes here
   }
 
   /**

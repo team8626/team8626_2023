@@ -128,9 +128,9 @@ public class DashBoard {
     // Initialize Dashboard for all subsystems.
     private void initSubsystems() {
       //  m_drive.initDashboard();
-      ElevatorSubsystem.initDashboard();
       m_robotContainer.m_claw.initDashboard();
-      ArmElbowSubsystem.initDashboard();
+      m_robotContainer.m_elbow.initDashboard();
+      m_robotContainer.m_elevator.initDashboard();
     }
 
     // Update values that need high frequency refresh.
@@ -141,10 +141,9 @@ public class DashBoard {
          dashboardFlash();
         
         //  m_elevator.updateDashboard();
-        ElevatorSubsystem.updateDashboard();
         m_robotContainer.m_claw.updateDashboard();
-         ArmElbowSubsystem.updateDashboard();
-
+        m_robotContainer.m_elbow.updateDashboard();
+        m_robotContainer.m_elevator.updateDashboard();
     }
 
     // Update values that need low frequency refresh.

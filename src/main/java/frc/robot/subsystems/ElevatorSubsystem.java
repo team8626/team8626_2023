@@ -52,16 +52,18 @@ public class ElevatorSubsystem extends SubsystemBase {
     m_elevatorMotor.set(speed);
       }
 
-      @Override
-      public void periodic() {
+  @Override
+  public void periodic() {
+
+  }
+
+  public void initDashboard() {
+    SmartDashboard.putString("Elevator Position", "Unknown");
+  }
   
-      }
-      public static void initDashboard() {
-        SmartDashboard.putString("Elevator Position", "Unknown");
-      }
-      public static void updateDashboard() {
-        SmartDashboard.putString("Elevator Position", getPosition());
-      }
+  public void updateDashboard() {
+    SmartDashboard.putString("Elevator Position", getPosition());
+  }
 
 }
 

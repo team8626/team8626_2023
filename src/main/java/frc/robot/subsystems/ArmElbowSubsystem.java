@@ -94,9 +94,13 @@ public class ArmElbowSubsystem extends SubsystemBase {
   public void periodic() {
   }
 
-  public static void initDashboard(){}
+  public void initDashboard(){
 
-  public static void updateDashboard(){}
+  }
+
+  public void updateDashboard(){
+    
+  }
 }
 
 
