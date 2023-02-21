@@ -10,26 +10,30 @@ import org.xml.sax.SAXException;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.PS4Controller.Button;
+import edu.wpi.first.wpilibj.XboxController.Button;
+// import edu.wpi.first.wpilibj.PS4Controller;
+// import edu.wpi.first.wpilibj.PS4Controller.Button;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.IOControlsConstants;
+import frc.robot.Constants.LEDManagerConstants;
 import frc.robot.commands.CloseClawCommand;
 import frc.robot.commands.MoveArmElbowCommand;
 import frc.robot.commands.MoveElevatorBottomCommand;
 import frc.robot.commands.MoveElevatorTopCommand;
 import frc.robot.commands.OpenClawCommand;
+import frc.robot.commands.UpdateLEDsCommand;
 import frc.robot.subsystems.ClawSubsystem;
 import frc.robot.subsystems.ArmElbowSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.ClawSubsystem;
 import frc.robot.subsystems.KitbotDriveSubsystem;
+import frc.robot.subsystems.LEDManagerSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 
 /**
@@ -52,6 +56,7 @@ public class RobotContainer {
   public final ElevatorSubsystem m_elevator = new ElevatorSubsystem();
   public final ClawSubsystem m_claw = new ClawSubsystem();
   public final ArmElbowSubsystem m_elbow = new ArmElbowSubsystem();
+  public final LEDManagerSubsystem m_ledManager = new LEDManagerSubsystem();
   // private final ArmExtensionSubsystem m_armExtension = new ArmExtensionSubsystem();
   
 
@@ -61,7 +66,7 @@ public class RobotContainer {
 
   // Define controllers
   // private final XboxController m_xBoxController = new XboxController(IOControls.kXboxControllerPort);
-  private final PS4Controller m_xBoxController = new PS4Controller(IOControlsConstants.kXboxControllerPort);
+  private final XboxController m_xBoxController = new XboxController(IOControlsConstants.kXboxControllerPort);
   private final Joystick m_flightJoystick = new Joystick(IOControlsConstants.kJoystickControllerPort);
 
   // Autonomous Mode Selection  
@@ -144,7 +149,11 @@ public class RobotContainer {
     // Trigger button12 = new JoystickButton(m_flightJoystick, 12);
     // button12.toggleOnTrue(new RetractArmCommand(m_armExtension));
 
-
+    // LED Control Buttons
+    new JoystickButton(m_xBoxController, Button.kX.value) /* X - Blue */
+      .onTrue(new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorCUBE));
+    new JoystickButton(m_xBoxController, Button.kY.value) /* Y - Yellow */
+      .onTrue(new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorCONE));
 
     // Toggle Auto-Balancing mode ON/OFF
     // TODO: Ned's code goes here

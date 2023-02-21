@@ -174,7 +174,7 @@ public final class Constants {
 
     // Elevator subsystem constants
     public final static class ElevatorConstants {
-        public static final int kCANElevator = 8; // SPARKMAX
+        public static final int kCANElevator = 9; // SPARKMAX
         public static int kDIOLimitSwitchBottom = 8; // DIO
         public static int kDIOLimitSwitchTop = 9;    // DIO
 
@@ -228,6 +228,19 @@ public final class Constants {
     
     // LEDManager constants
     public final static class LEDManagerConstants {
+        public static int kDIOCom1 = 0; // DIO
+        public static int kDIOCom2 = 1; // DIO
+        public static int kDIOCom3 = 2; // DIO
+
+        public static byte kColorUNDEF0       = 0b100;
+        public static byte kColorCONE         = 0b001;
+        public static byte kColorCUBE         = 0b010;
+        public static byte kColorALLIANCEBLUE = 0b011;
+        public static byte kColorALLIANCERED  = 0b100;
+        public static byte kColorUNDEF5       = 0b100;
+        public static byte kColorUNDEF6       = 0b101;
+        public static byte kColorUNDEF7       = 0b110;
+        public static byte kColorOFF          = 0b111;
     }
 
     // IO Controls

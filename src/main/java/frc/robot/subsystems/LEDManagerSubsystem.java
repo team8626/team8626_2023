@@ -4,21 +4,27 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.LEDManagerConstants;
 
 public class LEDManagerSubsystem extends SubsystemBase {
-  // Declare our Motor(s)
-  // TODO
+  private DigitalOutput m_pin1 = new DigitalOutput(LEDManagerConstants.kDIOCom1);
+  private DigitalOutput m_pin2 = new DigitalOutput(LEDManagerConstants.kDIOCom2);
+  private DigitalOutput m_pin3 = new DigitalOutput(LEDManagerConstants.kDIOCom3);
 
-  // Declare our Sensor(s)
-  // TODO
+  private byte m_pin1Mask = 0b00000001;
+  private byte m_pin2Mask = 0b00000010;
+  private byte m_pin3Mask = 0b00000100;
 
   /** Class Constructor. */
   public LEDManagerSubsystem() {
   }
 
-  @Override
-  public void periodic() {
+  public void setColor(byte newColor){
+    m_pin1.set(((newColor & m_pin1Mask) == m_pin1Mask)? true : false);
+    m_pin2.set(((newColor & m_pin2Mask) == m_pin2Mask)? true : false);
+    m_pin3.set(((newColor & m_pin3Mask) == m_pin3Mask)? true : false);
   }
 }
 
