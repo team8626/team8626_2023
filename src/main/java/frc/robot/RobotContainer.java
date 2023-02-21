@@ -109,13 +109,13 @@ public class RobotContainer {
     //
     // Swerve Drive Train Specific Bindings
     //
-    // if(m_robotDrive instanceof SwerveDriveSubsystem){
-    //   // Pressing Right Bumper set Swerve Modules to Cross (X) Position
-    //   new JoystickButton(m_xBoxController, Button.kR1.value)
-    //   .whileTrue(new RunCommand(
-    //       () -> ((SwerveDriveSubsystem)m_robotDrive).setX(),
-    //       m_robotDrive));
-    // }
+    if(m_robotDrive instanceof SwerveDriveSubsystem){
+      // Pressing Right Bumper set Swerve Modules to Cross (X) Position
+      new JoystickButton(m_xBoxController, Button.kRightBumper.value)
+      .whileTrue(new RunCommand(
+          () -> ((SwerveDriveSubsystem)m_robotDrive).setX(),
+          m_robotDrive));
+    }
 
     //
     // KitBot Drive Train Specific Bindings
