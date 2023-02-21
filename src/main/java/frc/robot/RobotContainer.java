@@ -5,7 +5,6 @@
 package frc.robot;
 
 import java.io.IOException;
-import java.lang.ModuleLayer.Controller;
 
 import org.xml.sax.SAXException;
 
@@ -15,12 +14,11 @@ import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.PS4Controller.Button;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.Constants.IOControls;
+import frc.robot.Constants.IOControlsConstants;
 import frc.robot.commands.CloseClawCommand;
 import frc.robot.commands.ElevatorMoveCommand;
 import frc.robot.commands.MoveArmElbowCommand;
@@ -64,8 +62,8 @@ public class RobotContainer {
 
   // Define controllers
   // private final XboxController m_xBoxController = new XboxController(IOControls.kXboxControllerPort);
-  private final PS4Controller m_xBoxController = new PS4Controller(IOControls.kXboxControllerPort);
-  private final Joystick m_flightJoystick = new Joystick(IOControls.kJoystickControllerPort);
+  private final PS4Controller m_xBoxController = new PS4Controller(IOControlsConstants.kXboxControllerPort);
+  private final Joystick m_flightJoystick = new Joystick(IOControlsConstants.kJoystickControllerPort);
 
   // Autonomous Mode Selection
   // TODO: Add Autonomous dashboard and controls here
@@ -125,24 +123,29 @@ public class RobotContainer {
     }
     
     
- 
+    Trigger button5 = new JoystickButton(m_flightJoystick, 5);
+    button5.toggleOnTrue(new OpenClawCommand(m_claw));
+
+    Trigger button6 = new JoystickButton(m_flightJoystick, 6);
+    button6.toggleOnTrue(new CloseClawCommand(m_claw));
+
     Trigger button7 = new JoystickButton(m_flightJoystick, 7);
-    button7.toggleOnTrue(new MoveArmElbowCommand(m_elbow, 90));
+    button7.toggleOnTrue(new MoveElevatorBottomCommand(m_elevator));
 
     Trigger button8 = new JoystickButton(m_flightJoystick, 8);
-    button8.toggleOnTrue(new MoveArmElbowCommand(m_elbow, 180));
+    button8.toggleOnTrue(new MoveElevatorTopCommand(m_elevator));
 
     Trigger button9 = new JoystickButton(m_flightJoystick, 9);
-    button9.toggleOnTrue(new OpenClawCommand(m_claw));
+    button9.toggleOnTrue(new MoveArmElbowCommand(m_elbow, 90));
 
     Trigger button10 = new JoystickButton(m_flightJoystick, 10);
-    button10.toggleOnTrue(new CloseClawCommand(m_claw));
+    button10.toggleOnTrue(new MoveArmElbowCommand(m_elbow, 180));
 
-    Trigger button11 = new JoystickButton(m_flightJoystick, 11);
-    button11.toggleOnTrue(new MoveElevatorBottomCommand(m_elevator));
+    // Trigger button11 = new JoystickButton(m_flightJoystick, 11);
+    // button11.toggleOnTrue(new ExtendArmCommand(m_elevator));
 
-    Trigger button12 = new JoystickButton(m_flightJoystick, 12);
-    button12.toggleOnTrue(new MoveElevatorTopCommand(m_elevator));
+    // Trigger button12 = new JoystickButton(m_flightJoystick, 12);
+    // button12.toggleOnTrue(new RetractArmCommand(m_elevator));
 
 
 
@@ -173,9 +176,9 @@ public class RobotContainer {
       // Turning is controlled by the X axis of the right stick.
       new RunCommand(
           () -> ((SwerveDriveSubsystem)m_robotDrive).drive(
-              MathUtil.applyDeadband(-m_xBoxController.getLeftY(), IOControls.kDriveDeadband),
-              MathUtil.applyDeadband(-m_xBoxController.getLeftX(), IOControls.kDriveDeadband),
-              MathUtil.applyDeadband(-m_xBoxController.getRightX(), IOControls.kDriveDeadband),
+              MathUtil.applyDeadband(-m_xBoxController.getLeftY(), IOControlsConstants.kDriveDeadband),
+              MathUtil.applyDeadband(-m_xBoxController.getLeftX(), IOControlsConstants.kDriveDeadband),
+              MathUtil.applyDeadband(-m_xBoxController.getRightX(), IOControlsConstants.kDriveDeadband),
               false,
               true),
           m_robotDrive));

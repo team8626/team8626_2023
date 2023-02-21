@@ -7,7 +7,7 @@ package frc.robot.commands;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ClawSubsystem;
-import frc.robot.Constants.Claw;
+import frc.robot.Constants.ClawConstants;
 
 
 public class CloseClawCommand extends CommandBase {
@@ -20,8 +20,8 @@ public class CloseClawCommand extends CommandBase {
     addRequirements(claw);
     m_claw = claw;
 
-    m_pidController = new PIDController(Claw.kP, Claw.kI, Claw.kD);
-    m_targetAngle = Claw.kHardCloseAngle;
+    m_pidController = new PIDController(ClawConstants.kP, ClawConstants.kI, ClawConstants.kD);
+    m_targetAngle = ClawConstants.kHardCloseAngle;
   }
 
   // Called when the command is initially scheduled.

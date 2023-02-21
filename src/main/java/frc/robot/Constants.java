@@ -173,12 +173,16 @@ public final class Constants {
         public static final double kRamseteZeta = 0.7;    }
 
     // Elevator subsystem constants
-    public final static class Elevator {
+    public final static class ElevatorConstants {
+        public static final int kCANElevator = 8; // SPARKMAX
+        public static int kDIOLimitSwitchBottom = 8; // DIO
+        public static int kDIOLimitSwitchTop = 9;    // DIO
+
     }
     
     // Arm subsystem constants
     public final static class ArmConstants {
-        public static final int kElbowCanId = 8;
+        public static final int kCANElbow = 8; // SPARKMAX
         public static final boolean kElbowEncoderInverted = false;
 
         public static final double kElbowEncoderPositionFactor = 360; // degrees
@@ -201,9 +205,9 @@ public final class Constants {
     }
     
     // Claw subsystem constants
-    public final static class Claw {
+    public final static class ClawConstants {
         // RoboRio/Can addresses
-        public static int kCANMotorClaw=1; // Talon SPX
+        public static int kCANMotorClaw = 20;  // Talon SPX
 
         public static int kDIOLimitSwitch = 5; // DIO
         public static int kDIOEncoderA = 6;    // DIO
@@ -223,11 +227,11 @@ public final class Constants {
     }
     
     // LEDManager constants
-    public final static class LEDManager {
+    public final static class LEDManagerConstants {
     }
 
     // IO Controls
-    public final static class IOControls {
+    public final static class IOControlsConstants {
         public static final int kXboxControllerPort = 0;
         public static final int kJoystickControllerPort = 1;    
         public static final double kDriveDeadband = 0.05;
