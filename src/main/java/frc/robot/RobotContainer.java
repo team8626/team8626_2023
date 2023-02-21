@@ -20,7 +20,6 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.IOControlsConstants;
 import frc.robot.commands.CloseClawCommand;
-import frc.robot.commands.ElevatorMoveCommand;
 import frc.robot.commands.MoveArmElbowCommand;
 import frc.robot.commands.MoveElevatorBottomCommand;
 import frc.robot.commands.MoveElevatorTopCommand;
@@ -52,8 +51,8 @@ public class RobotContainer {
   private static SubsystemBase m_robotDrive = null;
   public final ElevatorSubsystem m_elevator = new ElevatorSubsystem();
   public final ClawSubsystem m_claw = new ClawSubsystem();
-  public final static ArmElbowSubsystem m_elbow = new ArmElbowSubsystem();
-  // private static final ElevatorSubsystem m_elevator = new ElevatorSubsystem();
+  public final ArmElbowSubsystem m_elbow = new ArmElbowSubsystem();
+  // private final ArmExtensionSubsystem m_armExtension = new ArmExtensionSubsystem();
   
 
   private final static DriveType m_driveType = DriveType.SWERVE; // SWERVE or KITBOT
@@ -65,9 +64,7 @@ public class RobotContainer {
   private final PS4Controller m_xBoxController = new PS4Controller(IOControlsConstants.kXboxControllerPort);
   private final Joystick m_flightJoystick = new Joystick(IOControlsConstants.kJoystickControllerPort);
 
-  // Autonomous Mode Selection
-  // TODO: Add Autonomous dashboard and controls here
-  
+  // Autonomous Mode Selection  
   private static DashBoard m_dashboard;
   private static Autonomous m_autoControl = new Autonomous(m_dashboard, m_robotDrive);
  
@@ -80,13 +77,13 @@ public class RobotContainer {
 
     // Instantiate the drivetrain
     switch(m_driveType){
-      case SWERVE /*kSwerve*/: 
+      case SWERVE /* Swerve */: 
         m_robotDrive = new SwerveDriveSubsystem();
         break;
  
-     // case KITBOT /*kKitBot*/: 
-      //  m_robotDrive = new KitbotDriveSubsystem();
-      //  break;
+     case KITBOT /* KitBot */: 
+        m_robotDrive = new KitbotDriveSubsystem();
+        break;
 
     
     }
@@ -142,10 +139,10 @@ public class RobotContainer {
     button10.toggleOnTrue(new MoveArmElbowCommand(m_elbow, 180));
 
     // Trigger button11 = new JoystickButton(m_flightJoystick, 11);
-    // button11.toggleOnTrue(new ExtendArmCommand(m_elevator));
+    // button11.toggleOnTrue(new ExtendArmCommand(m_armExtension));
 
     // Trigger button12 = new JoystickButton(m_flightJoystick, 12);
-    // button12.toggleOnTrue(new RetractArmCommand(m_elevator));
+    // button12.toggleOnTrue(new RetractArmCommand(m_armExtension));
 
 
 
@@ -203,7 +200,6 @@ public class RobotContainer {
 
   /**
    * Get Start command from the autonomous controller (Dashboard)
-   * TODO: Insert Last year's code here
    */
   public Command getAutonomousCommand() {
     Command retval = null;
