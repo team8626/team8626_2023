@@ -13,15 +13,15 @@ import edu.wpi.first.wpilibj.simulation.EncoderSim;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
-import frc.robot.Constants.Claw;
+import frc.robot.Constants.ClawConstants;
 
 public class ClawSubsystem extends SubsystemBase {
   // Declare our Motor(s)
-  private WPI_VictorSPX m_motor = new WPI_VictorSPX(Claw.kCANMotorClaw);
+  private WPI_VictorSPX m_motor = new WPI_VictorSPX(ClawConstants.kCANMotorClaw);
 
   // Declare and initialize our Sensor(s)
-  private Encoder m_encoder = new Encoder(Claw.kDIOEncoderA, Claw.kDIOEncoderB, false);
-  private DigitalInput m_openSwitch = new DigitalInput(Claw.kDIOLimitSwitch);
+  private Encoder m_encoder = new Encoder(ClawConstants.kDIOEncoderA, ClawConstants.kDIOEncoderB, false);
+  private DigitalInput m_openSwitch = new DigitalInput(ClawConstants.kDIOLimitSwitch);
   private boolean m_homed = false;
   
   // Simulation opbjects
@@ -30,7 +30,7 @@ public class ClawSubsystem extends SubsystemBase {
 
   // Class Constructor
   public ClawSubsystem() {
-    m_encoder.setDistancePerPulse(360.0 / Claw.kTicksPerRev); // Degrees per pulse
+    m_encoder.setDistancePerPulse(360.0 / ClawConstants.kTicksPerRev); // Degrees per pulse
 
     // Set Values for starting simulation
     if(Robot.isSimulation()){

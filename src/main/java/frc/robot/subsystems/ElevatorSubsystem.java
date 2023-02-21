@@ -4,26 +4,22 @@
 
 package frc.robot.subsystems;
 
-// import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.ElevatorConstants;
 
 
 public class ElevatorSubsystem extends SubsystemBase {
   // Declare our Motor(s)
-  
- private final CANSparkMax m_elevatorMotor  = new CANSparkMax(9, MotorType.kBrushless);
-
+  private final CANSparkMax m_elevatorMotor  = new CANSparkMax(ElevatorConstants.kCANElevator, MotorType.kBrushless);
 
   // Declare our Sensor(s)
-
-
-  private static DigitalInput topLimitSwitch = new DigitalInput(9);
-  private static DigitalInput bottomLimitSwitch = new DigitalInput(8);
+  private static DigitalInput topLimitSwitch = new DigitalInput(ElevatorConstants.kDIOLimitSwitchTop);
+  private static DigitalInput bottomLimitSwitch = new DigitalInput(ElevatorConstants.kDIOLimitSwitchBottom);
 
   /** Class Constructor. */
   public ElevatorSubsystem() {
@@ -37,28 +33,26 @@ public class ElevatorSubsystem extends SubsystemBase {
   return (topLimitSwitch.get());
   }
   
-  public boolean getBottomPressed() {
-  return (bottomLimitSwitch.get());
-      }
+  public boolean getBottomPressed(){
+    return (bottomLimitSwitch.get());
+  }
   
   public static String getPosition(){
     if(bottomLimitSwitch.get()) return "BOTTOM";
     else if(topLimitSwitch.get()) return "TOP";
     else return "UNKNOWN";
-
-
   }
-    public void setMotor(double speed) {
+  
+  public void setMotor(double speed) {
     m_elevatorMotor.set(speed);
-      }
+  }
 
   @Override
   public void periodic() {
-
   }
 
   public void initDashboard() {
-    SmartDashboard.putString("Elevator Position", "Unknown");
+    SmartDashboard.putString("Elevator Position", "NOT INITIALIZED");
   }
   
   public void updateDashboard() {

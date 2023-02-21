@@ -28,7 +28,7 @@ public class ArmElbowSubsystem extends SubsystemBase {
   /** Class Constructor. */
   public ArmElbowSubsystem() {
 
-     m_elbowMotor = new CANSparkMax(ArmConstants.kElbowCanId, MotorType.kBrushless);
+     m_elbowMotor = new CANSparkMax(ArmConstants.kCANElbow, MotorType.kBrushless);
 
     // Factory Reset
     m_elbowMotor.restoreFactoryDefaults();
