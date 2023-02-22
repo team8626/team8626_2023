@@ -71,7 +71,7 @@ public class RobotContainer {
 
   // Autonomous Mode Selection  
   private static DashBoard m_dashboard;
-  private static Autonomous m_autoControl = new Autonomous(m_dashboard, m_robotDrive);
+  private static Autonomous m_autoControl;
  
   /** 
    * The container for the robot. 
@@ -89,9 +89,10 @@ public class RobotContainer {
      case KITBOT /* KitBot */: 
         m_robotDrive = new KitbotDriveSubsystem();
         break;
-
-    
     }
+    
+    m_autoControl = new Autonomous(m_dashboard, m_robotDrive);
+
     configureButtonBindings();
     configureDefaultCommands();
   }
@@ -151,9 +152,11 @@ public class RobotContainer {
 
     // LED Control Buttons
     new JoystickButton(m_xBoxController, Button.kX.value) /* X - Blue */
-      .onTrue(new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorCUBE));
+    .onTrue(new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorCUBE));
+    // .onTrue(new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorALLIANCEBLUE));
     new JoystickButton(m_xBoxController, Button.kY.value) /* Y - Yellow */
-      .onTrue(new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorCONE));
+    .onTrue(new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorCONE));
+    // .onTrue(new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorALLIANCERED));
 
     // Toggle Auto-Balancing mode ON/OFF
     // TODO: Ned's code goes here

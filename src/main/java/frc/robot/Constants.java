@@ -232,15 +232,14 @@ public final class Constants {
         public static int kDIOCom2 = 1; // DIO
         public static int kDIOCom3 = 2; // DIO
 
-        public static byte kColorUNDEF0       = 0b100;
+        public static byte kColorOFF          = 0b000;
         public static byte kColorCONE         = 0b001;
         public static byte kColorCUBE         = 0b010;
         public static byte kColorALLIANCEBLUE = 0b011;
         public static byte kColorALLIANCERED  = 0b100;
-        public static byte kColorUNDEF5       = 0b100;
-        public static byte kColorUNDEF6       = 0b101;
-        public static byte kColorUNDEF7       = 0b110;
-        public static byte kColorOFF          = 0b111;
+        public static byte kColorRAINBOW      = 0b101;
+        public static byte kColorPINK         = 0b110;
+        public static byte kColorWHITE        = 0b111;
     }
 
     // IO Controls

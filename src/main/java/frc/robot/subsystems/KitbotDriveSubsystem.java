@@ -48,19 +48,19 @@ public class KitbotDriveSubsystem extends SubsystemBase  {
   
     private final DifferentialDrive m_drive = new DifferentialDrive(m_motorControllerLeft, m_motorControllerRight);
     
-    // The left-side drive encoder
-    private final Encoder m_leftEncoder =
-      new Encoder(
-        KitbotDriveTrain.kLeftEncoderPorts[0],
-        KitbotDriveTrain.kLeftEncoderPorts[1],
-        KitbotDriveTrain.kLeftEncoderReversed);
+    // // The left-side drive encoder
+    // private final Encoder m_leftEncoder =
+    //   new Encoder(
+    //     KitbotDriveTrain.kLeftEncoderPorts[0],
+    //     KitbotDriveTrain.kLeftEncoderPorts[1],
+    //     KitbotDriveTrain.kLeftEncoderReversed);
 
-    // The right-side drive encoder
-    private final Encoder m_rightEncoder =
-      new Encoder(
-        KitbotDriveTrain.kRightEncoderPorts[0],
-        KitbotDriveTrain.kRightEncoderPorts[1],
-        KitbotDriveTrain.kRightEncoderReversed);
+    // // The right-side drive encoder
+    // private final Encoder m_rightEncoder =
+    //   new Encoder(
+    //     KitbotDriveTrain.kRightEncoderPorts[0],
+    //     KitbotDriveTrain.kRightEncoderPorts[1],
+    //     KitbotDriveTrain.kRightEncoderReversed);
 
     //  Gyro Sensor (Unsing NAVx Module)
     private final AHRS m_gyro = new AHRS(SPI.Port.kMXP);
@@ -75,9 +75,6 @@ public class KitbotDriveSubsystem extends SubsystemBase  {
     private final SimpleMotorFeedforward m_feedforward = new SimpleMotorFeedforward(KitbotDriveTrain.ks, KitbotDriveTrain.kv);
 
     // Simulation Objects
-    // TODO: Simulation Drivetrain Support
-    private EncoderSim m_leftEncoderSim = new EncoderSim(m_leftEncoder);
-    private EncoderSim m_rightEncoderSim = new EncoderSim(m_rightEncoder);
     private final Field2d m_fieldSim = new Field2d();
     private final LinearSystem<N2, N2, N2> m_drivetrainSystem =
         LinearSystemId.identifyDrivetrainSystem(1.98, 0.2, 1.5, 0.3);
@@ -104,8 +101,8 @@ public class KitbotDriveSubsystem extends SubsystemBase  {
       m_motorControllerRight.setInverted(KitbotDriveTrain.kRightMotorsInverted);
 
       // Sets distance for per pulse for the encoders
-      m_leftEncoder.setDistancePerPulse(KitbotDriveTrain.kEncoderMetersPerPulse);
-      m_rightEncoder.setDistancePerPulse(KitbotDriveTrain.kEncoderMetersPerPulse);  
+      // m_leftEncoder.setDistancePerPulse(KitbotDriveTrain.kEncoderMetersPerPulse);
+      // m_rightEncoder.setDistancePerPulse(KitbotDriveTrain.kEncoderMetersPerPulse);  
 
       // Reset Encoders
       resetEncoders();;
@@ -113,8 +110,8 @@ public class KitbotDriveSubsystem extends SubsystemBase  {
       m_odometry =
       new DifferentialDriveOdometry(
           m_gyro.getRotation2d(), 
-          m_leftEncoder.getDistance(), 
-          m_rightEncoder.getDistance());
+          0, //m_leftEncoder.getDistance(), 
+          0); //m_rightEncoder.getDistance());
 
       // Set initial Power for the drivetrain
       this.setHighSpeed();
@@ -135,9 +132,9 @@ public class KitbotDriveSubsystem extends SubsystemBase  {
       final double rightFeedforward = m_feedforward.calculate(speeds.rightMetersPerSecond);
 
       final double leftOutput =
-          m_leftPIDController.calculate(m_leftEncoder.getRate(), speeds.leftMetersPerSecond);
+          m_leftPIDController.calculate(0 /*m_leftEncoder.getRate() */, speeds.leftMetersPerSecond);
       final double rightOutput =
-          m_rightPIDController.calculate(m_rightEncoder.getRate(), speeds.rightMetersPerSecond);
+          m_rightPIDController.calculate(0 /* m_rightEncoder.getRate() */, speeds.rightMetersPerSecond);
       m_motorControllerLeft.setVoltage(leftOutput + leftFeedforward);
       m_motorControllerRight.setVoltage(rightOutput + rightFeedforward);
     }
@@ -159,7 +156,7 @@ public class KitbotDriveSubsystem extends SubsystemBase  {
      * */
     public void updateOdometry() {
       m_odometry.update(
-          m_gyro.getRotation2d(), m_leftEncoder.getDistance(), m_rightEncoder.getDistance());
+          m_gyro.getRotation2d(), 0 /* m_leftEncoder.getDistance() */, 0 /* m_rightEncoder.getDistance() */);
     }
 
     /**
@@ -231,7 +228,7 @@ public class KitbotDriveSubsystem extends SubsystemBase  {
    * @return The current wheel speeds.
    */
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {
-    return new DifferentialDriveWheelSpeeds(m_leftEncoder.getRate(), m_rightEncoder.getRate());
+    return new DifferentialDriveWheelSpeeds(0 /* m_leftEncoder.getRate() */, 0 /* m_rightEncoder.getRate() */);
   }
 
  /**
@@ -240,21 +237,21 @@ public class KitbotDriveSubsystem extends SubsystemBase  {
    * @return the average of the two encoder readings
    */
   public double getAverageEncoderDistance() {
-    return (m_leftEncoder.getDistance() + m_rightEncoder.getDistance()) / 2.0;
+    return 0; //(m_leftEncoder.getDistance() + m_rightEncoder.getDistance()) / 2.0;
   }
   public double getEncoderDistanceLeft() {
-    return m_leftEncoder.getDistance();
+    return 0; //m_leftEncoder.getDistance();
   }
   public double getEncoderDistanceRight() {
-    return m_rightEncoder.getDistance();
+    return 0; //m_rightEncoder.getDistance();
   }
 
   /** 
    * Resets the drive encoders to currently read a position of 0. 
    **/
   public void resetEncoders() {
-    m_leftEncoder.reset();
-    m_rightEncoder.reset();
+    // m_leftEncoder.reset();
+    // m_rightEncoder.reset();
   }
 
   /** 
@@ -269,18 +266,18 @@ public class KitbotDriveSubsystem extends SubsystemBase  {
    *
    * @return the left drive encoder
    */
-  public Encoder getLeftEncoder() {
-    return m_leftEncoder;
-  }
+  // public Encoder getLeftEncoder() {
+  //   return m_leftEncoder;
+  // }
 
   /**
    * Gets the right drive encoder.
    *
    * @return the right drive encoder
    */
-  public Encoder getRightEncoder() {
-    return m_rightEncoder;
-  }
+  // public Encoder getRightEncoder() {
+  //   return m_rightEncoder;
+  // }
 
   /**
    * Sets the max output of the drive. Useful for scaling the drive to drive more slowly.
@@ -335,11 +332,6 @@ public class KitbotDriveSubsystem extends SubsystemBase  {
       m_motorControllerLeft.get() * RobotController.getInputVoltage(),
       m_motorControllerRight.get() * RobotController.getInputVoltage());
     m_drivetrainSimulator.update(0.02);
-
-    m_leftEncoderSim.setDistance(m_drivetrainSimulator.getLeftPositionMeters());
-    m_leftEncoderSim.setRate(m_drivetrainSimulator.getLeftVelocityMetersPerSecond());
-    m_rightEncoderSim.setDistance(m_drivetrainSimulator.getRightPositionMeters());
-    m_rightEncoderSim.setRate(m_drivetrainSimulator.getRightVelocityMetersPerSecond());
 
     SimDouble angle = new SimDouble(SimDeviceDataJNI.getSimValueHandle(
       SimDeviceDataJNI.getSimDeviceHandle("navX-Sensor[0]"), 

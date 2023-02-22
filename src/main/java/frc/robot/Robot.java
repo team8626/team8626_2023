@@ -4,14 +4,18 @@
 
 package frc.robot;
 
+import com.revrobotics.ColorSensorV3.LEDCurrent;
+
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
+import frc.robot.Constants.LEDManagerConstants;
 
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
-
+  DriverStation.Alliance m_allianceColor =  DriverStation.getAlliance();
 
   public Command getAutonomousCommand() {
     return m_robotContainer.getAutonomousCommand();
@@ -25,6 +29,9 @@ public class Robot extends TimedRobot {
     // This will perform all our button bindings,
     // and put ourmautonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+    
+    // Set LEDS to PINK
+    // m_robotContainer.m_ledManager.setColor(LEDManagerConstants.kColorPINK); 
   }
 
   /**
@@ -40,7 +47,14 @@ public class Robot extends TimedRobot {
    * This function is called once each time the robot enters Disabled mode. 
    */
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+    // Set LEDS to AllIance Color
+    if(m_allianceColor == DriverStation.Alliance.Blue){
+      // m_robotContainer.m_ledManager.setColor(LEDManagerConstants.kColorALLIANCEBLUE); 
+    } else {
+      // m_robotContainer.m_ledManager.setColor(LEDManagerConstants.kColorALLIANCERED); 
+    }
+  }
 
   @Override
   public void disabledPeriodic() {}
@@ -53,6 +67,14 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+    // Set LEDS to Alliance Color
+    m_allianceColor = DriverStation.getAlliance();
+    if(m_allianceColor == DriverStation.Alliance.Blue){
+      m_robotContainer.m_ledManager.setColor(LEDManagerConstants.kColorALLIANCEBLUE); 
+    } else {
+      m_robotContainer.m_ledManager.setColor(LEDManagerConstants.kColorALLIANCERED); 
+    }
+    
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
  
     if (m_autonomousCommand != null) {
@@ -73,7 +95,8 @@ public class Robot extends TimedRobot {
    * This function is called when leaving autonomous mode. 
    */
   @Override
-  public void autonomousExit() {}
+  public void autonomousExit() {
+  }
 
   /** 
    * This function is called when operator control is started. 
@@ -84,6 +107,15 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
     m_robotContainer.configureTeleopDefaultCommands();
+    
+    // Set LEDS to AllIance Color
+    m_allianceColor = DriverStation.getAlliance();
+    if(m_allianceColor == DriverStation.Alliance.Blue){
+      m_robotContainer.m_ledManager.setColor(LEDManagerConstants.kColorALLIANCEBLUE); 
+    } else {
+      m_robotContainer.m_ledManager.setColor(LEDManagerConstants.kColorALLIANCERED); 
+    }
+
   }
 
   /** 
@@ -96,7 +128,9 @@ public class Robot extends TimedRobot {
    * This function is called when leaving operator control mode. 
    */
   @Override
-  public void teleopExit() {}
+  public void teleopExit() {
+    m_robotContainer.m_ledManager.setColor(LEDManagerConstants.kColorRAINBOW); 
+  }
 
   /**
    * This function is called when test mode is started.
