@@ -14,11 +14,11 @@ import frc.robot.subsystems.ArmElbowSubsystem;
 
 
 
-public class MoveArmElbowCommand extends InstantCommand {
+public class SetArmElbowCommand extends InstantCommand {
   private final ArmElbowSubsystem m_elbow;
   private final double m_angle;
   
-  public MoveArmElbowCommand(ArmElbowSubsystem elbow, double angle) {
+  public SetArmElbowCommand(ArmElbowSubsystem elbow, double angle) {
     m_elbow = elbow;
     m_angle = angle;
     // Use addRequirements() here to declare subsystem dependencies.

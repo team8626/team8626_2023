@@ -201,6 +201,14 @@ public final class Constants {
         
         public static final IdleMode kElbowMotorIdleMode = IdleMode.kBrake;
         public static final int kElbowMotorCurrentLimit = 40; // amps
+
+         // TODO: Fake value
+         public static final double kStowedElbowAngle = 0;
+        public static final double kBottomGridElbowAngle = 0;
+        public static final double kMiddleGridElbowAngle = 0;
+        public static final double kTopGridElbowAngle = 0;
+        public static final double kFloorElbowAngle = 0;
+       
         
     }
     
