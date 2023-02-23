@@ -29,6 +29,7 @@ import frc.robot.commands.OpenClawCommand;
 import frc.robot.commands.UpdateLEDsCommand;
 import frc.robot.subsystems.ClawSubsystem;
 import frc.robot.subsystems.ArmElbowSubsystem;
+import frc.robot.subsystems.ArmExtensionSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.ClawSubsystem;
@@ -56,6 +57,7 @@ public class RobotContainer {
   public final ElevatorSubsystem m_elevator = new ElevatorSubsystem();
   public final ClawSubsystem m_claw = new ClawSubsystem();
   public final ArmElbowSubsystem m_elbow = new ArmElbowSubsystem();
+  public final ArmExtensionSubsystem m_extender = new ArmExtensionSubsystem();
   public final LEDManagerSubsystem m_ledManager = new LEDManagerSubsystem();
   // private final ArmExtensionSubsystem m_armExtension = new ArmExtensionSubsystem();
   
