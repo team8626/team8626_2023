@@ -43,6 +43,10 @@ public class ArmExtensionSubsystem extends SubsystemBase {
   public void rest(){
     m_Cylinder.set(Value.kOff);
   }
+
+  public boolean isExtended() {
+    return m_extended;
+  }
   
   // Extend the arm extension
   public void extend(){
