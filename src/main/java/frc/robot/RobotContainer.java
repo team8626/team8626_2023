@@ -22,10 +22,10 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.IOControlsConstants;
 import frc.robot.Constants.LEDManagerConstants;
 import frc.robot.commands.CloseClawCommand;
-import frc.robot.commands.MoveArmElbowCommand;
 import frc.robot.commands.MoveElevatorBottomCommand;
 import frc.robot.commands.MoveElevatorTopCommand;
 import frc.robot.commands.OpenClawCommand;
+import frc.robot.commands.SetArmElbowCommand;
 import frc.robot.commands.UpdateLEDsCommand;
 import frc.robot.subsystems.ClawSubsystem;
 import frc.robot.subsystems.ArmElbowSubsystem;
@@ -141,10 +141,10 @@ public class RobotContainer {
     button8.toggleOnTrue(new MoveElevatorTopCommand(m_elevator));
 
     Trigger button9 = new JoystickButton(m_flightJoystick, 9);
-    button9.toggleOnTrue(new MoveArmElbowCommand(m_elbow, 90));
+    button9.toggleOnTrue(new SetArmElbowCommand(m_elbow, 90));
 
     Trigger button10 = new JoystickButton(m_flightJoystick, 10);
-    button10.toggleOnTrue(new MoveArmElbowCommand(m_elbow, 180));
+    button10.toggleOnTrue(new SetArmElbowCommand(m_elbow, 180));
 
     // Trigger button11 = new JoystickButton(m_flightJoystick, 11);
     // button11.toggleOnTrue(new ExtendArmCommand(m_armExtension));
