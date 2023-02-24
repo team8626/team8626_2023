@@ -12,23 +12,24 @@ import frc.robot.subsystems.ArmExtensionSubsystem;
 import frc.robot.subsystems.ClawSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 
-public class SetFloorPositionCommand extends SequentialCommandGroup {
+public class SetTraversePositionCommand extends SequentialCommandGroup {
 
 ArmElbowSubsystem m_elbow;
 ArmExtensionSubsystem m_extender;
 ClawSubsystem m_claw;
 ElevatorSubsystem m_elevator;
 
-  public SetFloorPositionCommand(ArmElbowSubsystem elbow, ArmExtensionSubsystem extender, ClawSubsystem claw, ElevatorSubsystem elevator) {
+  public SetTraversePositionCommand(ArmElbowSubsystem elbow, ArmExtensionSubsystem extender, ClawSubsystem claw, ElevatorSubsystem elevator) {
     m_elbow = elbow;
     m_extender = extender;
     m_claw = claw;
     m_elevator = elevator;
 
   addCommands(
-      new ParallelCommandGroup(new SetArmElbowCommand(m_elbow, ArmConstants.kFloorElbowAngle), new RetractArmCommand(m_extender), new MoveElevatorBottomCommand(elevator)),
-      new OpenClawCommand(m_claw)
+    new OpenClawCommand(m_claw), 
+    new ParallelCommandGroup(new SetArmElbowCommand(m_elbow, ArmConstants.kFloorElbowAngle), new RetractArmCommand(m_extender), new MoveElevatorBottomCommand(elevator))         
              );
+
   }
 
 }
