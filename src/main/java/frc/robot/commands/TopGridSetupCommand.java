@@ -5,27 +5,27 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.ArmElbowSubsystem;
 import frc.robot.subsystems.ArmExtensionSubsystem;
 import frc.robot.subsystems.ClawSubsystem;
+import frc.robot.subsystems.ElevatorSubsystem;
 
-public class DeliverBottomGridCommand extends SequentialCommandGroup {
+public class TopGridSetupCommand  extends ParallelCommandGroup {
   ArmElbowSubsystem m_elbow;
   ArmExtensionSubsystem m_extender;
   ClawSubsystem m_claw;
+  ElevatorSubsystem m_elevator;
   
-public DeliverBottomGridCommand(ArmElbowSubsystem elbow, ArmExtensionSubsystem extender, ClawSubsystem claw) {
+public TopGridSetupCommand (ArmElbowSubsystem elbow, ArmExtensionSubsystem extender, ClawSubsystem claw, ElevatorSubsystem elevator) {
   m_elbow = elbow;
   m_extender = extender;
   m_claw = claw;
-   
+  m_elevator = elevator;
+    
     addCommands(
-        new ParallelCommandGroup(new ExtendArmCommand(m_extender), new SetArmElbowCommand(m_elbow, ArmConstants.kBottomGridElbowAngle)),
-        new OpenClawCommand(m_claw)
+        new ExtendArmCommand(m_extender), new SetArmElbowCommand(m_elbow, ArmConstants.kTopGridElbowAngle), new MoveElevatorTopCommand(m_elevator)
                );
-
   }
 
 }

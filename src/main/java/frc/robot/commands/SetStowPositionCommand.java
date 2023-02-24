@@ -5,26 +5,31 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.ArmElbowSubsystem;
 import frc.robot.subsystems.ArmExtensionSubsystem;
+import frc.robot.subsystems.ClawSubsystem;
+import frc.robot.subsystems.ElevatorSubsystem;
 
-// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
-// information, see:
-// https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class SetStowPositionCommand extends ParallelCommandGroup {
+public class SetStowPositionCommand extends SequentialCommandGroup {
 
 ArmElbowSubsystem m_elbow;
 ArmExtensionSubsystem m_extender;
+ClawSubsystem m_claw;
+ElevatorSubsystem m_elevator;
 
-  public SetStowPositionCommand(ArmElbowSubsystem elbow, ArmExtensionSubsystem extender) {
+  public SetStowPositionCommand(ArmElbowSubsystem elbow, ArmExtensionSubsystem extender, ClawSubsystem claw, ElevatorSubsystem elevator) {
     m_elbow = elbow;
     m_extender = extender;
+    m_claw = claw;
+    m_elevator = elevator;
 
   addCommands(
-      new SetArmElbowCommand(m_elbow, ArmConstants.kStowedElbowAngle),
-      new RetractArmCommand(m_extender)
+      new CloseClawCommand(m_claw), 
+      new ParallelCommandGroup(new SetArmElbowCommand(m_elbow, ArmConstants.kStowedElbowAngle), new RetractArmCommand(m_extender), new MoveElevatorTopCommand(m_elevator))
              );
+
   }
   
 }
