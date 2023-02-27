@@ -246,6 +246,7 @@ public final class Constants {
     public final static class IOControlsConstants {
         public static final int kXboxControllerPort = 0;
         public static final int kJoystickControllerPort = 1;    
+        public static final int kButtonBoxPort = 2;    
         public static final double kDriveDeadband = 0.05;
     }
 
