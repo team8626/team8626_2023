@@ -5,8 +5,14 @@
 package frc.robot;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 import org.xml.sax.SAXException;
+
+import com.pathplanner.lib.PathConstraints;
+import com.pathplanner.lib.PathPlanner;
+import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.commands.FollowPathWithEvents;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.Joystick;
@@ -15,6 +21,7 @@ import edu.wpi.first.wpilibj.XboxController.Button;
 // import edu.wpi.first.wpilibj.PS4Controller;
 // import edu.wpi.first.wpilibj.PS4Controller.Button;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -70,6 +77,10 @@ public class RobotContainer {
   // private final XboxController m_xBoxController = new XboxController(IOControls.kXboxControllerPort);
   private final XboxController m_xBoxController = new XboxController(IOControlsConstants.kXboxControllerPort);
   private final Joystick m_flightJoystick = new Joystick(IOControlsConstants.kJoystickControllerPort);
+  private final Joystick m_buttonBox = new Joystick(IOControlsConstants.kButtonBoxPort);
+
+  // Declare Events Map
+  private static HashMap<String, Command> eventMap = new HashMap<>();
 
   // Autonomous Mode Selection  
   private static DashBoard m_dashboard;
@@ -80,7 +91,10 @@ public class RobotContainer {
    * Contains subsystems, IO devices, and commands.
    */
   public RobotContainer() {
-     m_dashboard = new DashBoard(this);
+    configureEventsMaps();
+
+    // Instatiate the Dashbpard
+    m_dashboard = new DashBoard(this);
 
     // Instantiate the drivetrain
     switch(m_driveType){
@@ -153,12 +167,16 @@ public class RobotContainer {
     // button12.toggleOnTrue(new RetractArmCommand(m_armExtension));
 
     // LED Control Buttons
-    new JoystickButton(m_xBoxController, Button.kX.value) /* X - Blue */
-    .onTrue(new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorCUBE));
-    // .onTrue(new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorALLIANCEBLUE));
-    new JoystickButton(m_xBoxController, Button.kY.value) /* Y - Yellow */
+    new JoystickButton(m_buttonBox, 7) 
     .onTrue(new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorCONE));
     // .onTrue(new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorALLIANCERED));
+    new JoystickButton(m_buttonBox, 8) 
+    .onTrue(new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorPINK));
+    // .onTrue(new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorALLIANCERED));
+    new JoystickButton(m_buttonBox, 9) 
+    .onTrue(new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorCUBE));
+    // .onTrue(new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorALLIANCEBLUE));
+
 
     // Toggle Auto-Balancing mode ON/OFF
     // TODO: Ned's code goes here
@@ -170,6 +188,20 @@ public class RobotContainer {
    */
   private void configureDefaultCommands() {}
 
+  /**
+   * Populate Autonomous Event map...
+   */
+  private void configureEventsMaps() {
+      // Populate Autonomous Event map
+      eventMap.put("marker1", new PrintCommand("Passed marker 1"));
+      eventMap.put("marker2", new PrintCommand("Passed marker 2"));
+      eventMap.put("marker3", new PrintCommand("Passed marker 3"));
+      eventMap.put("marker4", new PrintCommand("Passed marker 4"));
+      eventMap.put("marker5", new PrintCommand("Passed marker 5"));
+  }
+  
+
+      
   /**
    * Set Default Commands for Subsystems 
    * THis is called when robot enters in teleop mode.
@@ -217,12 +249,21 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     Command retval = null;
-     try {
-       retval = m_autoControl.getStartCommand();
-     } catch (IOException e) {
-       // TODO Auto-generated catch block
-       e.printStackTrace();
-     }
+    try {
+      retval = m_autoControl.getStartCommand();
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+
+    // Load trajectoryt file "Example Path.path" and generate it with a max velocity of 1 m/s and a max acceleration of 3 m/s^2
+    PathPlannerTrajectory trajectory = PathPlanner.loadPath("path_1", new PathConstraints(1.0, 3.0));
+
+    retval = new FollowPathWithEvents(
+      ((SwerveDriveSubsystem)m_robotDrive).followTrajectoryCommand(trajectory, true),
+      trajectory.getMarkers(),
+      eventMap);
+      
     return retval;
   }
 }
