@@ -38,10 +38,13 @@ public class ArmExtensionSubsystem extends SubsystemBase {
     SmartDashboard.putBoolean("ArmExtension", m_extended);
   }
 
-
   // Set assembly passive
   public void rest(){
     m_Cylinder.set(Value.kOff);
+  }
+
+  public boolean isExtended() {
+    return m_extended;
   }
   
   // Extend the arm extension
