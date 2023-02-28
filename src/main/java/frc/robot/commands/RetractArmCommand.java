@@ -21,6 +21,7 @@ public class RetractArmCommand extends InstantCommand {
   @Override
   public void initialize() {
   m_extender.retract();
+  new Timer().delay(0.5);
   }
 
   }

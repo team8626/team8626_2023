@@ -21,6 +21,7 @@ public class ExtendArmCommand extends InstantCommand {
   @Override
   public void initialize() {
   m_extender.extend();
+  new Timer().delay(0.5);
   }
 
   }

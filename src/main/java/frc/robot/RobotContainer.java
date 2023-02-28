@@ -28,11 +28,19 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.IOControlsConstants;
 import frc.robot.Constants.LEDManagerConstants;
+import frc.robot.commands.BottomGridSetupCommand;
 import frc.robot.commands.CloseClawCommand;
+import frc.robot.commands.DoubleSubstationPickupCommand;
+import frc.robot.commands.ElevatorMoveCommand;
+import frc.robot.commands.MiddleGridSetupCommand;
 import frc.robot.commands.MoveElevatorBottomCommand;
 import frc.robot.commands.MoveElevatorTopCommand;
 import frc.robot.commands.OpenClawCommand;
 import frc.robot.commands.SetArmElbowCommand;
+import frc.robot.commands.SetFloorPositionCommand;
+import frc.robot.commands.SetStowPositionCommand;
+import frc.robot.commands.SetTraversePositionCommand;
+import frc.robot.commands.TopGridSetupCommand;
 import frc.robot.commands.UpdateLEDsCommand;
 import frc.robot.subsystems.ClawSubsystem;
 import frc.robot.subsystems.ArmElbowSubsystem;
@@ -140,31 +148,33 @@ public class RobotContainer {
     if(m_robotDrive instanceof KitbotDriveSubsystem){
 
     }
-    
+
+    Trigger button4 = new JoystickButton(m_flightJoystick, 4);
+    button4.toggleOnTrue(new BottomGridSetupCommand(m_elbow, m_extender, m_elevator));
     
     Trigger button5 = new JoystickButton(m_flightJoystick, 5);
-    button5.toggleOnTrue(new OpenClawCommand(m_claw));
+    button5.toggleOnTrue(new MiddleGridSetupCommand(m_elbow, m_extender, m_claw, m_elevator));
 
     Trigger button6 = new JoystickButton(m_flightJoystick, 6);
-    button6.toggleOnTrue(new CloseClawCommand(m_claw));
+    button6.toggleOnTrue(new TopGridSetupCommand(m_elbow, m_extender, m_claw, m_elevator));
 
     Trigger button7 = new JoystickButton(m_flightJoystick, 7);
-    button7.toggleOnTrue(new MoveElevatorBottomCommand(m_elevator));
+    button7.toggleOnTrue(new SetFloorPositionCommand(m_elbow, m_extender, m_claw, m_elevator));
 
     Trigger button8 = new JoystickButton(m_flightJoystick, 8);
-    button8.toggleOnTrue(new MoveElevatorTopCommand(m_elevator));
+    button8.toggleOnTrue(new SetStowPositionCommand(m_elbow, m_extender, m_claw, m_elevator));
 
     Trigger button9 = new JoystickButton(m_flightJoystick, 9);
-    button9.toggleOnTrue(new SetArmElbowCommand(m_elbow, 90));
+    button9.toggleOnTrue(new SetTraversePositionCommand(m_elbow, m_extender, m_claw, m_elevator));
 
     Trigger button10 = new JoystickButton(m_flightJoystick, 10);
-    button10.toggleOnTrue(new SetArmElbowCommand(m_elbow, 180));
+    button10.toggleOnTrue(new DoubleSubstationPickupCommand(m_elbow, m_extender, m_elevator));
 
-    // Trigger button11 = new JoystickButton(m_flightJoystick, 11);
-    // button11.toggleOnTrue(new ExtendArmCommand(m_armExtension));
+    Trigger button11 = new JoystickButton(m_flightJoystick, 11);
+     button11.toggleOnTrue(new MoveElevatorBottomCommand(m_elevator));
 
-    // Trigger button12 = new JoystickButton(m_flightJoystick, 12);
-    // button12.toggleOnTrue(new RetractArmCommand(m_armExtension));
+     Trigger button12 = new JoystickButton(m_flightJoystick, 12);
+    button12.toggleOnTrue(new MoveElevatorTopCommand(m_elevator));
 
     // LED Control Buttons
     new JoystickButton(m_buttonBox, 7) 

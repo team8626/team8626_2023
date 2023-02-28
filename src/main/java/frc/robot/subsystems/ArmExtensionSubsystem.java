@@ -15,7 +15,7 @@ public class ArmExtensionSubsystem extends SubsystemBase {
 // Pneumatics
   // TODO Should eventually move to a "Constants" class
   // TODO Same values from the intake last year
-  private final DoubleSolenoid m_Cylinder = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 0, 1);
+  private final DoubleSolenoid m_Cylinder = new DoubleSolenoid(PneumaticsModuleType.REVPH, 0, 1);
 
   // Subsystem State
   private boolean m_extended;
