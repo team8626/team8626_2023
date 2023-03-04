@@ -24,7 +24,7 @@ public class ElevatorSubsystem extends SubsystemBase {
   /** Class Constructor. */
   public ElevatorSubsystem() {
     m_elevatorMotor.restoreFactoryDefaults();
-    m_elevatorMotor.setInverted(true);
+    m_elevatorMotor.setInverted(false);
 
   initDashboard();
   }

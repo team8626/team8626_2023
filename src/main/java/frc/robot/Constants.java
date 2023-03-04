@@ -191,7 +191,7 @@ public final class Constants {
         public static final double kElbowEncoderPositionPIDMinInput = 0; // degrees
         public static final double kElbowEncoderPositionPIDMaxInput = kElbowEncoderPositionFactor; // degrees
     
-        public static final double kElbowP = 0.05;
+        public static final double kElbowP = 0.02;
         public static final double kElbowI = 0;
         public static final double kElbowD = 0;
         public static final double kElbowFF = 0;
@@ -202,12 +202,14 @@ public final class Constants {
         public static final IdleMode kElbowMotorIdleMode = IdleMode.kBrake;
         public static final int kElbowMotorCurrentLimit = 40; // amps
 
-         // TODO: Fake value
-         public static final double kStowedElbowAngle = 0;
-        public static final double kBottomGridElbowAngle = 0;
-        public static final double kMiddleGridElbowAngle = 0;
-        public static final double kTopGridElbowAngle = 0;
-        public static final double kFloorElbowAngle = 0;
+         // TODO: Update values
+         public static final double kStowedElbowAngle = 348;
+        public static final double kBottomGridElbowAngle = 324;
+        public static final double kMiddleGridElbowAngle = 270;
+        public static final double kTopGridElbowAngle = 255;
+        public static final double kFloorElbowAngle = 275;
+        public static final double kTraverseElbowAngle = 210;
+        public static final double kSubstationlbowAngle = 270;
        
         
     }

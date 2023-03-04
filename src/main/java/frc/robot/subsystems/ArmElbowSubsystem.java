@@ -57,6 +57,7 @@ public class ArmElbowSubsystem extends SubsystemBase {
 
     // Set the PID gains for the turning motor. Note these are example gains, and you
     // may need to tune them for your own robot!
+    
     m_elbowPIDController.setP(ArmConstants.kElbowP);
     m_elbowPIDController.setI(ArmConstants.kElbowI);
     m_elbowPIDController.setD(ArmConstants.kElbowD);
@@ -79,6 +80,17 @@ public class ArmElbowSubsystem extends SubsystemBase {
   public double getAngle() {
     return m_elbowEncoder.getPosition();
   }
+
+public void setP(double kP){
+  m_elbowPIDController.setP(kP);
+}
+public void setI(double kI){
+  m_elbowPIDController.setP(kI);
+}
+public void setD(double kD){
+  m_elbowPIDController.setP(kD);
+}
+  
 
   /**
    * Sets the desired state for the module.

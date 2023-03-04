@@ -149,32 +149,27 @@ public class RobotContainer {
 
     }
 
-    Trigger button4 = new JoystickButton(m_flightJoystick, 4);
-    button4.toggleOnTrue(new BottomGridSetupCommand(m_elbow, m_extender, m_elevator));
-    
-    Trigger button5 = new JoystickButton(m_flightJoystick, 5);
-    button5.toggleOnTrue(new MiddleGridSetupCommand(m_elbow, m_extender, m_claw, m_elevator));
+  
 
-    Trigger button6 = new JoystickButton(m_flightJoystick, 6);
-    button6.toggleOnTrue(new TopGridSetupCommand(m_elbow, m_extender, m_claw, m_elevator));
 
-    Trigger button7 = new JoystickButton(m_flightJoystick, 7);
-    button7.toggleOnTrue(new SetFloorPositionCommand(m_elbow, m_extender, m_claw, m_elevator));
+// TODO: Button commands are not updated
+    Trigger topLeftButton = new JoystickButton(m_buttonBox, 1);
+    topLeftButton.toggleOnTrue(new TopGridSetupCommand(m_elbow, m_extender, m_claw, m_elevator));
 
-    Trigger button8 = new JoystickButton(m_flightJoystick, 8);
-    button8.toggleOnTrue(new SetStowPositionCommand(m_elbow, m_extender, m_claw, m_elevator));
+    Trigger middleLeftButton = new JoystickButton(m_buttonBox, 2);
+    middleLeftButton.toggleOnTrue(new MiddleGridSetupCommand(m_elbow, m_extender, m_claw, m_elevator));
 
-    Trigger button9 = new JoystickButton(m_flightJoystick, 9);
-    button9.toggleOnTrue(new SetTraversePositionCommand(m_elbow, m_extender, m_claw, m_elevator));
+    Trigger bottomLeftButton = new JoystickButton(m_buttonBox, 3);
+    bottomLeftButton.toggleOnTrue(new BottomGridSetupCommand(m_elbow, m_extender, m_elevator));
 
-    Trigger button10 = new JoystickButton(m_flightJoystick, 10);
-    button10.toggleOnTrue(new DoubleSubstationPickupCommand(m_elbow, m_extender, m_elevator));
+    Trigger topCenterButton = new JoystickButton(m_buttonBox, 4);
+    topCenterButton.toggleOnTrue(new DoubleSubstationPickupCommand(m_elbow, m_extender, m_elevator));
 
-    Trigger button11 = new JoystickButton(m_flightJoystick, 11);
-     button11.toggleOnTrue(new MoveElevatorBottomCommand(m_elevator));
+    Trigger middleCenterButton = new JoystickButton(m_buttonBox, 5);
+    middleCenterButton.toggleOnTrue(new SetFloorPositionCommand(m_elbow, m_extender, m_claw, m_elevator));
 
-     Trigger button12 = new JoystickButton(m_flightJoystick, 12);
-    button12.toggleOnTrue(new MoveElevatorTopCommand(m_elevator));
+    Trigger bottomCenterButton = new JoystickButton(m_buttonBox, 6);
+    bottomCenterButton.toggleOnTrue(new SetTraversePositionCommand(m_elbow, m_extender, m_claw, m_elevator));
 
     // LED Control Buttons
     new JoystickButton(m_buttonBox, 7) 
@@ -187,6 +182,28 @@ public class RobotContainer {
     .onTrue(new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorCUBE));
     // .onTrue(new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorALLIANCEBLUE));
 
+    Trigger button4 = new JoystickButton(m_flightJoystick, 4);
+    button4.toggleOnTrue(new BottomGridSetupCommand(m_elbow, m_extender, m_elevator));
+    
+    Trigger button5 = new JoystickButton(m_flightJoystick, 5);
+    button5.toggleOnTrue(new MiddleGridSetupCommand(m_elbow, m_extender, m_claw, m_elevator));
+
+    Trigger button6 = new JoystickButton(m_flightJoystick, 6);
+    button6.toggleOnTrue(new TopGridSetupCommand(m_elbow, m_extender, m_claw, m_elevator));
+
+
+  
+
+    Trigger button10 = new JoystickButton(m_flightJoystick, 10);
+    button10.toggleOnTrue(new DoubleSubstationPickupCommand(m_elbow, m_extender, m_elevator));
+
+    Trigger button11 = new JoystickButton(m_flightJoystick, 11);
+     button11.toggleOnTrue(new MoveElevatorBottomCommand(m_elevator));
+
+     Trigger button12 = new JoystickButton(m_flightJoystick, 12);
+    button12.toggleOnTrue(new MoveElevatorTopCommand(m_elevator));
+
+  
 
     // Toggle Auto-Balancing mode ON/OFF
     // TODO: Ned's code goes here

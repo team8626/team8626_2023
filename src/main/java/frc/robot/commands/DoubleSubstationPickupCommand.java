@@ -22,7 +22,7 @@ public DoubleSubstationPickupCommand(ArmElbowSubsystem elbow, ArmExtensionSubsys
   m_elevator = elevator;
    
     addCommands(
-       new RetractArmCommand(m_extender), new SetArmElbowCommand(m_elbow, ArmConstants.kBottomGridElbowAngle), new MoveElevatorTopCommand(m_elevator)
+       new RetractArmCommand(m_extender), new SetArmElbowCommand(m_elbow, ArmConstants.kSubstationlbowAngle), new MoveElevatorTopCommand(m_elevator)
        
                );
 
