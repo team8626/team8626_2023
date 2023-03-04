@@ -15,8 +15,10 @@ import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.commands.FollowPathWithEvents;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.XboxController.Button;
 // import edu.wpi.first.wpilibj.PS4Controller;
 // import edu.wpi.first.wpilibj.PS4Controller.Button;
@@ -76,6 +78,8 @@ public class RobotContainer {
   public final LEDManagerSubsystem m_ledManager = new LEDManagerSubsystem();
   // private final ArmExtensionSubsystem m_armExtension = new ArmExtensionSubsystem();
   
+  private Alliance m_allianceColor;
+
 
   private final static DriveType m_driveType = DriveType.SWERVE; // SWERVE or KITBOT
   //private final SwerveDriveSubsystem m_robotDrive = new SwerveDriveSubsystem();
@@ -114,7 +118,8 @@ public class RobotContainer {
         m_robotDrive = new KitbotDriveSubsystem();
         break;
     }
-    
+   
+    m_allianceColor = DriverStation.getAlliance();
     m_autoControl = new Autonomous(m_dashboard, m_robotDrive);
 
     configureButtonBindings();
@@ -175,15 +180,19 @@ public class RobotContainer {
     new JoystickButton(m_buttonBox, 7) 
     .onTrue(new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorCONE));
     // .onTrue(new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorALLIANCERED));
+
     new JoystickButton(m_buttonBox, 8) 
-    .onTrue(new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorPINK));
+      .onTrue(m_allianceColor == DriverStation.Alliance.Blue? 
+              new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorALLIANCEBLUE):
+              new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorALLIANCERED)
+            );
     // .onTrue(new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorALLIANCERED));
     new JoystickButton(m_buttonBox, 9) 
     .onTrue(new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorCUBE));
     // .onTrue(new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorALLIANCEBLUE));
 
     Trigger button4 = new JoystickButton(m_flightJoystick, 4);
-    button4.toggleOnTrue(new BottomGridSetupCommand(m_elbow, m_extender, m_elevator));
+    button4.toggleOnTrue(new OpenClawCommand(m_claw));
     
     Trigger button5 = new JoystickButton(m_flightJoystick, 5);
     button5.toggleOnTrue(new MiddleGridSetupCommand(m_elbow, m_extender, m_claw, m_elevator));
