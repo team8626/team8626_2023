@@ -261,6 +261,14 @@ public class SwerveDriveSubsystem extends SubsystemBase /*implements DriveSubsys
     return m_gyro.getRate() * (SwerveDriveConstants.kGyroReversed ? -1.0 : 1.0);
   }
 
+  public double getPitchRate() {
+    return m_gyro.getRawGyroY();
+  }
+  
+  public double getPitch() {
+  return m_gyro.getPitch();
+  }
+
   /** 
    * Follow the givent trajectory. 
    * 
