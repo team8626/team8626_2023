@@ -31,12 +31,22 @@ public class ArmExtensionSubsystem extends SubsystemBase {
   }
 
   // Initialize Dashboard
-  public void initDashboard(){}
+  public void initDashboard(){
+    if(m_extended){
+      SmartDashboard.putString("Arm Length", "EXTENDED");
+    } else {
+      SmartDashboard.putString("Arm Length", "RETRACTED");
+    }
+  }
 
   // Update Dashboard(Called Periodically)
   public void updateDashboard(){
-    SmartDashboard.putBoolean("ArmExtension", m_extended);
-  }
+    if(m_extended){
+      SmartDashboard.putString("Arm Length", "EXTENDED");
+    } else {
+      SmartDashboard.putString("Arm Length", "RETRACTED");
+    }
+  } 
 
   // Set assembly passive
   public void rest(){

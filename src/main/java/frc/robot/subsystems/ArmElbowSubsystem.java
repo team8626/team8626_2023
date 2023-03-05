@@ -10,6 +10,7 @@ import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArmConstants;;
 
@@ -107,11 +108,12 @@ public void setD(double kD){
   }
 
   public void initDashboard(){
-
+    SmartDashboard.putNumber("Elbow Angle", getAngle());
   }
 
   public void updateDashboard(){
-    
+    SmartDashboard.putNumber("Elbow Angle", getAngle());
+
   }
 }
 
