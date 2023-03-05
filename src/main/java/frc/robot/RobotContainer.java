@@ -25,11 +25,13 @@ import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.IOControlsConstants;
 import frc.robot.Constants.LEDManagerConstants;
+import frc.robot.commands.BalanceCommand;
 import frc.robot.commands.BottomGridSetupCommand;
 import frc.robot.commands.CloseClawCommand;
 import frc.robot.commands.DoubleSubstationPickupCommand;
@@ -229,11 +231,9 @@ public class RobotContainer {
    */
   private void configureEventsMaps() {
       // Populate Autonomous Event map
-      eventMap.put("marker1", new PrintCommand("Passed marker 1"));
-      eventMap.put("marker2", new PrintCommand("Passed marker 2"));
-      eventMap.put("marker3", new PrintCommand("Passed marker 3"));
-      eventMap.put("marker4", new PrintCommand("Passed marker 4"));
-      eventMap.put("marker5", new PrintCommand("Passed marker 5"));
+      eventMap.put("DeliverEvent", new SequentialCommandGroup(new TopGridSetupCommand(m_elbow, m_extender, m_claw, m_elevator), new OpenClawCommand(m_claw)));
+      eventMap.put("StowEvent", new SetStowPositionCommand(m_elbow, m_extender, m_claw, m_elevator));
+      eventMap.put("BalanceEvent", new BalanceCommand(m_claw, false));
   }
   
 
@@ -263,6 +263,12 @@ public class RobotContainer {
           m_robotDrive));
     }
 
+
+
+
+
+
+
     //
     // KitBot Drive Train Specific Bindings
     //
@@ -286,20 +292,12 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     Command retval = null;
     try {
-      retval = m_autoControl.getStartCommand();
+      retval = m_autoControl.getStartCommand((SwerveDriveSubsystem)m_robotDrive, eventMap);
     } catch (IOException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
-
-    // Load trajectoryt file "Example Path.path" and generate it with a max velocity of 1 m/s and a max acceleration of 3 m/s^2
-    PathPlannerTrajectory trajectory = PathPlanner.loadPath("path_1", new PathConstraints(1.0, 3.0));
-
-    retval = new FollowPathWithEvents(
-      ((SwerveDriveSubsystem)m_robotDrive).followTrajectoryCommand(trajectory, true),
-      trajectory.getMarkers(),
-      eventMap);
-      
-    return retval;
+      return retval;
   }
+
 }
