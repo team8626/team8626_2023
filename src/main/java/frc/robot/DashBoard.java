@@ -17,13 +17,11 @@ import frc.robot.subsystems.ElevatorSubsystem;
 
 public class DashBoard {
 
-    enum StartPosition {
-        LEFT_SIDE, RIGHT_SIDE, MIDDLE_SIDE
+    enum Trajectory {
+        BOTTOM_DELIVER, MIDDLE_DELIVER_BALANCE, TOP_DELIVER
     }
 
-    enum AutoSelec {
-       EXIT, EXIT_BALANCE, NODE_EXIT_BALANCE
-    }
+   
 
     private static RobotContainer m_robotContainer;
     private final Notifier m_thread = new Notifier(new dashboardThread());
@@ -31,8 +29,8 @@ public class DashBoard {
 	
     // private DesiredMode mCachedDesiredMode = null;
     // private StartingPosition mCachedStartingPosition = null;
-    SendableChooser<StartPosition> m_startPositionChooser = new SendableChooser<>();
-    SendableChooser<AutoSelec> m_autonomousModeChooser = new SendableChooser<>();
+    SendableChooser<Trajectory> m_autonomousModeChooser = new SendableChooser<>();
+    
 
     // SimpleWidget m_balanceMultiplier = new SimpleWidget();
 
@@ -58,7 +56,7 @@ public class DashBoard {
             //SmartDashboard.putBoolean("Limelight-LED Toggle", false);
 
             initAutonomousStrategy();
-            initStartupPostion();
+        
 
             
         }
@@ -74,38 +72,20 @@ public class DashBoard {
      */
     private void initAutonomousStrategy(){
         
-        m_autonomousModeChooser.setDefaultOption("Exit community zone", AutoSelec.EXIT);
-        m_autonomousModeChooser.addOption("Exit community zone and balance", AutoSelec.EXIT_BALANCE);
-        m_autonomousModeChooser.addOption("Deliver cone or block, exit community zone, and balance", AutoSelec.NODE_EXIT_BALANCE);
+        m_autonomousModeChooser.setDefaultOption("Deliver from bottom - Exit tarmac from bottom", Trajectory.BOTTOM_DELIVER);
+        m_autonomousModeChooser.addOption("Deliver from middle - Exit tarmac from middle - Balance", Trajectory.MIDDLE_DELIVER_BALANCE);
+        m_autonomousModeChooser.addOption("Deliver from top - Exit tarmac from top", Trajectory.TOP_DELIVER);
  
 
         SmartDashboard.putData("Auto Mode", m_autonomousModeChooser);
     }
     
-    /** 
-     * Initialize Robot Starting Position
-     */
-    private void initStartupPostion(){
-       
-        
-        m_startPositionChooser.setDefaultOption("Middle Side", StartPosition.MIDDLE_SIDE);
-        m_startPositionChooser.addOption("Left Side", StartPosition.LEFT_SIDE);
-        m_startPositionChooser.addOption("Right Side", StartPosition.RIGHT_SIDE);
+  
 
-        SmartDashboard.putData("Starting Position", m_startPositionChooser);
-    }
-
-    /** 
-     * Returns Selected Robot Start Position
-     */
-    public StartPosition getStartPosition() {
-        return m_startPositionChooser.getSelected();
-    }
- 
     /** 
      * Returns Selected Robot Autonomous Startup Mode
      */  
-    public AutoSelec getAutoMode() {
+    public Trajectory getAutoSelection() {
         return m_autonomousModeChooser.getSelected();
     }
 

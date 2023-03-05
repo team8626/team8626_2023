@@ -5,23 +5,31 @@
 package frc.robot;
 
 import java.io.IOException;
+import java.util.HashMap;
+
+import com.pathplanner.lib.PathConstraints;
+import com.pathplanner.lib.PathPlanner;
+import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.commands.FollowPathWithEvents;
+import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 
 // WPI Libraries
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 // Team8626 Libraries
-import frc.robot.DashBoard.AutoSelec;
-import frc.robot.DashBoard.StartPosition;
+import frc.robot.DashBoard.Trajectory;
+
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.SwerveDriveSubsystem;
 
 public class Autonomous {
 
     private final DashBoard m_dashboard;
     private final SubsystemBase m_drivetrain;
 
-    public StartPosition m_startPosition;
-    public AutoSelec m_autoStart;
+
+    private Trajectory m_autoStart;
 
     public Autonomous(DashBoard dashboard, SubsystemBase drivetrain){
         m_dashboard = dashboard;
@@ -35,53 +43,36 @@ public class Autonomous {
     enum AutoSelec {
        EXIT, EXIT_BALANCE, NODE_EXIT_BALANCE
     } */
-    public Command getStartCommand() throws IOException {
-        Command startCommand = null;
-        m_startPosition = m_dashboard.getStartPosition(); 
-        m_autoStart = m_dashboard.getAutoMode();
-         //   switch(m_startPosition) {}
-        switch (m_autoStart) {
-case EXIT:
-switch(m_startPosition) {
-    case LEFT_SIDE:
-startCommand = new PrintCommand("Exiting Tarmac from the left side");
-    break;
-    case MIDDLE_SIDE:
-    startCommand = new PrintCommand("Exiting Tarmac from the middle");
-    break;
-    case RIGHT_SIDE:
-    startCommand = new PrintCommand("Exiting Tarmac from the right side");
-    break;
-}
+    public Command getStartCommand(SwerveDriveSubsystem drive, HashMap<String, Command> map) throws IOException {
+        SwerveDriveSubsystem m_drive = drive;
+        HashMap<String, Command> m_map = map;
+        m_autoStart = m_dashboard.getAutoSelection();
+        String path = null;
+
+       //  BOTTOM_DELIVER, MIDDLE_DELIVER_BALANCE, TOP_DELIVER
+switch(m_autoStart) {
+
+case BOTTOM_DELIVER: 
+path = "BottomExit_Deliver";
 break;
-case EXIT_BALANCE:
-switch(m_startPosition) {
-    case LEFT_SIDE:
-startCommand = new PrintCommand("Exiting Tarmac from the left side and balancing");
-    break;
-    case MIDDLE_SIDE:
-    startCommand = new PrintCommand("Exiting Tarmac from the middle and balancing");
-    break;
-    case RIGHT_SIDE:
-    startCommand = new PrintCommand("Exiting Tarmac from the right side and balancing");
-    break;
-}
+
+case TOP_DELIVER:
+path = "TopExit_Deliver";
 break;
-case NODE_EXIT_BALANCE:
-switch(m_startPosition) {
-    case LEFT_SIDE:
-startCommand = new PrintCommand("Delivering node, exiting Tarmac from the left side, and balancing");
-    break;
-    case MIDDLE_SIDE:
-    startCommand = new PrintCommand("Delivering node, exiting Tarmac from the middle, and balancing");
-    break;
-    case RIGHT_SIDE:
-    startCommand = new PrintCommand("Delivering node, exiting Tarmac from the right side, and balancing");
-    break;
+
+case MIDDLE_DELIVER_BALANCE:
+path = "MiddleExit_Deliver_Balance";
+break;
+
 }
-break; 
-        }
+
+//  Load trajectory file "Example Path.path" and generate it with a max velocity of 1 m/s and a max acceleration of 3 m/s^2
+    PathPlannerTrajectory trajectory = PathPlanner.loadPath(path, new PathConstraints(1.0, 3.0));
+
+    return new FollowPathWithEvents(
+      m_drive.followTrajectoryCommand(trajectory, true),
+      trajectory.getMarkers(),
+      m_map);
         
-        return startCommand;
     }  
 }
