@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ClawSubsystem;
 import frc.robot.Constants.ClawConstants;
@@ -14,6 +15,7 @@ public class CloseClawCommand extends CommandBase {
   private ClawSubsystem m_claw;
   private PIDController m_pidController;
   private int m_targetAngle;
+  private Timer m_timer = new Timer();
 
   public CloseClawCommand(ClawSubsystem claw) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -27,6 +29,8 @@ public class CloseClawCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+  m_timer.start();  
+
     // Claw subsystem isn't homed, open until it's homed
     if(!m_claw.isHomed()){
       m_claw.homeSubsystem();
@@ -50,12 +54,13 @@ public class CloseClawCommand extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     m_claw.stop();
+    m_timer.stop();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return  m_pidController.atSetpoint();
+    return  m_pidController.atSetpoint() || m_timer.get() > 1;
   }
 }
 
