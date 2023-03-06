@@ -7,6 +7,8 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.LEDManagerConstants;
+import frc.robot.subsystems.LEDManagerSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 
 public class BalanceCommand extends CommandBase {
@@ -25,12 +27,13 @@ public class BalanceCommand extends CommandBase {
   private static boolean isAborted;
   private static double xAxisRate;
   private static double currPitchRate;
+  private LEDManagerSubsystem m_LEDManager;
 
   
 
-  public BalanceCommand(SubsystemBase drivetrain, boolean abort) {
+  public BalanceCommand(SwerveDriveSubsystem drivetrain, boolean abort) {
     // Use addRequirements() here to declare subsystem dependencies.
-    m_drivetrain = (SwerveDriveSubsystem)drivetrain;
+    m_drivetrain = drivetrain;
     m_abort = abort;
     addRequirements(m_drivetrain);
   }
@@ -38,6 +41,7 @@ public class BalanceCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+  m_LEDManager.setColor(LEDManagerConstants.kColorWHITE);
   balanceMode = true;
   // Starts with a fake pitch rate above the threshold so it can run
   // without instantly being shutdown

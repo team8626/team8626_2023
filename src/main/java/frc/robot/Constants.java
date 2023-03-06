@@ -260,6 +260,14 @@ public final class Constants {
         public static final double kDriveDeadband = 0.05;
     }
 
+    public final static class XboxControllerConstants {
+
+        public static final int kLeftBumper = 5;
+        public static final int kRightBumper = 6;
+        public static final int kBButton = 2;
+    
+    }
+
 
 }
 

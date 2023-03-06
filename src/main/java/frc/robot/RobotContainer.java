@@ -31,11 +31,13 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.IOControlsConstants;
 import frc.robot.Constants.LEDManagerConstants;
+import frc.robot.Constants.XboxControllerConstants;
 import frc.robot.commands.BalanceCommand;
 import frc.robot.commands.BottomGridSetupCommand;
 import frc.robot.commands.CloseClawCommand;
 import frc.robot.commands.DoubleSubstationPickupCommand;
 import frc.robot.commands.ElevatorMoveCommand;
+import frc.robot.commands.ExtendArmCommand;
 import frc.robot.commands.MiddleGridSetupCommand;
 import frc.robot.commands.MoveElevatorBottomCommand;
 import frc.robot.commands.MoveElevatorTopCommand;
@@ -72,7 +74,8 @@ enum DriveType {
 public class RobotContainer {
   // The robot's subsystems
   // private DriveSubsystem m_robotDrive = null;
-  private static SubsystemBase m_robotDrive = null;
+  // TODO: Should be null; fix initialization
+  private static SubsystemBase m_robotDrive = new SwerveDriveSubsystem();;
   public final ElevatorSubsystem m_elevator = new ElevatorSubsystem();
   public final ClawSubsystem m_claw = new ClawSubsystem();
   public final ArmElbowSubsystem m_elbow = new ArmElbowSubsystem();
@@ -88,8 +91,8 @@ public class RobotContainer {
   //private final KitBotDriveSubsystem m_robotDrive = new SwerveDriveSubsystem();
 
   // Define controllers
-  // private final XboxController m_xBoxController = new XboxController(IOControls.kXboxControllerPort);
-  private final XboxController m_xBoxController = new XboxController(IOControlsConstants.kXboxControllerPort);
+  // private final XboxController m_xboxController = new XboxController(IOControls.kXboxControllerPort);
+  private final XboxController m_xboxController = new XboxController(IOControlsConstants.kXboxControllerPort);
   private final Joystick m_flightJoystick = new Joystick(IOControlsConstants.kJoystickControllerPort);
   private final Joystick m_buttonBox = new Joystick(IOControlsConstants.kButtonBoxPort);
 
@@ -110,16 +113,17 @@ public class RobotContainer {
     // Instatiate the Dashbpard
     m_dashboard = new DashBoard(this);
 
-    // Instantiate the drivetrain
+    /* Instantiate the drivetrain
     switch(m_driveType){
-      case SWERVE /* Swerve */: 
+      case SWERVE /* Swerve : 
         m_robotDrive = new SwerveDriveSubsystem();
         break;
  
-     case KITBOT /* KitBot */: 
+     case KITBOT /* KitBot : 
         m_robotDrive = new KitbotDriveSubsystem();
         break;
     }
+    */
    
     m_allianceColor = DriverStation.getAlliance();
     m_autoControl = new Autonomous(m_dashboard, m_robotDrive);
@@ -140,15 +144,15 @@ public class RobotContainer {
     
     //
     // Swerve Drive Train Specific Bindings
-    //
+    /* 
     if(m_robotDrive instanceof SwerveDriveSubsystem){
       // Pressing Right Bumper set Swerve Modules to Cross (X) Position
-      new JoystickButton(m_xBoxController, Button.kRightBumper.value)
+      new JoystickButton(m_xboxController, Button.kRightBumper.value)
       .whileTrue(new RunCommand(
           () -> ((SwerveDriveSubsystem)m_robotDrive).setX(),
           m_robotDrive));
     }
-
+*/
     //
     // KitBot Drive Train Specific Bindings
     //
@@ -159,7 +163,7 @@ public class RobotContainer {
   
 
 
-// TODO: Button commands are not updated
+
     Trigger topLeftButton = new JoystickButton(m_buttonBox, 1);
     topLeftButton.toggleOnTrue(new TopGridSetupCommand(m_elbow, m_extender, m_claw, m_elevator));
 
@@ -181,38 +185,53 @@ public class RobotContainer {
     // LED Control Buttons
     new JoystickButton(m_buttonBox, 7) 
     .onTrue(new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorCONE));
-    // .onTrue(new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorALLIANCERED));
 
     new JoystickButton(m_buttonBox, 8) 
       .onTrue(m_allianceColor == DriverStation.Alliance.Blue? 
               new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorALLIANCEBLUE):
               new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorALLIANCERED)
             );
-    // .onTrue(new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorALLIANCERED));
     new JoystickButton(m_buttonBox, 9) 
     .onTrue(new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorCUBE));
-    // .onTrue(new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorALLIANCEBLUE));
 
-    Trigger button4 = new JoystickButton(m_flightJoystick, 4);
-    button4.toggleOnTrue(new OpenClawCommand(m_claw));
-    
-    Trigger button5 = new JoystickButton(m_flightJoystick, 5);
-    button5.toggleOnTrue(new MiddleGridSetupCommand(m_elbow, m_extender, m_claw, m_elevator));
 
-    Trigger button6 = new JoystickButton(m_flightJoystick, 6);
-    button6.toggleOnTrue(new TopGridSetupCommand(m_elbow, m_extender, m_claw, m_elevator));
 
+
+  Trigger xboxLeftBumper = new JoystickButton(m_xboxController, XboxControllerConstants.kLeftBumper);
+  xboxLeftBumper.onTrue(new OpenClawCommand(m_claw));
+
+  Trigger xboxRightBumper = new JoystickButton(m_xboxController, XboxControllerConstants.kRightBumper);
+  xboxRightBumper.onTrue(new CloseClawCommand(m_claw));
 
   
+  Trigger xboxBButton = new JoystickButton(m_xboxController, XboxControllerConstants.kBButton);
+  xboxBButton.toggleOnTrue(new BalanceCommand((SwerveDriveSubsystem)m_robotDrive, false));
+  
 
-    Trigger button10 = new JoystickButton(m_flightJoystick, 10);
-    button10.toggleOnTrue(new DoubleSubstationPickupCommand(m_elbow, m_extender, m_elevator));
+  /*   kLeftBumper(5),
+    kRightBumper(6),
+    kLeftStick(9),
+    kRightStick(10),
+    kA(1),
+    kB(2),
+    kX(3),
+    kY(4),
+    kBack(7),
+    kStart(8);
+*/
 
-    Trigger button11 = new JoystickButton(m_flightJoystick, 11);
-     button11.toggleOnTrue(new MoveElevatorBottomCommand(m_elevator));
 
-     Trigger button12 = new JoystickButton(m_flightJoystick, 12);
-    button12.toggleOnTrue(new MoveElevatorTopCommand(m_elevator));
+
+
+
+
+
+/* 
+    Trigger stickButton8 = new JoystickButton(m_flightJoystick, 8);
+    stickButton8.toggleOnTrue(new ExtendArmCommand(m_extender));
+    */
+    
+   
 
   
 
@@ -233,7 +252,7 @@ public class RobotContainer {
       // Populate Autonomous Event map
       eventMap.put("DeliverEvent", new SequentialCommandGroup(new TopGridSetupCommand(m_elbow, m_extender, m_claw, m_elevator), new OpenClawCommand(m_claw)));
       eventMap.put("StowEvent", new SetStowPositionCommand(m_elbow, m_extender, m_claw, m_elevator));
-      eventMap.put("BalanceEvent", new BalanceCommand(m_claw, false));
+      eventMap.put("BalanceEvent", new BalanceCommand((SwerveDriveSubsystem)m_robotDrive, false));
   }
   
 
@@ -255,9 +274,9 @@ public class RobotContainer {
       // Turning is controlled by the X axis of the right stick.
       new RunCommand(
           () -> ((SwerveDriveSubsystem)m_robotDrive).drive(
-              MathUtil.applyDeadband(-m_xBoxController.getLeftY(), IOControlsConstants.kDriveDeadband),
-              MathUtil.applyDeadband(-m_xBoxController.getLeftX(), IOControlsConstants.kDriveDeadband),
-              MathUtil.applyDeadband(-m_xBoxController.getRightX(), IOControlsConstants.kDriveDeadband),
+              MathUtil.applyDeadband(-m_xboxController.getLeftY(), IOControlsConstants.kDriveDeadband),
+              MathUtil.applyDeadband(-m_xboxController.getLeftX(), IOControlsConstants.kDriveDeadband),
+              MathUtil.applyDeadband(-m_xboxController.getRightX(), IOControlsConstants.kDriveDeadband),
               false,
               true),
           m_robotDrive));

@@ -74,8 +74,12 @@ public class ClawSubsystem extends SubsystemBase {
   }
 
   public void setMotor(double speed) {
+    setMotor(speed, false); 
+  }
+
+  public void setMotor(double speed, boolean forced) {
     // Not moving if not homed
-    if(m_homed){
+    if(m_homed || forced){
       m_motor.set(speed);
       
       // Set Values for starting simulation
@@ -85,7 +89,6 @@ public class ClawSubsystem extends SubsystemBase {
       }
     }
   }
-  
   public void stop() {
     m_motor.set(0.0);
   }
