@@ -32,6 +32,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.IOControlsConstants;
 import frc.robot.Constants.LEDManagerConstants;
 import frc.robot.Constants.XboxControllerConstants;
+import frc.robot.commands.AutoStartPositionCommand;
 import frc.robot.commands.BalanceCommand;
 import frc.robot.commands.BottomGridSetupCommand;
 import frc.robot.commands.CloseClawCommand;
@@ -201,8 +202,7 @@ public class RobotContainer {
   xboxLeftBumper.onTrue(new OpenClawCommand(m_claw));
 
   Trigger xboxRightBumper = new JoystickButton(m_xboxController, XboxControllerConstants.kRightBumper);
-  xboxRightBumper.onTrue(new CloseClawCommand(m_claw));
-
+  xboxRightBumper.onTrue(new CloseClawCommand(m_claw, true));
   
   Trigger xboxBButton = new JoystickButton(m_xboxController, XboxControllerConstants.kBButton);
   xboxBButton.toggleOnTrue(new BalanceCommand((SwerveDriveSubsystem)m_robotDrive, false));
@@ -311,7 +311,9 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     Command retval = null;
     try {
-      retval = m_autoControl.getStartCommand((SwerveDriveSubsystem)m_robotDrive, eventMap);
+      retval =  
+     new SequentialCommandGroup(new AutoStartPositionCommand(m_elbow, m_extender, m_claw, m_elevator), 
+     m_autoControl.getStartCommand((SwerveDriveSubsystem)m_robotDrive, eventMap));
     } catch (IOException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();

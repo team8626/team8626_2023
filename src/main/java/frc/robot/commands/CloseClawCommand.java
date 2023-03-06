@@ -16,11 +16,13 @@ public class CloseClawCommand extends CommandBase {
   private PIDController m_pidController;
   private int m_targetAngle;
   private Timer m_timer = new Timer();
+  private static boolean m_forced;
 
-  public CloseClawCommand(ClawSubsystem claw) {
+  public CloseClawCommand(ClawSubsystem claw, boolean forced) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(claw);
     m_claw = claw;
+    m_forced = forced;
 
     m_pidController = new PIDController(ClawConstants.kP, ClawConstants.kI, ClawConstants.kD);
     m_targetAngle = ClawConstants.kHardCloseAngle;
