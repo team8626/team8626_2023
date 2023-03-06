@@ -5,14 +5,16 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.ArmElbowSubsystem;
 import frc.robot.subsystems.ArmExtensionSubsystem;
 import frc.robot.subsystems.ClawSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 
-public class SetTraversePositionCommand extends ParallelCommandGroup {
+public class SetTraversePositionCommand extends SequentialCommandGroup {
 
 ArmElbowSubsystem m_elbow;
 ArmExtensionSubsystem m_extender;
@@ -26,7 +28,16 @@ ElevatorSubsystem m_elevator;
     m_elevator = elevator;
 
   addCommands(
-    new SetArmElbowCommand(m_elbow, ArmConstants.kTraverseElbowAngle), new RetractArmCommand(m_extender), new MoveElevatorBottomCommand(elevator));
+    // Moves until waitcommand ends then it will move on to elbow and extension and instantly restart elevator
+    new ParallelRaceGroup(new WaitCommand(1), new MoveElevatorBottomCommand(m_elevator)), 
+
+    new ParallelCommandGroup(
+    new SetArmElbowCommand(m_elbow, ArmConstants.kTraverseElbowAngle), 
+    new RetractArmCommand(m_extender), 
+    new MoveElevatorBottomCommand(elevator)
+    )
+    
+    );
 
   }
 
