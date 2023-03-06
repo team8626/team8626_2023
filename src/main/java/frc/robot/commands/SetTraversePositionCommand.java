@@ -26,7 +26,7 @@ ElevatorSubsystem m_elevator;
     m_elevator = elevator;
 
   addCommands(
-    new OpenClawCommand(m_claw), 
+    //new OpenClawCommand(m_claw), 
     new ParallelCommandGroup(new SetArmElbowCommand(m_elbow, ArmConstants.kTraverseElbowAngle), new RetractArmCommand(m_extender), new MoveElevatorBottomCommand(elevator))         
              );
 

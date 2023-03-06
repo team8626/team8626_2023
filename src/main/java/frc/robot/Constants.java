@@ -195,7 +195,7 @@ public final class Constants {
         public static final double kElbowI = 0;
         public static final double kElbowD = 0;
         public static final double kElbowFF = 0;
-        public static final double kElbowMinOutput = -1;
+        public static final double kElbowMinOutput = -.8;
         public static final double kElbowMaxOutput = 0.1;
     
         
@@ -206,7 +206,7 @@ public final class Constants {
         public static final double kBottomGridElbowAngle = 324;
         public static final double kMiddleGridElbowAngle = 270;
         public static final double kTopGridElbowAngle = 255;
-        public static final double kFloorElbowAngle = 275;
+        public static final double kFloorElbowAngle = 295;
         public static final double kTraverseElbowAngle = 210;
         public static final double kSubstationlbowAngle = 270;
 
