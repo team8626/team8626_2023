@@ -196,22 +196,22 @@ public final class Constants {
         public static final double kElbowD = 0;
         public static final double kElbowFF = 0;
         public static final double kElbowMinOutput = -1;
-        public static final double kElbowMaxOutput = 1;
+        public static final double kElbowMaxOutput = 0.1;
     
         
         public static final IdleMode kElbowMotorIdleMode = IdleMode.kBrake;
         public static final int kElbowMotorCurrentLimit = 40; // amps
 
-         // TODO: Update values
-         public static final double kStowedElbowAngle = 348;
+        public static final double kStowedElbowAngle = 348;
         public static final double kBottomGridElbowAngle = 324;
         public static final double kMiddleGridElbowAngle = 270;
         public static final double kTopGridElbowAngle = 255;
         public static final double kFloorElbowAngle = 275;
         public static final double kTraverseElbowAngle = 210;
         public static final double kSubstationlbowAngle = 270;
-       
-        
+
+        //public static final float kSoftLimitBottom = 345;
+        //public static final float kSoftLimitTop = 215;
     }
     
     // Claw subsystem constants
