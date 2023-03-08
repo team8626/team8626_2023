@@ -16,8 +16,9 @@ import frc.robot.subsystems.ArmElbowSubsystem.ItemType;
 
 public class SetArmElbowCommand extends InstantCommand {
   private final ArmElbowSubsystem m_elbow;
-  private final double m_angle;
+  private double m_angle;
   private static double incrementAngle;
+  private static boolean isDelivery = false;
   
 // For non-delivery use
   public SetArmElbowCommand(ArmElbowSubsystem elbow, double angle) {
@@ -32,7 +33,7 @@ public class SetArmElbowCommand extends InstantCommand {
 // The purpose of the extra parameter-which is useless-is to call the special constructor
   public SetArmElbowCommand(ArmElbowSubsystem elbow, double angle, boolean identifyAsDelivery) {
     m_elbow = elbow;
-    m_angle = angle;
+    m_elbow.setDesiredAngle(angle);  
     
     switch(m_elbow.getDesiredItem()) {
       case CUBE:
@@ -42,14 +43,14 @@ public class SetArmElbowCommand extends InstantCommand {
       incrementAngle = ArmConstants.kConeAngleIncrement; // 0
       break;
           }
+      isDelivery = true;
     addRequirements(elbow);
   }
   // For the LED buttons
   // When called, it updates and uses a new item type for the increment
   // The extra parameter is an enum to save and apply the item type
-  public SetArmElbowCommand(ArmElbowSubsystem elbow, double angle, ItemType item) {
+  public SetArmElbowCommand(ArmElbowSubsystem elbow, ItemType item) {
     m_elbow = elbow;
-    m_angle = angle;
 
     m_elbow.setDesiredItem(item);
 
@@ -63,11 +64,14 @@ public class SetArmElbowCommand extends InstantCommand {
     }
 
     addRequirements(elbow);
+    isDelivery = true;
   }
 
   @Override
   public void initialize() {
+   if(isDelivery) m_angle = m_elbow.getDesiredAngle();
   m_elbow.setAngle(m_angle + incrementAngle);
+  isDelivery = false;
   }
 
 }

@@ -51,10 +51,10 @@ public class ArmElbowSubsystem extends SubsystemBase {
 
 
     // TODO: Set Limit Switches
-    // m_elbowMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
-    // m_elbowMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
-    // m_elbowMotor.setSoftLimit(SoftLimitDirection.kForward, ArmConstants.kSoftLimitBottom);
-    // m_elbowMotor.setSoftLimit(SoftLimitDirection.kReverse, ArmConstants.kSoftLimitTop);
+    m_elbowMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
+     m_elbowMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
+     m_elbowMotor.setSoftLimit(SoftLimitDirection.kForward, ArmConstants.kSoftLimitBottom);
+     m_elbowMotor.setSoftLimit(SoftLimitDirection.kReverse, ArmConstants.kSoftLimitTop);
 
     // Apply position and velocity conversion factors for the turning encoder. We
     // want these in degrees and degrees per second
@@ -141,7 +141,9 @@ public class ArmElbowSubsystem extends SubsystemBase {
   public void setDesiredItem(ItemType updatedItemType) {
 m_desiredItem = updatedItemType;
   }
-
+public void setDesiredAngle(double angle) {
+m_desiredAngle = angle;
+}
 
 }
 

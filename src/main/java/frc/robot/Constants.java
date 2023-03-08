@@ -212,8 +212,8 @@ public final class Constants {
         public static final double kCubeAngleIncrement = -10;
         public static final double kConeAngleIncrement = 0;
 
-        //public static final float kSoftLimitBottom = 345;
-        //public static final float kSoftLimitTop = 215;
+        public static final float kSoftLimitBottom = 345;
+        public static final float kSoftLimitTop = 215;
     }
     
     // Claw subsystem constants
@@ -267,6 +267,7 @@ public final class Constants {
         public static final int kLeftBumper = 5;
         public static final int kRightBumper = 6;
         public static final int kBButton = 2;
+        public static final int kStartButton = 8;
     
     }
 

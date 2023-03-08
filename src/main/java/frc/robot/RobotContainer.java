@@ -188,7 +188,7 @@ public class RobotContainer {
     // LED Control Buttons
     new JoystickButton(m_buttonBox, 7) 
     .onTrue(new ParallelCommandGroup(new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorCONE), 
-                                    new SetArmElbowCommand(m_elbow, m_elbow.getDesiredAngle(), ItemType.CONE)));
+                                    new SetArmElbowCommand(m_elbow, ItemType.CONE)));
 
     new JoystickButton(m_buttonBox, 8) 
       .onTrue(m_allianceColor == DriverStation.Alliance.Blue? 
@@ -197,7 +197,7 @@ public class RobotContainer {
             );
     new JoystickButton(m_buttonBox, 9) 
     .onTrue(new ParallelCommandGroup(new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorCUBE), 
-                                     new SetArmElbowCommand(m_elbow, m_elbow.getDesiredAngle(), ItemType.CUBE)));
+                                     new SetArmElbowCommand(m_elbow, ItemType.CUBE)));
 
 
 
@@ -211,6 +211,8 @@ public class RobotContainer {
   Trigger xboxBButton = new JoystickButton(m_xboxController, XboxControllerConstants.kBButton);
   xboxBButton.toggleOnTrue(new BalanceCommand((SwerveDriveSubsystem)m_robotDrive, false));
   
+  Trigger xboxStartButton = new JoystickButton(m_xboxController, XboxControllerConstants.kStartButton);
+  xboxStartButton.toggleOnTrue(new BalanceCommand((SwerveDriveSubsystem)m_robotDrive, false));
 
   /*   kLeftBumper(5),
     kRightBumper(6),
