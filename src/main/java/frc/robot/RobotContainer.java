@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj.XboxController.Button;
 // import edu.wpi.first.wpilibj.PS4Controller;
 // import edu.wpi.first.wpilibj.PS4Controller.Button;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -51,6 +52,7 @@ import frc.robot.commands.TopGridSetupCommand;
 import frc.robot.commands.UpdateLEDsCommand;
 import frc.robot.subsystems.ClawSubsystem;
 import frc.robot.subsystems.ArmElbowSubsystem;
+import frc.robot.subsystems.ArmElbowSubsystem.ItemType;
 import frc.robot.subsystems.ArmExtensionSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
@@ -76,7 +78,7 @@ public class RobotContainer {
   // The robot's subsystems
   // private DriveSubsystem m_robotDrive = null;
   // TODO: Should be null; fix initialization
-  private static SubsystemBase m_robotDrive = new SwerveDriveSubsystem();;
+  private static SubsystemBase m_robotDrive = new SwerveDriveSubsystem();
   public final ElevatorSubsystem m_elevator = new ElevatorSubsystem();
   public final ClawSubsystem m_claw = new ClawSubsystem();
   public final ArmElbowSubsystem m_elbow = new ArmElbowSubsystem();
@@ -185,7 +187,8 @@ public class RobotContainer {
 
     // LED Control Buttons
     new JoystickButton(m_buttonBox, 7) 
-    .onTrue(new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorCONE));
+    .onTrue(new ParallelCommandGroup(new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorCONE), 
+                                    new SetArmElbowCommand(m_elbow, m_elbow.getDesiredAngle(), ItemType.CONE)));
 
     new JoystickButton(m_buttonBox, 8) 
       .onTrue(m_allianceColor == DriverStation.Alliance.Blue? 
@@ -193,7 +196,8 @@ public class RobotContainer {
               new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorALLIANCERED)
             );
     new JoystickButton(m_buttonBox, 9) 
-    .onTrue(new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorCUBE));
+    .onTrue(new ParallelCommandGroup(new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorCUBE), 
+                                     new SetArmElbowCommand(m_elbow, m_elbow.getDesiredAngle(), ItemType.CUBE)));
 
 
 

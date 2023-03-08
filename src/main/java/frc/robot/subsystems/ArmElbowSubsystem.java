@@ -27,8 +27,17 @@ public class ArmElbowSubsystem extends SubsystemBase {
 
   private double m_desiredAngle = 0.0;
 
+  public enum ItemType {
+    CUBE, CONE
+    }
+
+  public ItemType m_desiredItem;
+
+ 
+
   /** Class Constructor. */
   public ArmElbowSubsystem() {
+  m_desiredItem = ItemType.CONE;
 
      m_elbowMotor = new CANSparkMax(ArmConstants.kCANElbow, MotorType.kBrushless);
 
@@ -108,6 +117,14 @@ public class ArmElbowSubsystem extends SubsystemBase {
     m_desiredAngle = desiredAngle;
   }
 
+  public double getDesiredAngle() {
+    return m_desiredAngle;
+  }
+
+  public ItemType getDesiredItem() {
+    return m_desiredItem;
+  }
+
   @Override
   public void periodic() {
   }
@@ -120,7 +137,14 @@ public class ArmElbowSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Elbow Angle", getAngle());
 
   }
+
+  public void setDesiredItem(ItemType updatedItemType) {
+m_desiredItem = updatedItemType;
+  }
+
+
 }
+
 
 
 
