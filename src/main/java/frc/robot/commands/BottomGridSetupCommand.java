@@ -22,7 +22,7 @@ public BottomGridSetupCommand(ArmElbowSubsystem elbow, ArmExtensionSubsystem ext
   m_elevator = elevator;
    
     addCommands(
-       new RetractArmCommand(m_extender), new SetArmElbowCommand(m_elbow, ArmConstants.kBottomGridElbowAngle), new MoveElevatorTopCommand(m_elevator)
+       new RetractArmCommand(m_extender), new SetArmElbowCommand(m_elbow, ArmConstants.kBottomGridElbowAngle, true), new MoveElevatorTopCommand(m_elevator)
        
                );
 

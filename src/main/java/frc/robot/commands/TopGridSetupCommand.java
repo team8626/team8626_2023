@@ -24,7 +24,7 @@ public TopGridSetupCommand (ArmElbowSubsystem elbow, ArmExtensionSubsystem exten
   m_elevator = elevator;
     
     addCommands(
-        new ExtendArmCommand(m_extender), new SetArmElbowCommand(m_elbow, ArmConstants.kTopGridElbowAngle), new MoveElevatorTopCommand(m_elevator)
+        new ExtendArmCommand(m_extender), new SetArmElbowCommand(m_elbow, ArmConstants.kTopGridElbowAngle, true), new MoveElevatorTopCommand(m_elevator)
                );
   }
 

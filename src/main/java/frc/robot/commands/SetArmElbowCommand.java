@@ -30,7 +30,7 @@ public class SetArmElbowCommand extends InstantCommand {
 // For delivery buttons 
 // When called, the command uses the current instance variable desired item to initialize the increment
 // The purpose of the extra parameter-which is useless-is to call the special constructor
-  public SetArmElbowCommand(ArmElbowSubsystem elbow, double angle, byte identifyAsDelivery) {
+  public SetArmElbowCommand(ArmElbowSubsystem elbow, double angle, boolean identifyAsDelivery) {
     m_elbow = elbow;
     m_angle = angle;
     

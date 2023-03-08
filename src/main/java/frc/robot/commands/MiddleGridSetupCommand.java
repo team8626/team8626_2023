@@ -25,7 +25,7 @@ public MiddleGridSetupCommand (ArmElbowSubsystem elbow, ArmExtensionSubsystem ex
 
   
     addCommands(
-        new RetractArmCommand(m_extender), new SetArmElbowCommand(m_elbow, ArmConstants.kMiddleGridElbowAngle), new MoveElevatorTopCommand(m_elevator)
+        new RetractArmCommand(m_extender), new SetArmElbowCommand(m_elbow, ArmConstants.kMiddleGridElbowAngle, true), new MoveElevatorTopCommand(m_elevator)
         
                );
 
