@@ -212,7 +212,7 @@ public class RobotContainer {
   xboxBButton.toggleOnTrue(new BalanceCommand((SwerveDriveSubsystem)m_robotDrive, false));
   
   Trigger xboxStartButton = new JoystickButton(m_xboxController, XboxControllerConstants.kStartButton);
-  xboxStartButton.toggleOnTrue(new BalanceCommand((SwerveDriveSubsystem)m_robotDrive, false));
+  xboxStartButton.toggleOnTrue(new SetStowPositionCommand(m_elbow, m_extender, m_claw, m_elevator));
 
   /*   kLeftBumper(5),
     kRightBumper(6),
