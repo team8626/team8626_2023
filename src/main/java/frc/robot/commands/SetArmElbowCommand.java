@@ -17,15 +17,17 @@ import frc.robot.subsystems.ArmElbowSubsystem.ItemType;
 public class SetArmElbowCommand extends InstantCommand {
   private final ArmElbowSubsystem m_elbow;
   private double m_angle;
-  private static double incrementAngle;
-  private static boolean isDelivery = false;
-  
+  private static boolean isLEDCall = false;
+  private static boolean isDeliveryCall = false; 
+  private static boolean isBasicCall = false; 
+  private static ItemType m_desiredItem;
+
 // For non-delivery use
   public SetArmElbowCommand(ArmElbowSubsystem elbow, double angle) {
     m_elbow = elbow;
     m_angle = angle;
     
-   incrementAngle = ArmConstants.kConeAngleIncrement; // 0
+    // 0
    addRequirements(elbow);
   }
 // For delivery buttons 
@@ -33,45 +35,58 @@ public class SetArmElbowCommand extends InstantCommand {
 // The purpose of the extra parameter-which is useless-is to call the special constructor
   public SetArmElbowCommand(ArmElbowSubsystem elbow, double angle, boolean identifyAsDelivery) {
     m_elbow = elbow;
-    m_elbow.setDesiredAngle(angle);  
-    
-    switch(m_elbow.getDesiredItem()) {
-      case CUBE:
-      incrementAngle = ArmConstants.kCubeAngleIncrement; // -10
-      break;
-      case CONE:
-      incrementAngle = ArmConstants.kConeAngleIncrement; // 0
-      break;
-          }
-      isDelivery = true;
+    m_angle = angle;
+      
     addRequirements(elbow);
   }
   // For the LED buttons
   // When called, it updates and uses a new item type for the increment
   // The extra parameter is an enum to save and apply the item type
   public SetArmElbowCommand(ArmElbowSubsystem elbow, ItemType item) {
-    m_elbow = elbow;
+  m_elbow = elbow;
+  m_angle = m_elbow.getDesiredAngle();
+  m_desiredItem = item;
 
-    m_elbow.setDesiredItem(item);
+  isLEDCall = true;
 
-    switch(item) {
+  addRequirements(elbow);
+
+  }
+
+  @Override
+  public void initialize() {
+   double incrementAngle = 0;
+
+  if(isLEDCall) {
+  m_elbow.setDesiredItem(m_desiredItem);
+  this.m_angle = m_elbow.getDesiredAngle();
+  switch(m_elbow.getDesiredItem()) {
+    case CUBE:
+    incrementAngle = ArmConstants.kCubeAngleIncrement; // 10
+    break;
+    case CONE:
+    incrementAngle = ArmConstants.kConeAngleIncrement; // 0
+    break;
+    }
+}
+
+if(isDeliveryCall) {
+  switch(m_elbow.getDesiredItem()) {
     case CUBE:
     incrementAngle = ArmConstants.kCubeAngleIncrement; // -10
     break;
     case CONE:
     incrementAngle = ArmConstants.kConeAngleIncrement; // 0
     break;
-    }
+        }
+}
 
-    addRequirements(elbow);
-    isDelivery = true;
-  }
+if(isBasicCall) {
+  incrementAngle = ArmConstants.kConeAngleIncrement;
+}
 
-  @Override
-  public void initialize() {
-   if(isDelivery) m_angle = m_elbow.getDesiredAngle();
   m_elbow.setAngle(m_angle + incrementAngle);
-  isDelivery = false;
+
   }
 
 }

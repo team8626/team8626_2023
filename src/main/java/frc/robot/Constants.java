@@ -209,7 +209,7 @@ public final class Constants {
         public static final double kFloorElbowAngle = 295;
         public static final double kTraverseElbowAngle = 210;
         public static final double kSubstationlbowAngle = 270;
-        public static final double kCubeAngleIncrement = -10;
+        public static final double kCubeAngleIncrement = 10;
         public static final double kConeAngleIncrement = 0;
 
         public static final float kSoftLimitBottom = 345;
