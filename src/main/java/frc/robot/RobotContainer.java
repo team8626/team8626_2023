@@ -163,25 +163,33 @@ public class RobotContainer {
 
     }
 
-  
+    // Predefined Arm positions for Game Pieces delivery
+    new JoystickButton(m_buttonBox, 1) 
+    .onTrue(new ParallelCommandGroup(new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorCONE), 
+                                    new TopGridSetupCommand(m_elbow, m_extender, m_claw, m_elevator)));
+    // Trigger topLeftButton = new JoystickButton(m_buttonBox, 1);
+    // topLeftButton.toggleOnTrue(new TopGridSetupCommand(m_elbow, m_extender, m_claw, m_elevator));
 
+    new JoystickButton(m_buttonBox, 2) 
+    .onTrue(new ParallelCommandGroup(new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorCONE), 
+                                    new MiddleGridSetupCommand(m_elbow, m_extender, m_claw, m_elevator)));
+    // Trigger middleLeftButton = new JoystickButton(m_buttonBox, 2);
+    // middleLeftButton.toggleOnTrue(new MiddleGridSetupCommand(m_elbow, m_extender, m_claw, m_elevator));
 
+    new JoystickButton(m_buttonBox, 3) 
+    .onTrue(new ParallelCommandGroup(new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorCONE), 
+                                    new BottomGridSetupCommand(m_elbow, m_extender, m_elevator)));
+    // Trigger bottomLeftButton = new JoystickButton(m_buttonBox, 3);
+    // bottomLeftButton.toggleOnTrue(new BottomGridSetupCommand(m_elbow, m_extender, m_elevator));
 
-    Trigger topLeftButton = new JoystickButton(m_buttonBox, 1);
-    topLeftButton.toggleOnTrue(new TopGridSetupCommand(m_elbow, m_extender, m_claw, m_elevator));
-
-    Trigger middleLeftButton = new JoystickButton(m_buttonBox, 2);
-    middleLeftButton.toggleOnTrue(new MiddleGridSetupCommand(m_elbow, m_extender, m_claw, m_elevator));
-
-    Trigger bottomLeftButton = new JoystickButton(m_buttonBox, 3);
-    bottomLeftButton.toggleOnTrue(new BottomGridSetupCommand(m_elbow, m_extender, m_elevator));
-
+    // Predefined Arm positions for Game Pieces pickup
     Trigger topCenterButton = new JoystickButton(m_buttonBox, 4);
     topCenterButton.toggleOnTrue(new DoubleSubstationPickupCommand(m_elbow, m_extender, m_elevator));
 
     Trigger middleCenterButton = new JoystickButton(m_buttonBox, 5);
     middleCenterButton.toggleOnTrue(new SetFloorPositionCommand(m_elbow, m_extender, m_claw, m_elevator));
 
+    // Safe position for traveling
     Trigger bottomCenterButton = new JoystickButton(m_buttonBox, 6);
     bottomCenterButton.toggleOnTrue(new SetTraversePositionCommand(m_elbow, m_extender, m_claw, m_elevator));
 
@@ -195,22 +203,26 @@ public class RobotContainer {
               new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorALLIANCEBLUE):
               new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorALLIANCERED)
             );
+
     new JoystickButton(m_buttonBox, 9) 
     .onTrue(new ParallelCommandGroup(new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorCUBE), 
                                      new SetArmElbowCommand(m_elbow, ItemType.CUBE)));
 
-
-
-
+  // Claw Controls
   Trigger xboxLeftBumper = new JoystickButton(m_xboxController, XboxControllerConstants.kLeftBumper);
-  xboxLeftBumper.onTrue(new OpenClawCommand(m_claw));
+  xboxLeftBumper.onTrue(new ParallelCommandGroup(m_allianceColor == DriverStation.Alliance.Blue? 
+                                                    new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorALLIANCEBLUE):
+                                                    new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorALLIANCERED),
+                                                new OpenClawCommand(m_claw)));
 
   Trigger xboxRightBumper = new JoystickButton(m_xboxController, XboxControllerConstants.kRightBumper);
   xboxRightBumper.onTrue(new CloseClawCommand(m_claw, true));
   
+  // Manual start of Balancing Command
   Trigger xboxBButton = new JoystickButton(m_xboxController, XboxControllerConstants.kBButton);
-  xboxBButton.toggleOnTrue(new BalanceCommand((SwerveDriveSubsystem)m_robotDrive, false));
-  
+  xboxBButton.toggleOnTrue(new BalanceCommand((SwerveDriveSubsystem)m_robotDrive, m_ledManager, false));
+
+  // Stow the Arm
   Trigger xboxStartButton = new JoystickButton(m_xboxController, XboxControllerConstants.kStartButton);
   xboxStartButton.toggleOnTrue(new SetStowPositionCommand(m_elbow, m_extender, m_claw, m_elevator));
 
@@ -258,7 +270,7 @@ public class RobotContainer {
       // Populate Autonomous Event map
       eventMap.put("DeliverEvent", new SequentialCommandGroup(new TopGridSetupCommand(m_elbow, m_extender, m_claw, m_elevator), new OpenClawCommand(m_claw)));
       eventMap.put("StowEvent", new SetStowPositionCommand(m_elbow, m_extender, m_claw, m_elevator));
-      eventMap.put("BalanceEvent", new BalanceCommand((SwerveDriveSubsystem)m_robotDrive, false));
+      eventMap.put("BalanceEvent", new BalanceCommand((SwerveDriveSubsystem)m_robotDrive, m_ledManager, false));
   }
   
 

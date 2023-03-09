@@ -4,6 +4,8 @@
 
 package frc.robot.commands;
 
+import javax.lang.model.util.ElementScanner6;
+
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.ArmElbowSubsystem;
@@ -17,18 +19,20 @@ import frc.robot.subsystems.ArmElbowSubsystem.ItemType;
 public class SetArmElbowCommand extends InstantCommand {
   private final ArmElbowSubsystem m_elbow;
   private double m_angle;
-  private static boolean isLEDCall = false;
-  private static boolean isDeliveryCall = false; 
-  private static boolean isBasicCall = false; 
-  private static ItemType m_desiredItem;
+  private boolean m_isLEDCall = false;
+  private boolean m_isDeliveryCall = false; 
+  private boolean m_isBasicCall = false; 
+  private ItemType m_newDesiredItem;
 
 // For non-delivery use
   public SetArmElbowCommand(ArmElbowSubsystem elbow, double angle) {
     m_elbow = elbow;
     m_angle = angle;
     
-    // 0
-   addRequirements(elbow);
+    m_isBasicCall = true;
+    m_isDeliveryCall = false;
+    m_isLEDCall = false;
+    addRequirements(elbow);
   }
 // For delivery buttons 
 // When called, the command uses the current instance variable desired item to initialize the increment
@@ -36,57 +40,78 @@ public class SetArmElbowCommand extends InstantCommand {
   public SetArmElbowCommand(ArmElbowSubsystem elbow, double angle, boolean identifyAsDelivery) {
     m_elbow = elbow;
     m_angle = angle;
-      
+
+    m_isBasicCall = false;
+    m_isDeliveryCall = true;
+    m_isLEDCall = false;
     addRequirements(elbow);
   }
   // For the LED buttons
   // When called, it updates and uses a new item type for the increment
   // The extra parameter is an enum to save and apply the item type
-  public SetArmElbowCommand(ArmElbowSubsystem elbow, ItemType item) {
-  m_elbow = elbow;
-  m_angle = m_elbow.getDesiredAngle();
-  m_desiredItem = item;
+  public SetArmElbowCommand(ArmElbowSubsystem elbow, ItemType newItem) {
+    m_elbow = elbow;
+    m_angle = m_elbow.getDesiredAngle();
+    m_newDesiredItem = newItem;
 
-  isLEDCall = true;
-
-  addRequirements(elbow);
-
+    m_isBasicCall = true;
+    m_isDeliveryCall = false;
+    m_isLEDCall = true;
+    addRequirements(elbow);
   }
 
   @Override
   public void initialize() {
-   double incrementAngle = 0;
-
-  if(isLEDCall) {
-  m_elbow.setDesiredItem(m_desiredItem);
-  this.m_angle = m_elbow.getDesiredAngle();
-  switch(m_elbow.getDesiredItem()) {
-    case CUBE:
-    incrementAngle = ArmConstants.kCubeAngleIncrement; // 10
-    break;
-    case CONE:
-    incrementAngle = ArmConstants.kConeAngleIncrement; // 0
-    break;
-    }
-}
-
-if(isDeliveryCall) {
-  switch(m_elbow.getDesiredItem()) {
-    case CUBE:
-    incrementAngle = ArmConstants.kCubeAngleIncrement; // -10
-    break;
-    case CONE:
-    incrementAngle = ArmConstants.kConeAngleIncrement; // 0
-    break;
+    double incrementAngle = 0.0;
+    
+    // LED Call, we adjust angle based on Item Type
+    // -- Higher for cones (Smaller Angle)
+    // -- Lower for Cubes (Larger Angle)
+    if(m_isLEDCall) {
+      // If requested Item is differenc, adjust the angle
+      m_angle = m_elbow.getDesiredAngle();
+      if(m_newDesiredItem != m_elbow.getDesiredItem()){
+        switch(m_elbow.getDesiredItem()) {
+          case CUBE: // Currently set to a cube, new item will be a cone ==> Higher ==> Lower Angle
+            incrementAngle = -ArmConstants.kCubeAngleIncrement; // -10
+            System.out.printf("[SetArmElbowCommand] Changing to Cone\n"); 
+            break;
+          case CONE: // Currently set to a cone, new item will be a cube ==> Lower ==> Higher Angle
+            incrementAngle = +ArmConstants.kCubeAngleIncrement; // +10
+            System.out.printf("[SetArmElbowCommand] Changing to Cube\n"); 
+            break;
+          case NONE:
+            incrementAngle = 0;
+            System.out.printf("[SetArmElbowCommand] This is not an item... Do nothing\n"); 
         }
-}
+        m_elbow.setDesiredItem(m_newDesiredItem);
+      }
+      else {
+          System.out.printf("[SetArmElbowCommand] Same Item - Doing Nothing\n"); 
+      }
+    } else if(m_isDeliveryCall) {
+      System.out.printf("[SetArmElbowCommand] Delivery Call\n"); 
+      switch(m_elbow.getDesiredItem()) {
+        case CUBE: // Setting up for Cube delivery, adjust angle (We received Cone angle)
+        incrementAngle = +ArmConstants.kCubeAngleIncrement; // +10
+        System.out.printf("[SetArmElbowCommand] Delivery Call: Cube\n"); 
+      break;
+        case CONE: // Setting up for Cone delivery, no need to adjust angle (We received Cone angle)
+          incrementAngle = 0;
+          System.out.printf("[SetArmElbowCommand] Delivery Call: Cone\n"); 
+          break;
+        case NONE:
+          incrementAngle = 0;
+          System.out.printf("[SetArmElbowCommand] This is not an item... Do nothing\n"); 
+          break;
+      }
+    }
+    // Basic Call (not delivery... Do nothing to adjust)
+    else if(m_isBasicCall) {
+      System.out.printf("[SetArmElbowCommand] Basic Call\n"); 
+      incrementAngle = 0;
+    }
 
-if(isBasicCall) {
-  incrementAngle = ArmConstants.kConeAngleIncrement;
-}
-
-  m_elbow.setAngle(m_angle + incrementAngle);
-
+    m_elbow.setAngle(m_angle + incrementAngle);
   }
-
 }

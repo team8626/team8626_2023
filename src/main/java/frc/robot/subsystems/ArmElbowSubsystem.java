@@ -25,10 +25,10 @@ public class ArmElbowSubsystem extends SubsystemBase {
   private final SparkMaxPIDController m_elbowPIDController;
 
 
-  private double m_desiredAngle = 0.0;
+  private double m_desiredAngle = 359.00;
 
   public enum ItemType {
-    CUBE, CONE
+    CUBE, CONE, NONE
     }
 
   public ItemType m_desiredItem;
@@ -86,7 +86,7 @@ public class ArmElbowSubsystem extends SubsystemBase {
 
     // Set initial angle to the current position of the elbow.
     // (keep it there)
-    m_desiredAngle = m_elbowEncoder.getPosition();
+    m_desiredAngle = getAngle();
     setAngle(m_desiredAngle);
   }
 
@@ -131,19 +131,20 @@ public class ArmElbowSubsystem extends SubsystemBase {
 
   public void initDashboard(){
     SmartDashboard.putNumber("Elbow Angle", getAngle());
+    SmartDashboard.putNumber("Desired Angle", m_desiredAngle);
   }
 
   public void updateDashboard(){
     SmartDashboard.putNumber("Elbow Angle", getAngle());
-
+    SmartDashboard.putNumber("Desired Angle", m_desiredAngle);
   }
 
   public void setDesiredItem(ItemType updatedItemType) {
-m_desiredItem = updatedItemType;
+    m_desiredItem = updatedItemType;
   }
-public void setDesiredAngle(double angle) {
-m_desiredAngle = angle;
-}
+  public void setDesiredAngle(double angle) {
+    m_desiredAngle = angle;
+  }
 
 }
 
