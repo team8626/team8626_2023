@@ -195,8 +195,8 @@ public final class Constants {
         public static final double kElbowI = 0;
         public static final double kElbowD = 0;
         public static final double kElbowFF = 0;
-        public static final double kElbowMinOutput = -.8;
-        public static final double kElbowMaxOutput = 0.1;
+        public static final double kElbowMinOutput = -.6; // Upwards
+        public static final double kElbowMaxOutput = 0.1; // Downwards
     
         
         public static final IdleMode kElbowMotorIdleMode = IdleMode.kBrake;
