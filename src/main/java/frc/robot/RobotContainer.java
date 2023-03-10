@@ -78,7 +78,7 @@ public class RobotContainer {
   // The robot's subsystems
   // private DriveSubsystem m_robotDrive = null;
   // TODO: Should be null; fix initialization
-  private static SubsystemBase m_robotDrive = new SwerveDriveSubsystem();
+  private static SwerveDriveSubsystem m_robotDrive = new SwerveDriveSubsystem();
   public final ElevatorSubsystem m_elevator = new ElevatorSubsystem();
   public final ClawSubsystem m_claw = new ClawSubsystem();
   public final ArmElbowSubsystem m_elbow = new ArmElbowSubsystem();
@@ -159,10 +159,11 @@ public class RobotContainer {
     //
     // KitBot Drive Train Specific Bindings
     //
+    /* 
     if(m_robotDrive instanceof KitbotDriveSubsystem){
 
     }
-
+    */
     // Predefined Arm positions for Game Pieces delivery
     new JoystickButton(m_buttonBox, 1) 
     .onTrue(new ParallelCommandGroup(new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorCONE), 
@@ -220,7 +221,7 @@ public class RobotContainer {
   
   // Manual start of Balancing Command
   Trigger xboxBButton = new JoystickButton(m_xboxController, XboxControllerConstants.kBButton);
-  xboxBButton.toggleOnTrue(new BalanceCommand((SwerveDriveSubsystem)m_robotDrive, m_ledManager, false));
+  xboxBButton.toggleOnTrue(new BalanceCommand(m_robotDrive, m_ledManager, false));
 
   // Stow the Arm
   Trigger xboxStartButton = new JoystickButton(m_xboxController, XboxControllerConstants.kStartButton);
@@ -244,17 +245,6 @@ public class RobotContainer {
 
 
 
-/* 
-    Trigger stickButton8 = new JoystickButton(m_flightJoystick, 8);
-    stickButton8.toggleOnTrue(new ExtendArmCommand(m_extender));
-    */
-    
-   
-
-  
-
-    // Toggle Auto-Balancing mode ON/OFF
-    // TODO: Ned's code goes here
 
   }
 
@@ -270,7 +260,7 @@ public class RobotContainer {
       // Populate Autonomous Event map
       eventMap.put("DeliverEvent", new SequentialCommandGroup(new TopGridSetupCommand(m_elbow, m_extender, m_claw, m_elevator), new OpenClawCommand(m_claw)));
       eventMap.put("StowEvent", new SetStowPositionCommand(m_elbow, m_extender, m_claw, m_elevator));
-      eventMap.put("BalanceEvent", new BalanceCommand((SwerveDriveSubsystem)m_robotDrive, m_ledManager, false));
+      eventMap.put("BalanceEvent", new BalanceCommand(m_robotDrive, m_ledManager, false));
   }
   
 
@@ -309,6 +299,7 @@ public class RobotContainer {
     //
     // KitBot Drive Train Specific Bindings
     //
+    /* 
     if(m_robotDrive instanceof KitbotDriveSubsystem){
       m_robotDrive.setDefaultCommand(
       // Joystick controls the robot.
@@ -319,6 +310,7 @@ public class RobotContainer {
               MathUtil.applyDeadband(-m_flightJoystick.getX(), 0.06)),
           m_robotDrive));
     }
+    */
     // m_elevator.setDefaultCommand(new ElevatorMoveCommand(() ->  m_flightJoystick.getY(), m_elevator));
   }
 
