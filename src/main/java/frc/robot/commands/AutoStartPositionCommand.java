@@ -27,7 +27,7 @@ public AutoStartPositionCommand (ArmElbowSubsystem elbow, ArmExtensionSubsystem 
 
   
     addCommands(
-        new CloseClawCommand(claw, true), 
+        new CloseClawCommand(claw), 
         new ParallelCommandGroup(new RetractArmCommand(m_extender), new SetArmElbowCommand(m_elbow, ArmConstants.kMiddleGridElbowAngle), new MoveElevatorTopCommand(m_elevator))
                );
 

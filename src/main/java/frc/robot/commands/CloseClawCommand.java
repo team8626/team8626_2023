@@ -16,13 +16,12 @@ public class CloseClawCommand extends CommandBase {
   private PIDController m_pidController;
   private int m_targetAngle;
   private Timer m_timer = new Timer();
-  private static boolean m_forced;
 
-  public CloseClawCommand(ClawSubsystem claw, boolean forced) {
+  public CloseClawCommand(ClawSubsystem claw) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(claw);
     m_claw = claw;
-    m_forced = forced;
+   
 
     m_pidController = new PIDController(ClawConstants.kP, ClawConstants.kI, ClawConstants.kD);
     m_targetAngle = ClawConstants.kHardCloseAngle;
@@ -51,6 +50,7 @@ public class CloseClawCommand extends CommandBase {
       // double pidOut = m_pidController.calculate(m_claw.getAngle());
       // m_claw.setMotor(pidOut);
       m_claw.setMotor(1);
+      m_claw.closePneumatic();
   }
 
   // Called once the command ends or is interrupted.
@@ -64,7 +64,7 @@ public class CloseClawCommand extends CommandBase {
   @Override
   public boolean isFinished() {
     boolean retval = false;
-    if(m_timer.hasElapsed(3.0)){
+    if(m_timer.hasElapsed(1.0)){
       retval = true;
     }
     //return  m_pidController.atSetpoint();

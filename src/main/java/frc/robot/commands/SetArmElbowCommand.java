@@ -28,7 +28,7 @@ public class SetArmElbowCommand extends InstantCommand {
   public SetArmElbowCommand(ArmElbowSubsystem elbow, double angle) {
     m_elbow = elbow;
     m_angle = angle;
-    
+
     m_isBasicCall = true;
     m_isDeliveryCall = false;
     m_isLEDCall = false;
@@ -40,6 +40,8 @@ public class SetArmElbowCommand extends InstantCommand {
   public SetArmElbowCommand(ArmElbowSubsystem elbow, double angle, boolean identifyAsDelivery) {
     m_elbow = elbow;
     m_angle = angle;
+
+    
 
     m_isBasicCall = false;
     m_isDeliveryCall = true;
@@ -105,13 +107,15 @@ public class SetArmElbowCommand extends InstantCommand {
           System.out.printf("[SetArmElbowCommand] This is not an item... Do nothing\n"); 
           break;
       }
+      m_elbow.setDeliveryStatus(true);
     }
     // Basic Call (not delivery... Do nothing to adjust)
     else if(m_isBasicCall) {
       System.out.printf("[SetArmElbowCommand] Basic Call\n"); 
       incrementAngle = 0;
+      m_elbow.setDeliveryStatus(false);
     }
 
-    m_elbow.setAngle(m_angle + incrementAngle);
+    m_elbow.setAngle(m_angle + (m_elbow.isSetDelivery()? incrementAngle : 0));
   }
 }

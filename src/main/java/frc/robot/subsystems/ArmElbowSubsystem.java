@@ -24,7 +24,7 @@ public class ArmElbowSubsystem extends SubsystemBase {
   private final AbsoluteEncoder m_elbowEncoder;
   private final SparkMaxPIDController m_elbowPIDController;
 
-
+private boolean m_setDelivery;
   private double m_desiredAngle = 359.00;
 
   public enum ItemType {
@@ -145,6 +145,14 @@ public class ArmElbowSubsystem extends SubsystemBase {
   public void setDesiredAngle(double angle) {
     m_desiredAngle = angle;
   }
+
+public boolean isSetDelivery() {
+  return m_setDelivery;
+}
+
+public void setDeliveryStatus(boolean isSetDelivery) {
+  m_setDelivery = isSetDelivery;
+}
 
 }
 

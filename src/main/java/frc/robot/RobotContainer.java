@@ -216,7 +216,7 @@ public class RobotContainer {
                                                 new OpenClawCommand(m_claw)));
 
   Trigger xboxRightBumper = new JoystickButton(m_xboxController, XboxControllerConstants.kRightBumper);
-  xboxRightBumper.onTrue(new CloseClawCommand(m_claw, true));
+  xboxRightBumper.onTrue(new CloseClawCommand(m_claw));
   
   // Manual start of Balancing Command
   Trigger xboxBButton = new JoystickButton(m_xboxController, XboxControllerConstants.kBButton);

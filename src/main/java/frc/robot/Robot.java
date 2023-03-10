@@ -6,6 +6,9 @@ package frc.robot;
 
 import com.revrobotics.ColorSensorV3.LEDCurrent;
 
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.UsbCamera;
+import edu.wpi.first.cscore.VideoException;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -30,8 +33,14 @@ public class Robot extends TimedRobot {
     // and put ourmautonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
     
-    // Set LEDS to PINK
-    // m_robotContainer.m_ledManager.setColor(LEDManagerConstants.kColorPINK); 
+    // Start the Camera Server
+    try {
+      UsbCamera camera = CameraServer.startAutomaticCapture();
+      camera.setResolution(640, 480);
+    } catch (VideoException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
   }
 
   /**
