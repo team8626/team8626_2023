@@ -9,30 +9,43 @@ import edu.wpi.first.wpilibj2.command.PIDCommand;
 import frc.robot.subsystems.LEDManagerSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 
-// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
-// information, see:
-// https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class BalanceCommandRemastered extends PIDCommand {
+  private PIDController m_PID;
+  private double minVelocity = 3;
+  private double maxStillAngle = 10;
   /** Creates a new BalanceCommandRemastered. */
   public BalanceCommandRemastered(SwerveDriveSubsystem drivetrain, LEDManagerSubsystem ledManager, boolean abort) {
+    
     super(
         // The controller that the command will use
         new PIDController(0, 0, 0),
         // This should return the measurement
-        () -> 0,
+        () -> drivetrain.getPitchRadians(),
         // This should return the setpoint (can also be a constant)
         () -> 0,
         // This uses the output
         output -> {
-          // Use the output here
+          drivetrain.drive(output, 0,0,false, true);
         });
+        addRequirements(drivetrain);
     // Use addRequirements() here to declare subsystem dependencies.
     // Configure additional PID options by calling `getController` here.
+    m_PID = getController();
   }
 
-  // Returns true when the command should end.
+ 
+/* 
+We will fly if we can't manipulate the charge station
+Keep in mind the error is based off of zero
+*/
+
   @Override
-  public boolean isFinished() {
-    return false;
+  public void execute() {
+// Check if we are not making progress 
+if((Math.abs(m_PID.getVelocityError()) < minVelocity) 
+// Checking angle, will cancel at rest without this
+&& (Math.abs(m_PID.getPositionError()) > maxStillAngle)) 
+cancel();
   }
+ 
 }

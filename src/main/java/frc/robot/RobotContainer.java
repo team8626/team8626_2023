@@ -35,6 +35,7 @@ import frc.robot.Constants.LEDManagerConstants;
 import frc.robot.Constants.XboxControllerConstants;
 import frc.robot.commands.AutoStartPositionCommand;
 import frc.robot.commands.BalanceCommand;
+import frc.robot.commands.BalanceCommandRemastered;
 import frc.robot.commands.BottomGridSetupCommand;
 import frc.robot.commands.CloseClawCommand;
 import frc.robot.commands.DoubleSubstationPickupCommand;
@@ -221,7 +222,7 @@ public class RobotContainer {
   
   // Manual start of Balancing Command
   Trigger xboxBButton = new JoystickButton(m_xboxController, XboxControllerConstants.kBButton);
-  xboxBButton.toggleOnTrue(new BalanceCommand(m_robotDrive, m_ledManager, false));
+  xboxBButton.toggleOnTrue(new BalanceCommandRemastered(m_robotDrive, m_ledManager, false));
 
   // Stow the Arm
   Trigger xboxStartButton = new JoystickButton(m_xboxController, XboxControllerConstants.kStartButton);
@@ -260,7 +261,7 @@ public class RobotContainer {
       // Populate Autonomous Event map
       eventMap.put("DeliverEvent", new SequentialCommandGroup(new TopGridSetupCommand(m_elbow, m_extender, m_claw, m_elevator), new OpenClawCommand(m_claw)));
       eventMap.put("StowEvent", new SetStowPositionCommand(m_elbow, m_extender, m_claw, m_elevator));
-      eventMap.put("BalanceEvent", new BalanceCommand(m_robotDrive, m_ledManager, false));
+      eventMap.put("BalanceEvent", new BalanceCommandRemastered(m_robotDrive, m_ledManager, false));
   }
   
 

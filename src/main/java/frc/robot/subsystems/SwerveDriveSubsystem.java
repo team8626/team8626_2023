@@ -269,6 +269,10 @@ public class SwerveDriveSubsystem extends SubsystemBase /*implements DriveSubsys
   return m_gyro.getPitch();
   }
 
+  public double getPitchRadians() {
+    return getPitch() * (Math.PI / 180.0);
+  }
+
   /** 
    * Follow the givent trajectory. 
    * 
