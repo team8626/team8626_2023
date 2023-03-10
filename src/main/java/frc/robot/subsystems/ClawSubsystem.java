@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -14,7 +15,6 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Robot;
 import frc.robot.Constants.ClawConstants;
 
 public class ClawSubsystem extends SubsystemBase {
@@ -33,6 +33,8 @@ public class ClawSubsystem extends SubsystemBase {
   // Class Constructor
   public ClawSubsystem() {
     m_encoder.setDistancePerPulse(360.0 / ClawConstants.kTicksPerRev); // Degrees per pulse
+    
+    m_motor.setNeutralMode(NeutralMode.Coast); // Using Coast since we have a pneumatic cylinder
     // m_cylinderOpen.set(true);
     // m_cylinderClose.set(false);
     m_cylinder.set(Value.kForward);
@@ -72,15 +74,12 @@ public class ClawSubsystem extends SubsystemBase {
     // m_cylinderOpen.set(false);
     // m_cylinderClose.set(true);
     m_cylinder.set(Value.kForward);
-
-
   }
 
   public void openPneumatic(){
     // m_cylinderOpen.set(true);
     // m_cylinderClose.set(false);
     m_cylinder.set(Value.kReverse);
-
   }
 
   public void stop() {
