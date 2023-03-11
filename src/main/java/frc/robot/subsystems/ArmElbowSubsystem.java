@@ -33,8 +33,6 @@ private boolean m_setDelivery;
 
   public ItemType m_desiredItem;
 
- 
-
   /** Class Constructor. */
   public ArmElbowSubsystem() {
   m_desiredItem = ItemType.CONE;

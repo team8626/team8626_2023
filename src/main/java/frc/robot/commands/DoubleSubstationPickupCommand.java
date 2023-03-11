@@ -9,20 +9,22 @@ import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.ArmElbowSubsystem;
 import frc.robot.subsystems.ArmExtensionSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
+import frc.robot.subsystems.LEDManagerSubsystem;
 
 public class DoubleSubstationPickupCommand extends ParallelCommandGroup {
   ArmElbowSubsystem m_elbow;
   ArmExtensionSubsystem m_extender;
   ElevatorSubsystem m_elevator;
-  
-public DoubleSubstationPickupCommand(ArmElbowSubsystem elbow, ArmExtensionSubsystem extender, ElevatorSubsystem elevator) {
+  LEDManagerSubsystem m_ledManager;
+
+public DoubleSubstationPickupCommand(ArmElbowSubsystem elbow, ArmExtensionSubsystem extender, ElevatorSubsystem elevator, LEDManagerSubsystem LEDManager) {
   m_elbow = elbow;
   m_extender = extender;
-
   m_elevator = elevator;
-   
+  m_ledManager = LEDManager;
+  
     addCommands(
-       new RetractArmCommand(m_extender), new SetArmElbowCommand(m_elbow, ArmConstants.kSubstationlbowAngle), new MoveElevatorTopCommand(m_elevator)
+       new RetractArmCommand(m_extender), new SetArmElbowCommand(m_elbow, LEDManager, ArmConstants.kSubstationlbowAngle), new MoveElevatorTopCommand(m_elevator)
        
                );
 
