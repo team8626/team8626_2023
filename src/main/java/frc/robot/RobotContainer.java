@@ -139,17 +139,19 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     
-    //
-    // Swerve Drive Train Specific Bindings
-    /* 
-    if(m_robotDrive instanceof SwerveDriveSubsystem){
-      // Pressing Right Bumper set Swerve Modules to Cross (X) Position
-      new JoystickButton(m_xboxController, Button.kRightBumper.value)
-      .whileTrue(new RunCommand(
+    // Pressing X Button  set Swerve Modules to Cross (X) Position
+    Trigger topLeftButton = new JoystickButton(m_buttonBox, 3);
+    topLeftButton.toggleOnTrue(new RunCommand(
           () -> ((SwerveDriveSubsystem)m_robotDrive).setX(),
-          m_robotDrive));
-    }
-*/
+           m_robotDrive));
+
+
+    // new JoystickButton(m_xboxController, Button.kRightBumper.value)
+    // .whileTrue(new RunCommand(
+    //     () -> ((SwerveDriveSubsystem)m_robotDrive).setX(),
+    //     m_robotDrive));
+    // }
+    
     //
     // KitBot Drive Train Specific Bindings
     //
@@ -162,8 +164,8 @@ public class RobotContainer {
     // new JoystickButton(m_buttonBox, 1) 
     // .onTrue(new ParallelCommandGroup(new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorCONE), 
     //                                 new TopGridSetupCommand(m_elbow, m_extender, m_claw, m_elevator, m_ledManager)));
-    Trigger topLeftButton = new JoystickButton(m_buttonBox, 1);
-    topLeftButton.toggleOnTrue(new TopGridSetupCommand(m_elbow, m_extender, m_claw, m_elevator, m_ledManager));
+    Trigger xButton= new JoystickButton(m_buttonBox, 1);
+    xButton.toggleOnTrue(new TopGridSetupCommand(m_elbow, m_extender, m_claw, m_elevator, m_ledManager));
 
     // new JoystickButton(m_buttonBox, 2) 
     // .onTrue(new ParallelCommandGroup(new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorCONE), 
@@ -309,13 +311,13 @@ public class RobotContainer {
                                     eventMap),
                                   new OpenClawCommand(m_claw),
                                   
-                                  new SequentialCommandGroup(
+                                  new ParallelCommandGroup(
                                     new SetStowPositionCommand(m_elbow, m_extender, m_claw, m_elevator, m_ledManager),
                                     new FollowPathWithEvents(
                                       m_robotDrive.followTrajectoryCommand(trajectory2, false),
                                       trajectory2.getMarkers(),
                                       eventMap)),
-                                      
+
                                   new FollowPathWithEvents(
                                     m_robotDrive.followTrajectoryCommand(trajectory3, false),
                                     trajectory3.getMarkers(),
