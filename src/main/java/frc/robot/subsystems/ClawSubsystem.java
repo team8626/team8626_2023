@@ -21,7 +21,7 @@ public class ClawSubsystem extends SubsystemBase {
   // Declare our Motor(s)
   private WPI_VictorSPX m_motor = new WPI_VictorSPX(ClawConstants.kCANMotorClaw);
   // Declare Pneumatic Solenoid
-  private final DoubleSolenoid m_cylinder = new DoubleSolenoid(PneumaticsModuleType.REVPH, 15, 2);
+  private final DoubleSolenoid m_cylinder = new DoubleSolenoid(PneumaticsModuleType.REVPH, 15, 8);
 
   // private final Solenoid m_cylinderOpen = new Solenoid(PneumaticsModuleType.REVPH, 0 /*8*/);
   // private final Solenoid m_cylinderClose = new Solenoid(PneumaticsModuleType.REVPH, 1 /*9*/);
