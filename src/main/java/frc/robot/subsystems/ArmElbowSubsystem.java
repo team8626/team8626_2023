@@ -49,9 +49,9 @@ private boolean m_setDelivery;
 
 
     // TODO: Set Limit Switches
-    m_elbowMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
+    // m_elbowMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
      m_elbowMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
-     m_elbowMotor.setSoftLimit(SoftLimitDirection.kForward, ArmConstants.kSoftLimitBottom);
+    //  m_elbowMotor.setSoftLimit(SoftLimitDirection.kForward, ArmConstants.kSoftLimitBottom);
      m_elbowMotor.setSoftLimit(SoftLimitDirection.kReverse, ArmConstants.kSoftLimitTop);
 
     // Apply position and velocity conversion factors for the turning encoder. We

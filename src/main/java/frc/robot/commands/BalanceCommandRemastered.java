@@ -49,10 +49,9 @@ Keep in mind the error is based off of zero
   // Check if we are not making progress 
   if((Math.abs(m_PID.getVelocityError()) < minVelocity) 
   // Checking angle, will cancel at rest without this
-  && (Math.abs(m_PID.getPositionError()) > maxStillAngle)) 
-    cancel();
-    m_ledManager.setAllianceColor();
+  && (Math.abs(m_PID.getPositionError()) > maxStillAngle)) {
+      cancel();
+      m_ledManager.setAllianceColor();
+    }
   }
-
-
 }
