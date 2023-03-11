@@ -7,6 +7,8 @@ package frc.robot;
 import java.io.IOException;
 import java.util.HashMap;
 
+import javax.swing.plaf.TreeUI;
+
 import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
@@ -281,7 +283,7 @@ public class RobotContainer {
               MathUtil.applyDeadband(-m_xboxController.getLeftY(), IOControlsConstants.kDriveDeadband),
               MathUtil.applyDeadband(-m_xboxController.getLeftX(), IOControlsConstants.kDriveDeadband),
               MathUtil.applyDeadband(-m_xboxController.getRightX(), IOControlsConstants.kDriveDeadband),
-              false,
+              true,
               true),
           m_robotDrive));
     }
@@ -297,17 +299,26 @@ public class RobotContainer {
     //  new SequentialCommandGroup(new AutoStartPositionCommand(m_elbow, m_extender, m_claw, m_elevator, m_ledManager), 
     //  m_autoControl.getStartCommand((SwerveDriveSubsystem)m_robotDrive, eventMap));
     PathPlannerTrajectory trajectory1 = PathPlanner.loadPath("trajectory1", new PathConstraints(1.0, 3.0));
-    PathPlannerTrajectory trajectory2 = PathPlanner.loadPath("trajectory2", new PathConstraints(2.0, 3.0));
+    PathPlannerTrajectory trajectory2 = PathPlanner.loadPath("trajectory2", new PathConstraints(1.0, 3.0));
+    PathPlannerTrajectory trajectory3 = PathPlanner.loadPath("trajectory3", new PathConstraints(1.0, 3.0));
       retval =  
       new SequentialCommandGroup(new AutoStartPositionCommand(m_elbow, m_extender, m_claw, m_elevator, m_ledManager), 
                                  new FollowPathWithEvents(
                                     m_robotDrive.followTrajectoryCommand(trajectory1, true),
                                     trajectory1.getMarkers(),
                                     eventMap),
-                                  new OpenClawCommand(m_claw), 
+                                  new OpenClawCommand(m_claw),
+                                  
+                                  new SequentialCommandGroup(
+                                    new SetStowPositionCommand(m_elbow, m_extender, m_claw, m_elevator, m_ledManager),
+                                    new FollowPathWithEvents(
+                                      m_robotDrive.followTrajectoryCommand(trajectory2, false),
+                                      trajectory2.getMarkers(),
+                                      eventMap)),
+                                      
                                   new FollowPathWithEvents(
-                                    m_robotDrive.followTrajectoryCommand(trajectory2, false),
-                                    trajectory2.getMarkers(),
+                                    m_robotDrive.followTrajectoryCommand(trajectory3, false),
+                                    trajectory3.getMarkers(),
                                     eventMap));
     // } catch (IOException e) {
       // TODO Auto-generated catch block
