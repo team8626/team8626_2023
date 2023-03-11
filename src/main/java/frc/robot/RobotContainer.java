@@ -7,6 +7,11 @@ package frc.robot;
 import java.io.IOException;
 import java.util.HashMap;
 
+import com.pathplanner.lib.PathConstraints;
+import com.pathplanner.lib.PathPlanner;
+import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.commands.FollowPathWithEvents;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
@@ -255,9 +260,7 @@ public class RobotContainer {
       eventMap.put("StowEvent", new SetStowPositionCommand(m_elbow, m_extender, m_claw, m_elevator, m_ledManager));
       eventMap.put("BalanceEvent", new BalanceCommandRemastered(m_robotDrive, m_ledManager, false));
   }
-  
-
-      
+        
   /**
    * Set Default Commands for Subsystems 
    * THis is called when robot enters in teleop mode.
@@ -282,46 +285,36 @@ public class RobotContainer {
               true),
           m_robotDrive));
     }
-
-
-
-
-
-
-
-    //
-    // KitBot Drive Train Specific Bindings
-    //
-    /* 
-    if(m_robotDrive instanceof KitbotDriveSubsystem){
-      m_robotDrive.setDefaultCommand(
-      // Joystick controls the robot.
-      // Speed is controlled by Y axis, Rotation is controlled by Y Axis, 
-      new RunCommand(
-        () -> ((KitbotDriveSubsystem)m_robotDrive).drive(
-              MathUtil.applyDeadband(-m_flightJoystick.getY(), 0.06),
-              MathUtil.applyDeadband(-m_flightJoystick.getX(), 0.06)),
-          m_robotDrive));
-    }
-    */
-    // m_elevator.setDefaultCommand(new ElevatorMoveCommand(() ->  m_flightJoystick.getY(), m_elevator));
   }
-
 
   /**
    * Get Start command from the autonomous controller (Dashboard)
    */
   public Command getAutonomousCommand() {
     Command retval = null;
-    try {
+    // try {
+    //   retval =  
+    //  new SequentialCommandGroup(new AutoStartPositionCommand(m_elbow, m_extender, m_claw, m_elevator, m_ledManager), 
+    //  m_autoControl.getStartCommand((SwerveDriveSubsystem)m_robotDrive, eventMap));
+    PathPlannerTrajectory trajectory1 = PathPlanner.loadPath("trajectory1", new PathConstraints(1.0, 3.0));
+    PathPlannerTrajectory trajectory2 = PathPlanner.loadPath("trajectory2", new PathConstraints(2.0, 3.0));
       retval =  
-     new SequentialCommandGroup(new AutoStartPositionCommand(m_elbow, m_extender, m_claw, m_elevator, m_ledManager), 
-     m_autoControl.getStartCommand((SwerveDriveSubsystem)m_robotDrive, eventMap));
-    } catch (IOException e) {
+      new SequentialCommandGroup(new AutoStartPositionCommand(m_elbow, m_extender, m_claw, m_elevator, m_ledManager), 
+                                 new FollowPathWithEvents(
+                                    m_robotDrive.followTrajectoryCommand(trajectory1, true),
+                                    trajectory1.getMarkers(),
+                                    eventMap),
+                                  new OpenClawCommand(m_claw), 
+                                  new FollowPathWithEvents(
+                                    m_robotDrive.followTrajectoryCommand(trajectory2, false),
+                                    trajectory2.getMarkers(),
+                                    eventMap));
+    // } catch (IOException e) {
       // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
-      return retval;
+    //   e.printStackTrace();
+    // }
+    return retval;
   }
 
 }
+

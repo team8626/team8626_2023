@@ -50,22 +50,21 @@ public class Autonomous {
         String path = null;
 
        //  BOTTOM_DELIVER, MIDDLE_DELIVER_BALANCE, TOP_DELIVER
-switch(m_autoStart) {
+        switch(m_autoStart) {
+            case BOTTOM_DELIVER: 
+                path = "BottomExit_Deliver";
+                break;
 
-case BOTTOM_DELIVER: 
-path = "BottomExit_Deliver";
-break;
+            case TOP_DELIVER:
+                path = "TopExit_Deliver";
+                break;
 
-case TOP_DELIVER:
-path = "TopExit_Deliver";
-break;
+            case MIDDLE_DELIVER_BALANCE:
+                path = "MiddleExit_Deliver_Balance";
+                path = "MiddleExit_Deliver_Reverse_Balance";
+                break;
 
-case MIDDLE_DELIVER_BALANCE:
-path = "MiddleExit_Deliver_Balance";
-path = "MiddleExit_Deliver_Reverse_Balance";
-break;
-
-}
+        }
 
 //  Load trajectory file "Example Path.path" and generate it with a max velocity of 1 m/s and a max acceleration of 3 m/s^2
     PathPlannerTrajectory trajectory = PathPlanner.loadPath(path, new PathConstraints(1.0, 3.0));
