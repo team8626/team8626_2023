@@ -14,7 +14,7 @@
           "8,0": {
             "size": [
               1,
-              1
+              2
             ],
             "content": {
               "_type": "Boolean Box",
@@ -91,7 +91,7 @@
               "_showGlyph": false
             }
           },
-          "6,0": {
+          "2,1": {
             "size": [
               2,
               1
@@ -106,23 +106,7 @@
               "Colors/Color when false": "#8B0000FF"
             }
           },
-          "6,1": {
-            "size": [
-              2,
-              2
-            ],
-            "content": {
-              "_type": "Simple Dial",
-              "_source0": "network_table:///SmartDashboard/Claw Angle",
-              "_title": "SmartDashboard/Claw Angle",
-              "_glyph": 14,
-              "_showGlyph": false,
-              "Range/Min": 0.0,
-              "Range/Max": 45.0,
-              "Visuals/Show value": true
-            }
-          },
-          "4,1": {
+          "6,0": {
             "size": [
               2,
               2
@@ -149,6 +133,42 @@
               "_title": "/SmartDashboard/Arm Length",
               "_glyph": 148,
               "_showGlyph": false
+            }
+          },
+          "4,1": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Claw Closed",
+              "_title": "/SmartDashboard/Claw Closed",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "2,2": {
+            "size": [
+              7,
+              4
+            ],
+            "content": {
+              "_type": "Camera Stream",
+              "_source0": "camera_server://USB Camera 0",
+              "_title": "USB Camera 0",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Crosshair/Show crosshair": true,
+              "Crosshair/Crosshair color": "#FFFFFFFF",
+              "Controls/Show controls": true,
+              "Controls/Rotation": "NONE",
+              "compression": -1.0,
+              "fps": -1,
+              "imageWidth": -1,
+              "imageHeight": -1
             }
           }
         }
@@ -327,9 +347,9 @@
     }
   ],
   "windowGeometry": {
-    "x": 30.0,
-    "y": 40.0,
-    "width": 1583.0,
-    "height": 813.0
+    "x": 0.0,
+    "y": 25.0,
+    "width": 1677.0,
+    "height": 967.0
   }
 }

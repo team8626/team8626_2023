@@ -4,11 +4,11 @@
 
 package frc.robot.commands;
 
-import javax.lang.model.util.ElementScanner6;
-
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Constants.ArmConstants;
+import frc.robot.Constants.LEDManagerConstants;
 import frc.robot.subsystems.ArmElbowSubsystem;
+import frc.robot.subsystems.LEDManagerSubsystem;
 import frc.robot.subsystems.ArmElbowSubsystem.ItemType;
 
 
@@ -18,6 +18,7 @@ import frc.robot.subsystems.ArmElbowSubsystem.ItemType;
 
 public class SetArmElbowCommand extends InstantCommand {
   private final ArmElbowSubsystem m_elbow;
+  private final LEDManagerSubsystem m_ledManager;
   private double m_angle;
   private boolean m_isLEDCall = false;
   private boolean m_isDeliveryCall = false; 
@@ -25,8 +26,9 @@ public class SetArmElbowCommand extends InstantCommand {
   private ItemType m_newDesiredItem;
 
 // For non-delivery use
-  public SetArmElbowCommand(ArmElbowSubsystem elbow, double angle) {
+  public SetArmElbowCommand(ArmElbowSubsystem elbow, LEDManagerSubsystem LEDManager, double angle) {
     m_elbow = elbow;
+    m_ledManager = LEDManager;
     m_angle = angle;
 
     m_isBasicCall = true;
@@ -37,8 +39,9 @@ public class SetArmElbowCommand extends InstantCommand {
 // For delivery buttons 
 // When called, the command uses the current instance variable desired item to initialize the increment
 // The purpose of the extra parameter-which is useless-is to call the special constructor
-  public SetArmElbowCommand(ArmElbowSubsystem elbow, double angle, boolean identifyAsDelivery) {
+  public SetArmElbowCommand(ArmElbowSubsystem elbow, LEDManagerSubsystem LEDManager, double angle, boolean identifyAsDelivery) {
     m_elbow = elbow;
+    m_ledManager = LEDManager;
     m_angle = angle;
 
     
@@ -51,8 +54,10 @@ public class SetArmElbowCommand extends InstantCommand {
   // For the LED buttons
   // When called, it updates and uses a new item type for the increment
   // The extra parameter is an enum to save and apply the item type
-  public SetArmElbowCommand(ArmElbowSubsystem elbow, ItemType newItem) {
+  public SetArmElbowCommand(ArmElbowSubsystem elbow, LEDManagerSubsystem LEDManager, ItemType newItem) {
     m_elbow = elbow;
+    m_ledManager = LEDManager;
+
     m_angle = m_elbow.getDesiredAngle();
     m_newDesiredItem = newItem;
 
@@ -76,15 +81,18 @@ public class SetArmElbowCommand extends InstantCommand {
         switch(m_elbow.getDesiredItem()) {
           case CUBE: // Currently set to a cube, new item will be a cone ==> Higher ==> Lower Angle
             incrementAngle = -ArmConstants.kCubeAngleIncrement; // -10
+            m_ledManager.setColor(LEDManagerConstants.kColorCONE);
             System.out.printf("[SetArmElbowCommand] Changing to Cone\n"); 
             break;
           case CONE: // Currently set to a cone, new item will be a cube ==> Lower ==> Higher Angle
             incrementAngle = +ArmConstants.kCubeAngleIncrement; // +10
             System.out.printf("[SetArmElbowCommand] Changing to Cube\n"); 
+            m_ledManager.setColor(LEDManagerConstants.kColorCUBE);
             break;
           case NONE:
             incrementAngle = 0;
-            System.out.printf("[SetArmElbowCommand] This is not an item... Do nothing\n"); 
+            m_ledManager.setAllianceColor();
+            m_newDesiredItem = ItemType.CONE;
         }
         m_elbow.setDesiredItem(m_newDesiredItem);
       }
@@ -95,12 +103,14 @@ public class SetArmElbowCommand extends InstantCommand {
       System.out.printf("[SetArmElbowCommand] Delivery Call\n"); 
       switch(m_elbow.getDesiredItem()) {
         case CUBE: // Setting up for Cube delivery, adjust angle (We received Cone angle)
-        incrementAngle = +ArmConstants.kCubeAngleIncrement; // +10
-        System.out.printf("[SetArmElbowCommand] Delivery Call: Cube\n"); 
+          incrementAngle = +ArmConstants.kCubeAngleIncrement; // +10
+          m_ledManager.setColor(LEDManagerConstants.kColorCUBE);
+          System.out.printf("[SetArmElbowCommand] Delivery Call: Cube\n"); 
       break;
         case CONE: // Setting up for Cone delivery, no need to adjust angle (We received Cone angle)
           incrementAngle = 0;
-          System.out.printf("[SetArmElbowCommand] Delivery Call: Cone\n"); 
+          System.out.printf("[SetArmElbowCommand] Delivery Call: Cone\n");
+          m_ledManager.setColor(LEDManagerConstants.kColorCONE);
           break;
         case NONE:
           incrementAngle = 0;

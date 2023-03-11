@@ -16,21 +16,6 @@
       }
     },
     "Other Devices": {
-      "SPARK MAX [41]": {
-        "header": {
-          "open": true
-        }
-      },
-      "SPARK MAX [51]": {
-        "header": {
-          "open": true
-        }
-      },
-      "SPARK MAX [54]": {
-        "header": {
-          "open": true
-        }
-      },
       "Victor SPX[1]": {
         "header": {
           "open": true
@@ -69,8 +54,7 @@
         },
         ".recording": {
           "open": true
-        },
-        "open": true
+        }
       },
       "SmartDashboard": {
         "Field": {
