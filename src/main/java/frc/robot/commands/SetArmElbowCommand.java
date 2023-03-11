@@ -75,46 +75,60 @@ public class SetArmElbowCommand extends InstantCommand {
     // -- Higher for cones (Smaller Angle)
     // -- Lower for Cubes (Larger Angle)
     if(m_isLEDCall) {
-      // If requested Item is differenc, adjust the angle
-      m_angle = m_elbow.getDesiredAngle();
-      if(m_newDesiredItem != m_elbow.getDesiredItem()){
-        switch(m_elbow.getDesiredItem()) {
-          case CUBE: // Currently set to a cube, new item will be a cone ==> Higher ==> Lower Angle
-            incrementAngle = -ArmConstants.kCubeAngleIncrement; // -10
-            m_ledManager.setColor(LEDManagerConstants.kColorCONE);
-            System.out.printf("[SetArmElbowCommand] Changing to Cone\n"); 
-            break;
-          case CONE: // Currently set to a cone, new item will be a cube ==> Lower ==> Higher Angle
-            incrementAngle = +ArmConstants.kCubeAngleIncrement; // +10
-            System.out.printf("[SetArmElbowCommand] Changing to Cube\n"); 
+      // Not a delivery, just change LEDS
+      if(!m_elbow.isSetDelivery()){
+        switch(m_newDesiredItem) {
+          case CUBE:
             m_ledManager.setColor(LEDManagerConstants.kColorCUBE);
+            System.out.printf("[SetArmElbowCommand] Changing Color Only to CUBE\n"); 
+            break;
+          case CONE: 
+            System.out.printf("[SetArmElbowCommand] Changing Color Only to CONE\n"); 
+            m_ledManager.setColor(LEDManagerConstants.kColorCONE);
             break;
           case NONE:
-            incrementAngle = 0;
+            System.out.printf("[SetArmElbowCommand] Changing Color Only to ALLIANCE\n"); 
             m_ledManager.setAllianceColor();
-            m_newDesiredItem = ItemType.CONE;
         }
-        m_elbow.setDesiredItem(m_newDesiredItem);
+      //  This is a Delivery, Adjust angles and LEDs
+      } else { 
+        // If requested Item is different, adjust the angle
+        m_angle = m_elbow.getDesiredAngle();
+        if(m_newDesiredItem != m_elbow.getDesiredItem()) {
+          switch(m_newDesiredItem) { 
+            case CUBE: // Requesting a Cube, assuming previous was CONE ==> Lower ==> Higher Angle
+              incrementAngle = +ArmConstants.kCubeAngleIncrement; // +10
+              m_ledManager.setColor(LEDManagerConstants.kColorCUBE);
+              System.out.printf("[SetArmElbowCommand] Changing to Cube\n"); 
+              break;
+            case CONE:  // Requesting a Cube, assuming previous was CUBE ==> Higher ==> Lower Angle
+              incrementAngle = -ArmConstants.kCubeAngleIncrement; // -10
+              System.out.printf("[SetArmElbowCommand] Changing to Cone\n"); 
+              m_ledManager.setColor(LEDManagerConstants.kColorCONE);
+              break;
+            case NONE:
+              incrementAngle = 0;
+              System.out.printf("[SetArmElbowCommand] Rainbow while delivering... Do Nothing...\n"); 
+          }
+          m_elbow.setDesiredItem(m_newDesiredItem);
+        } else {
+          System.out.printf("[SetArmElbowCommand] Same Item - Do NOthing\n"); 
+        }
       }
-      else {
-          System.out.printf("[SetArmElbowCommand] Same Item - Doing Nothing\n"); 
-      }
+
     } else if(m_isDeliveryCall) {
-      System.out.printf("[SetArmElbowCommand] Delivery Call\n"); 
       switch(m_elbow.getDesiredItem()) {
         case CUBE: // Setting up for Cube delivery, adjust angle (We received Cone angle)
           incrementAngle = +ArmConstants.kCubeAngleIncrement; // +10
           m_ledManager.setColor(LEDManagerConstants.kColorCUBE);
           System.out.printf("[SetArmElbowCommand] Delivery Call: Cube\n"); 
       break;
-        case CONE: // Setting up for Cone delivery, no need to adjust angle (We received Cone angle)
+        case NONE:
+          System.out.printf("[SetArmElbowCommand] Using Default Item (CONE)\n"); 
+        case CONE: // Setting up for Cone delivery, no need to adjust angle (We received Cone angle
           incrementAngle = 0;
           System.out.printf("[SetArmElbowCommand] Delivery Call: Cone\n");
           m_ledManager.setColor(LEDManagerConstants.kColorCONE);
-          break;
-        case NONE:
-          incrementAngle = 0;
-          System.out.printf("[SetArmElbowCommand] This is not an item... Do nothing\n"); 
           break;
       }
       m_elbow.setDeliveryStatus(true);

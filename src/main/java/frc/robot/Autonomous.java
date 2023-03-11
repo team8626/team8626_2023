@@ -62,6 +62,7 @@ break;
 
 case MIDDLE_DELIVER_BALANCE:
 path = "MiddleExit_Deliver_Balance";
+path = "MiddleExit_Deliver_Reverse_Balance";
 break;
 
 }

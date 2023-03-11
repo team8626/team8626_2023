@@ -26,6 +26,7 @@ public class OpenClawCommand extends CommandBase {
   @Override
   public void execute() {
     m_claw.openPneumatic();
+    System.out.printf("[OpenClawCommand] Opening Claw\n");
   }
 
   // Called once the command ends or is interrupted.
