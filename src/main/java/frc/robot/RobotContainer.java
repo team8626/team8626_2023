@@ -249,8 +249,8 @@ public class RobotContainer {
    */
   private void configureEventsMaps() {
       // Populate Autonomous Event map
-      eventMap.put("DeliverEvent", new SequentialCommandGroup(new TopGridSetupCommand(m_elbow, m_extender, m_claw, m_elevator, m_ledManager), new OpenClawCommand(m_claw)));
-      eventMap.put("StowEvent", new SetStowPositionCommand(m_elbow, m_extender, m_claw, m_elevator, m_ledManager));
+      eventMap.put("DeliverEvent", new SequentialCommandGroup(new TopGridSetupCommand(m_elbow, m_extender, m_claw, m_elevator, m_ledManager, m_ledManager), new OpenClawCommand(m_claw)));
+      eventMap.put("StowEvent", new SetStowPositionCommand(m_elbow, m_extender, m_claw, m_elevator, m_ledManager, m_ledManager));
       eventMap.put("BalanceEvent", new BalanceCommandRemastered(m_robotDrive, m_ledManager, false));
   }
   
