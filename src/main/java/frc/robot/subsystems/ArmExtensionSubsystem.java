@@ -13,9 +13,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class ArmExtensionSubsystem extends SubsystemBase {
 
 // Pneumatics
-  // TODO Should eventually move to a "Constants" class
-  // TODO Same values from the intake last year
-  private final DoubleSolenoid m_Cylinder = new DoubleSolenoid(PneumaticsModuleType.REVPH, 8 /* 0 */, 9 /* 1 */);
+  private final DoubleSolenoid m_Cylinder = new DoubleSolenoid(PneumaticsModuleType.REVPH, 9 /* 0 */, 14 /* 1 */);
 
   // Subsystem State
   private boolean m_extended;
