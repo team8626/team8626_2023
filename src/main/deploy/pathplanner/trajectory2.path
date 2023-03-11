@@ -20,7 +20,7 @@
           "DeliverEvent"
         ],
         "executionBehavior": "sequential",
-        "waitBehavior": "after",
+        "waitBehavior": "none",
         "waitTime": 1.0
       }
     },
