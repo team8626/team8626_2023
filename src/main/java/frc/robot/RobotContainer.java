@@ -294,68 +294,71 @@ public class RobotContainer {
     PathPlannerTrajectory trajectory2 = PathPlanner.loadPath("trajectory2", new PathConstraints(2.0, 3.0));
     PathPlannerTrajectory trajectory3 = PathPlanner.loadPath("trajectory3", new PathConstraints(1.0, 3.0));
       retval = 
-      new SequentialCommandGroup(new AutoStartPositionCommand(m_elbow, m_extender, m_claw, m_elevator, m_ledManager), 
-      new PPSwerveControllerCommand(
-                                  trajectory1, 
-                                  m_robotDrive::getPose,   // Pose supplier
-                                  SwerveDriveConstants.kDriveKinematics, // SwerveDriveKinematics
-                                  new PIDController(0, 0, 0), // X controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
-                                  new PIDController(0, 0, 0), // Y controller (usually the same values as X controller)
-                                  new PIDController(0, 0, 0), // Rotation controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
-                                  m_robotDrive::setModuleStates, // Module states consumer
-                                  true, // Should the path be automatically mirrored depending on alliance color. Optional, defaults to true
-                                  m_robotDrive // Requires this drive subsystem
-                                  ),
-                                  new OpenClawCommand(m_claw),
+           // CODE BELLOW DOES NOT WORKW
+            //
+            //  new SequentialCommandGroup(new AutoStartPositionCommand(m_elbow, m_extender, m_claw, m_elevator, m_ledManager), 
+      
+                        // new PPSwerveControllerCommand(
+                        //           trajectory1, 
+                        //           m_robotDrive::getPose,   // Pose supplier
+                        //           SwerveDriveConstants.kDriveKinematics, // SwerveDriveKinematics
+                        //           new PIDController(0, 0, 0), // X controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
+                        //           new PIDController(0, 0, 0), // Y controller (usually the same values as X controller)
+                        //           new PIDController(0, 0, 0), // Rotation controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
+                        //           m_robotDrive::setModuleStates, // Module states consumer
+                        //           true, // Should the path be automatically mirrored depending on alliance color. Optional, defaults to true
+                        //           m_robotDrive // Requires this drive subsystem
+                        //           ),
+                        //           new OpenClawCommand(m_claw),
 
-                                  new SetStowPositionCommand(m_elbow, m_extender, m_claw, m_elevator, m_ledManager),
+                        //           new SetStowPositionCommand(m_elbow, m_extender, m_claw, m_elevator, m_ledManager),
 
-                                  new PPSwerveControllerCommand(
-                                    trajectory2, 
-                                    m_robotDrive::getPose,   // Pose supplier
-                                    SwerveDriveConstants.kDriveKinematics, // SwerveDriveKinematics
-                                    new PIDController(0, 0, 0), // X controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
-                                    new PIDController(0, 0, 0), // Y controller (usually the same values as X controller)
-                                    new PIDController(0, 0, 0), // Rotation controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
-                                    m_robotDrive::setModuleStates, // Module states consumer
-                                    true, // Should the path be automatically mirrored depending on alliance color. Optional, defaults to true
-                                    m_robotDrive // Requires this drive subsystem
-                                    ),
+                        //           new PPSwerveControllerCommand(
+                        //             trajectory2, 
+                        //             m_robotDrive::getPose,   // Pose supplier
+                        //             SwerveDriveConstants.kDriveKinematics, // SwerveDriveKinematics
+                        //             new PIDController(0, 0, 0), // X controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
+                        //             new PIDController(0, 0, 0), // Y controller (usually the same values as X controller)
+                        //             new PIDController(0, 0, 0), // Rotation controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
+                        //             m_robotDrive::setModuleStates, // Module states consumer
+                        //             true, // Should the path be automatically mirrored depending on alliance color. Optional, defaults to true
+                        //             m_robotDrive // Requires this drive subsystem
+                        //             ),
 
-                                    new PPSwerveControllerCommand(
-                                      trajectory3, 
-                                      m_robotDrive::getPose,   // Pose supplier
-                                      SwerveDriveConstants.kDriveKinematics, // SwerveDriveKinematics
-                                      new PIDController(0, 0, 0), // X controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
-                                      new PIDController(0, 0, 0), // Y controller (usually the same values as X controller)
-                                      new PIDController(0, 0, 0), // Rotation controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
-                                      m_robotDrive::setModuleStates, // Module states consumer
-                                      true, // Should the path be automatically mirrored depending on alliance color. Optional, defaults to true
-                                      m_robotDrive // Requires this drive subsystem
-                                      ));
+                        //             new PPSwerveControllerCommand(
+                        //               trajectory3, 
+                        //               m_robotDrive::getPose,   // Pose supplier
+                        //               SwerveDriveConstants.kDriveKinematics, // SwerveDriveKinematics
+                        //               new PIDController(0, 0, 0), // X controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
+                        //               new PIDController(0, 0, 0), // Y controller (usually the same values as X controller)
+                        //               new PIDController(0, 0, 0), // Rotation controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
+                        //               m_robotDrive::setModuleStates, // Module states consumer
+                        //               true, // Should the path be automatically mirrored depending on alliance color. Optional, defaults to true
+                        //               m_robotDrive // Requires this drive subsystem
+                        //               ));
 
       // CODE BELLOW WORKS UNTIL END OF 2ND TRAJECTORY
       //
-      // new SequentialCommandGroup(new AutoStartPositionCommand(m_elbow, m_extender, m_claw, m_elevator, m_ledManager), 
-      //                            new FollowPathWithEvents(
-      //                               m_robotDrive.followTrajectoryCommand(trajectory1, true),
-      //                               trajectory1.getMarkers(),
-      //                               eventMap),
-      //                             new OpenClawCommand(m_claw),
+      new SequentialCommandGroup(new AutoStartPositionCommand(m_elbow, m_extender, m_claw, m_elevator, m_ledManager), 
+                                 new FollowPathWithEvents(
+                                    m_robotDrive.followTrajectoryCommand(trajectory1, true),
+                                    trajectory1.getMarkers(),
+                                    eventMap),
+                                  new OpenClawCommand(m_claw),
                                   
-      //                             // new ParallelCommandGroup(
-      //                               new SetStowPositionCommand(m_elbow, m_extender, m_claw, m_elevator, m_ledManager),
-      //                               new FollowPathWithEvents(
-      //                                 m_robotDrive.followTrajectoryCommand(trajectory2, false),
-      //                                 trajectory2.getMarkers(),
-      //                                 eventMap)
-      //                               // )
-      //                               ,
+                                  // new ParallelCommandGroup(
+                                    new SetStowPositionCommand(m_elbow, m_extender, m_claw, m_elevator, m_ledManager),
+                                    new FollowPathWithEvents(
+                                      m_robotDrive.followTrajectoryCommand(trajectory2, false),
+                                      trajectory2.getMarkers(),
+                                      eventMap)
+                                    // )
+                                    ,
 
-      //                             new FollowPathWithEvents(
-      //                               m_robotDrive.followTrajectoryCommand(trajectory3, false),
-      //                               trajectory3.getMarkers(),
-      //                               eventMap));
+                                  new FollowPathWithEvents(
+                                    m_robotDrive.followTrajectoryCommand(trajectory3, false),
+                                    trajectory3.getMarkers(),
+                                    eventMap));
 
 
 
