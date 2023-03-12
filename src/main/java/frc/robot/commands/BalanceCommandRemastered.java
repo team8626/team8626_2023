@@ -19,7 +19,7 @@ public class BalanceCommandRemastered extends PIDCommand {
   public BalanceCommandRemastered(SwerveDriveSubsystem drivetrain, LEDManagerSubsystem ledManager) {
     super(
         // The controller that the command will use
-        new PIDController(0.02, 0, 0),
+        new PIDController(0.04, 0, 0),
         // This should return the measurement
         () -> drivetrain.getPitch(),
         // This should return the setpoint (can also be a constant)
@@ -36,7 +36,37 @@ public class BalanceCommandRemastered extends PIDCommand {
     m_PID = getController();
   }
 
- 
+  @Override
+  public void end(boolean interrupted) {
+    
+    System.out.println(" ______                  ______       _                  _             ");
+    System.out.println("|  _  \\                 | ___ \\     | |                (_)            ");
+    System.out.println("| | | |___  _ __   ___  | |_/ / __ _| | __ _ _ __   ___ _ _ __   __ _ ");
+    System.out.println("| | | / _ \\| '_ \\ / _ \\ | ___ \\/ _` | |/ _` | '_ \\ / __| | '_ \\ / _` |");
+    System.out.println("| |/ / (_) | | | |  __/ | |_/ / (_| | | (_| | | | | (__| | | | | (_| |");
+    System.out.println("|___/ \\___/|_| |_|\\___| \\____/ \\__,_|_|\\__,_|_| |_|\\___|_|_| |_|\\__, |");
+    System.out.println("                                                                 __/ |");
+    System.out.println("                                                                |___/ ");
+
+    m_ledManager.setAllianceColor();
+  }    
+
+  @Override
+  public void initialize() {
+System.out.println(" ______       _                  _             ");
+System.out.println("| ___ \\     | |                (_)            ");
+System.out.println("| |_/ / __ _| | __ _ _ __   ___ _ _ __   __ _ ");
+System.out.println("| ___ \\/ _` | |/ _` | '_ \\ / __| | '_ \\ / _` |");
+System.out.println("| |_/ / (_| | | (_| | | | | (__| | | | | (_| |");
+System.out.println("\\____/ \\__,_|_|\\__,_|_| |_|\\___|_|_| |_|\\__, |");
+System.out.println("                                         __/ |");
+System.out.println("                                        |___/ ");
+
+m_ledManager.setColor(LEDManagerConstants.kColorWHITE);
+
+  }
+
+
 /* 
 We will fly if we can't manipulate the charge station
 Keep in mind the error is based off of zero
@@ -44,14 +74,12 @@ Keep in mind the error is based off of zero
 
   @Override
   public void execute() {
-    m_ledManager.setColor(LEDManagerConstants.kColorWHITE);
-
+    
   // Check if we are not making progress 
   if((Math.abs(m_PID.getVelocityError()) < minVelocity) 
   // Checking angle, will cancel at rest without this
   && (Math.abs(m_PID.getPositionError()) > maxStillAngle)) {
       cancel();
-      m_ledManager.setAllianceColor();
     }
   }
 }
