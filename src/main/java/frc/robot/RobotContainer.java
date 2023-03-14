@@ -159,40 +159,42 @@ public class RobotContainer {
     // new JoystickButton(m_buttonBox, 3) 
     // .onTrue(new ParallelCommandGroup(new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorCONE), 
     //                                 new BottomGridSetupCommand(m_elbow, m_extender, m_elevator, m_ledManager)));
-    Trigger bottomLeftButton = new JoystickButton(m_buttonBox, 3);
-    bottomLeftButton.toggleOnTrue(new BottomGridSetupCommand(m_elbow, m_extender, m_elevator, m_ledManager));
+    //Trigger bottomLeftButton = new JoystickButton(m_buttonBox, 3);
+   // bottomLeftButton.toggleOnTrue(new BottomGridSetupCommand(m_elbow, m_extender, m_elevator, m_ledManager));
 
     // Predefined Arm positions for Game Pieces pickup
-    Trigger topCenterButton = new JoystickButton(m_buttonBox, 4);
-    topCenterButton.toggleOnTrue(new DoubleSubstationPickupCommand(m_elbow, m_extender, m_elevator, m_ledManager));
+   // Trigger topCenterButton = new JoystickButton(m_buttonBox, 4);
+   // topCenterButton.toggleOnTrue(new DoubleSubstationPickupCommand(m_elbow, m_extender, m_elevator, m_ledManager));
 
-    Trigger middleCenterButton = new JoystickButton(m_buttonBox, 5);
-    middleCenterButton.toggleOnTrue(new SetFloorPositionCommand(m_elbow, m_extender, m_claw, m_elevator, m_ledManager));
+    //Trigger middleCenterButton = new JoystickButton(m_buttonBox, 5);
+   // middleCenterButton.toggleOnTrue(new SetFloorPositionCommand(m_elbow, m_extender, m_claw, m_elevator, m_ledManager));
 
     // Safe position for traveling
-    Trigger bottomCenterButton = new JoystickButton(m_buttonBox, 6);
-    bottomCenterButton.toggleOnTrue(new SetTraversePositionCommand(m_elbow, m_extender, m_claw, m_elevator, m_ledManager));
+  //  Trigger bottomCenterButton = new JoystickButton(m_buttonBox, 6);
+  //  bottomCenterButton.toggleOnTrue(new SetTraversePositionCommand(m_elbow, m_extender, m_claw, m_elevator, m_ledManager));
 
     // LED Control Buttons
     // new JoystickButton(m_buttonBox, 7) 
     // .onTrue(new ParallelCommandGroup(new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorCONE), 
     //                                 new SetArmElbowCommand(m_elbow, m_ledManager, ItemType.CONE)));
     Trigger topRightButton = new JoystickButton(m_buttonBox, 7);
-    topRightButton.toggleOnTrue(new SetArmElbowCommand(m_elbow, m_ledManager, ItemType.CONE));
+    topRightButton.toggleOnTrue(new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorALLIANCERED));
                                 
     // new JoystickButton(m_buttonBox, 8) 
     //   .onTrue(m_allianceColor == DriverStation.Alliance.Blue? 
     //           new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorALLIANCEBLUE):
     //           new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorALLIANCERED)
     //         );
+    /* */
     Trigger middleRightButton = new JoystickButton(m_buttonBox, 8);
-    middleRightButton.toggleOnTrue(new SetArmElbowCommand(m_elbow, m_ledManager, ItemType.NONE));
+    middleRightButton.toggleOnTrue(new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorRAINBOW));
 
     // new JoystickButton(m_buttonBox, 9) 
     // .onTrue(new ParallelCommandGroup(new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorCUBE), 
     //                                  new SetArmElbowCommand(m_elbow, m_ledManager, ItemType.CUBE)));
     Trigger bottomRightButton = new JoystickButton(m_buttonBox, 9);
-    bottomRightButton.toggleOnTrue(new SetArmElbowCommand(m_elbow, m_ledManager, ItemType.CUBE));
+    bottomRightButton.toggleOnTrue(new ParallelCommandGroup(new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorCUBE), 
+                                     new SetArmElbowCommand(m_elbow, m_ledManager, ItemType.CUBE)));
 
   // Claw Controls
   Trigger xboxLeftBumper = new JoystickButton(m_xboxController, XboxControllerConstants.kLeftBumper);
@@ -204,15 +206,21 @@ public class RobotContainer {
   Trigger xboxRightBumper = new JoystickButton(m_xboxController, XboxControllerConstants.kRightBumper);
   xboxRightBumper.onTrue(new CloseClawCommand(m_claw));
   
-  // Manual start of Balancing Command
+  /*  Manual start of Balancing Command
   Trigger xboxBButton = new JoystickButton(m_xboxController, XboxControllerConstants.kBButton);
   xboxBButton.toggleOnTrue(new BalanceCommandRemastered(m_robotDrive, m_ledManager));
-
+*/
   // Pressing X Button  set Swerve Modules to Cross (X) Position
   Trigger xButton = new JoystickButton(m_xboxController, XboxControllerConstants.kXButton);
-  xButton.toggleOnTrue(new RunCommand(
+  xButton.toggleOnTrue(new ParallelCommandGroup( 
+
+  new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorCONE),
+
+  new RunCommand(
         () -> ((SwerveDriveSubsystem)m_robotDrive).setX(),
-          m_robotDrive));
+          m_robotDrive))
+
+          );
   
   
   // Stow the Arm
@@ -247,12 +255,14 @@ public class RobotContainer {
    * Populate Autonomous Event map...
    */
   private void configureEventsMaps() {
+    /* 
       // Populate Autonomous Event map
       eventMap.put("DeliverEvent", new SequentialCommandGroup(new TopGridSetupCommand(m_elbow, m_extender, m_claw, m_elevator, m_ledManager), 
                                                                   new OpenClawCommand(m_claw), 
                                                                   new SetStowPositionCommand(m_elbow, m_extender, m_claw, m_elevator, m_ledManager)));
       eventMap.put("StowEvent", new SetStowPositionCommand(m_elbow, m_extender, m_claw, m_elevator, m_ledManager));
       eventMap.put("BalanceEvent", new BalanceCommandRemastered(m_robotDrive, m_ledManager));
+      */
   }
         
   /**
@@ -285,7 +295,7 @@ public class RobotContainer {
    * Get Start command from the autonomous controller (Dashboard)
    */
   public Command getAutonomousCommand() {
-    Command retval = null;
+
     // try {
     //   retval =  
     //  new SequentialCommandGroup(new AutoStartPositionCommand(m_elbow, m_extender, m_claw, m_elevator, m_ledManager), 
@@ -293,7 +303,10 @@ public class RobotContainer {
     PathPlannerTrajectory trajectory1 = PathPlanner.loadPath("trajectory1", new PathConstraints(1.0, 3.0));
     PathPlannerTrajectory trajectory2 = PathPlanner.loadPath("trajectory2", new PathConstraints(2.0, 3.0));
     PathPlannerTrajectory trajectory3 = PathPlanner.loadPath("trajectory3", new PathConstraints(1.0, 3.0));
-      retval = 
+    PathPlannerTrajectory shortSide = PathPlanner.loadPath("Playoffs_ShortSide", new PathConstraints(1.0, 3.0));
+    PathPlannerTrajectory longSide = PathPlanner.loadPath("Playoffs_LongSide", new PathConstraints(1.0, 3.0));
+
+     
            // CODE BELLOW DOES NOT WORKW
             //
             //  new SequentialCommandGroup(new AutoStartPositionCommand(m_elbow, m_extender, m_claw, m_elevator, m_ledManager), 
@@ -338,7 +351,7 @@ public class RobotContainer {
                         //               ));
 
       // CODE BELLOW WORKS UNTIL END OF 2ND TRAJECTORY
-      //
+      /* 
       new SequentialCommandGroup(new AutoStartPositionCommand(m_elbow, m_extender, m_claw, m_elevator, m_ledManager), 
                                  new FollowPathWithEvents(
                                     m_robotDrive.followTrajectoryCommand(trajectory1, true),
@@ -361,13 +374,17 @@ public class RobotContainer {
                                     eventMap));
 
 
-
+ */
 
     // } catch (IOException e) {
       // TODO Auto-generated catch block
     //   e.printStackTrace();
     // }
-    return retval;
+
+    return new FollowPathWithEvents(
+      m_robotDrive.followTrajectoryCommand(shortSide, true),
+      shortSide.getMarkers(),
+      eventMap);
   }
 
 }
