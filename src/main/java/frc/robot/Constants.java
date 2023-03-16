@@ -57,6 +57,11 @@ public final class Constants {
         public static final int kRearRightTurningCanId = 43;
     
         public static final boolean kGyroReversed = false;
+
+        public static final double kLowestSpeedFactor = 0.3;
+        public static final double kLowSpeedFactor = 0.5;
+        public static final double kBalancedPositionTolerance = 5;
+        public static final double kBalancedVelocityTolerance = 1;
       }
     
       // Swerve Module Constants
@@ -249,9 +254,9 @@ public final class Constants {
         public static byte kColorCUBE         = 0b010;
         public static byte kColorALLIANCEBLUE = 0b011;
         public static byte kColorALLIANCERED  = 0b100;
-        public static byte kColorRAINBOW      = 0b101;
         public static byte kColorPINK         = 0b110;
-        public static byte kColorWHITE        = 0b111;
+        public static byte kColorWHITE        = 0b101;
+        public static byte kColorRAINBOW      = 0b111;
     }
 
     // IO Controls
@@ -269,6 +274,7 @@ public final class Constants {
         public static final int kBButton = 2;
         public static final int kXButton = 3;
         public static final int kStartButton = 8;
+        public static final int kAButton = 2;
     
     }
 

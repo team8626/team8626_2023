@@ -7,6 +7,7 @@ package frc.robot.commands;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 import frc.robot.Constants.LEDManagerConstants;
+import frc.robot.Constants.SwerveDriveConstants;
 import frc.robot.subsystems.LEDManagerSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 
@@ -19,14 +20,14 @@ public class BalanceCommandRemastered extends PIDCommand {
   public BalanceCommandRemastered(SwerveDriveSubsystem drivetrain, LEDManagerSubsystem ledManager) {
     super(
         // The controller that the command will use
-        new PIDController(0.04, 0, 0),
+        new PIDController(100, 0, 0),
         // This should return the measurement
         () -> drivetrain.getPitch(),
         // This should return the setpoint (can also be a constant)
-        () -> 0,
+        0,
         // This uses the output
         output -> {
-          drivetrain.drive(output, 0,0,false, true);
+          drivetrain.drive(output, 0, 0, false, true);
         });
         m_ledManager = ledManager;
 
@@ -34,6 +35,7 @@ public class BalanceCommandRemastered extends PIDCommand {
     // Use addRequirements() here to declare subsystem dependencies.
     // Configure additional PID options by calling `getController` here.
     m_PID = getController();
+    m_PID.setTolerance(SwerveDriveConstants.kBalancedPositionTolerance, SwerveDriveConstants.kBalancedVelocityTolerance);
   }
 
   @Override
@@ -48,7 +50,7 @@ public class BalanceCommandRemastered extends PIDCommand {
     System.out.println("                                                                 __/ |");
     System.out.println("                                                                |___/ ");
 
-    m_ledManager.setAllianceColor();
+   // m_ledManager.setAllianceColor();
   }    
 
   @Override
@@ -62,7 +64,7 @@ System.out.println("\\____/ \\__,_|_|\\__,_|_| |_|\\___|_|_| |_|\\__, |");
 System.out.println("                                         __/ |");
 System.out.println("                                        |___/ ");
 
-m_ledManager.setColor(LEDManagerConstants.kColorWHITE);
+m_ledManager.setColor(LEDManagerConstants.kColorCONE);
 
   }
 
@@ -74,12 +76,20 @@ Keep in mind the error is based off of zero
 
   @Override
   public void execute() {
-    
+
   // Check if we are not making progress 
   if((Math.abs(m_PID.getVelocityError()) < minVelocity) 
   // Checking angle, will cancel at rest without this
   && (Math.abs(m_PID.getPositionError()) > maxStillAngle)) {
-      cancel();
+    System.out.println("Trying to cancel");
+      // cancel();
+    }
+    // 
+    if(m_controller.atSetpoint()) {
+      // new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorCUBE).schedule();
+    } 
+    else {
+     // new SetAllianceColorCommand(m_ledManager).schedule();
     }
   }
 }

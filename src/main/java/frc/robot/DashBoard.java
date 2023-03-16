@@ -112,6 +112,7 @@ public class DashBoard {
       m_robotContainer.m_elbow.initDashboard();
       m_robotContainer.m_elevator.initDashboard();
       m_robotContainer.m_extender.initDashboard();
+      m_robotContainer.m_robotDrive.initDashboard();
     }
 
     // Update values that need high frequency refresh.
@@ -126,6 +127,7 @@ public class DashBoard {
         m_robotContainer.m_elbow.updateDashboard();
         m_robotContainer.m_elevator.updateDashboard();
         m_robotContainer.m_extender.updateDashboard();
+        m_robotContainer.m_robotDrive.updateDashboard();
     }
 
     // Update values that need low frequency refresh.

@@ -7,6 +7,7 @@ package frc.robot;
 import java.io.IOException;
 import java.util.HashMap;
 
+import javax.sound.sampled.SourceDataLine;
 import javax.swing.plaf.TreeUI;
 
 import com.pathplanner.lib.PathConstraints;
@@ -19,12 +20,14 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.SynchronousInterrupt;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.XboxController.Button;
 // import edu.wpi.first.wpilibj.PS4Controller;
 // import edu.wpi.first.wpilibj.PS4Controller.Button;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -38,9 +41,11 @@ import frc.robot.Constants.XboxControllerConstants;
 import frc.robot.commands.AutoStartPositionCommand;
 import frc.robot.commands.BalanceCommand;
 import frc.robot.commands.BalanceCommandRemastered;
+import frc.robot.commands.BalanceTest;
 import frc.robot.commands.BottomGridSetupCommand;
 import frc.robot.commands.CloseClawCommand;
 import frc.robot.commands.DoubleSubstationPickupCommand;
+import frc.robot.commands.DriveAdjustmentModeCommand;
 import frc.robot.commands.MiddleGridSetupCommand;
 import frc.robot.commands.OpenClawCommand;
 import frc.robot.commands.SetArmElbowCommand;
@@ -52,6 +57,7 @@ import frc.robot.commands.UpdateLEDsCommand;
 import frc.robot.subsystems.ClawSubsystem;
 import frc.robot.subsystems.ArmElbowSubsystem;
 import frc.robot.subsystems.ArmElbowSubsystem.ItemType;
+import frc.robot.subsystems.SwerveDriveSubsystem.DriveSpeed;
 import frc.robot.subsystems.ArmExtensionSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.KitbotDriveSubsystem;
@@ -75,7 +81,7 @@ public class RobotContainer {
   // The robot's subsystems
   // private DriveSubsystem m_robotDrive = null;
   // TODO: Should be null; fix initialization
-  private static SwerveDriveSubsystem m_robotDrive = new SwerveDriveSubsystem();
+  public final SwerveDriveSubsystem m_robotDrive = new SwerveDriveSubsystem();
   public final ElevatorSubsystem m_elevator = new ElevatorSubsystem();
   public final ClawSubsystem m_claw = new ClawSubsystem();
   public final ArmElbowSubsystem m_elbow = new ArmElbowSubsystem();
@@ -225,7 +231,20 @@ public class RobotContainer {
   
   // Stow the Arm
   Trigger xboxStartButton = new JoystickButton(m_xboxController, XboxControllerConstants.kStartButton);
-  xboxStartButton.toggleOnTrue(new SetStowPositionCommand(m_elbow, m_extender, m_claw, m_elevator, m_ledManager));
+  xboxStartButton.toggleOnTrue(new BalanceTest(m_robotDrive));
+  
+
+  Trigger xboxBButton = new JoystickButton(m_xboxController, XboxControllerConstants.kBButton);
+  xboxBButton.toggleOnTrue(new DriveAdjustmentModeCommand(m_robotDrive, DriveSpeed.LOW_SPEED));
+   
+  Trigger xboxAButton = new JoystickButton(m_xboxController, XboxControllerConstants.kAButton);
+  xboxAButton.toggleOnTrue(new DriveAdjustmentModeCommand(m_robotDrive, DriveSpeed.LOWEST_SPEED));
+
+
+
+
+
+
 
   /*   kLeftBumper(5),
     kRightBumper(6),
@@ -265,6 +284,10 @@ public class RobotContainer {
       */
   }
         
+
+
+
+  
   /**
    * Set Default Commands for Subsystems 
    * THis is called when robot enters in teleop mode.

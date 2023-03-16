@@ -19,6 +19,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.util.WPIUtilJNI;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.SwerveDriveConstants;
 import frc.utils.SwerveUtils;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -51,6 +52,13 @@ public class SwerveDriveSubsystem extends SubsystemBase /*implements DriveSubsys
 
   // Gyro Sensor (Unsing NAVx Module)
   private final AHRS m_gyro = new AHRS(SPI.Port.kMXP);
+
+  private static double m_powerFactor = 1;
+
+  public enum DriveSpeed {
+  LOWEST_SPEED, 
+  LOW_SPEED
+  }
   
   // Slew rate filter variables for controlling lateral acceleration
   private double m_currentRotation = 0.0;
@@ -185,6 +193,10 @@ public class SwerveDriveSubsystem extends SubsystemBase /*implements DriveSubsys
       m_currentRotation = rot;
     }
 
+    xSpeedCommanded *= m_powerFactor;
+    ySpeedCommanded *= m_powerFactor;
+    m_currentRotation *= m_powerFactor;
+
     // Convert the commanded speeds into the correct units for the drivetrain
     double xSpeedDelivered = xSpeedCommanded * SwerveDriveConstants.kMaxSpeedMetersPerSecond;
     double ySpeedDelivered = ySpeedCommanded * SwerveDriveConstants.kMaxSpeedMetersPerSecond;
@@ -308,7 +320,22 @@ public class SwerveDriveSubsystem extends SubsystemBase /*implements DriveSubsys
   public boolean isSwerve(){
     return true;
   }
+
+public void setPowerFactor(double factor) {
+  m_powerFactor = factor;
+}
+
+
+
   public boolean isKitBot(){
     return !isSwerve();
+  }
+  public void initDashboard() {
+    SmartDashboard.putNumber("Pitch Angle", getPitch()); 
+    SmartDashboard.putNumber("Roll Angle", m_gyro.getRoll()); 
+  }
+  public void updateDashboard() {
+   SmartDashboard.putNumber("Pitch Angle", getPitch()); 
+   SmartDashboard.putNumber("Roll Angle", m_gyro.getRoll()); 
   }
 }
