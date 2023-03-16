@@ -2,43 +2,42 @@
   "waypoints": [
     {
       "anchorPoint": {
-        "x": 2.05,
-        "y": 2.75
+        "x": 1.9,
+        "y": 3.3
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.747557709202829,
-        "y": 2.75
+        "x": 2.9000000000000012,
+        "y": 3.3
       },
-      "holonomicAngle": 0,
+      "holonomicAngle": 180.0,
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
       "isStopPoint": false,
       "stopEvent": {
         "names": [
-          "drop cube",
-          "Position 1"
+          "DeliverEvent"
         ],
-        "executionBehavior": "parallel",
+        "executionBehavior": "sequential",
         "waitBehavior": "after",
         "waitTime": 1.0
       }
     },
     {
       "anchorPoint": {
-        "x": 6.0,
-        "y": 2.75
+        "x": 5.5,
+        "y": 3.3
       },
       "prevControl": {
-        "x": 5.305415741560572,
-        "y": 2.75
+        "x": 4.5,
+        "y": 3.3
       },
       "nextControl": {
-        "x": 6.273534407375842,
-        "y": 2.75
+        "x": 6.5,
+        "y": 3.3
       },
-      "holonomicAngle": 0,
+      "holonomicAngle": 180.0,
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
@@ -52,12 +51,12 @@
     },
     {
       "anchorPoint": {
-        "x": 3.9,
-        "y": 2.75
+        "x": 6.3971873412496825,
+        "y": 3.3
       },
       "prevControl": {
-        "x": 5.3211048180117295,
-        "y": 2.75
+        "x": 6.584632219611661,
+        "y": 3.3197264026472495
       },
       "nextControl": null,
       "holonomicAngle": 0,
@@ -66,10 +65,7 @@
       "isLocked": false,
       "isStopPoint": false,
       "stopEvent": {
-        "names": [
-          "balance",
-          "Position 3"
-        ],
+        "names": [],
         "executionBehavior": "parallel",
         "waitBehavior": "none",
         "waitTime": 0
@@ -79,13 +75,5 @@
   "maxVelocity": 3.0,
   "maxAcceleration": null,
   "isReversed": null,
-  "markers": [
-    {
-      "position": 1.2095880681818194,
-      "names": [
-        "event",
-        "position 2"
-      ]
-    }
-  ]
+  "markers": []
 }
