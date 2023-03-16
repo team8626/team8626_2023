@@ -257,6 +257,7 @@ public class RobotContainer {
       eventMap.put("DeliverEvent", new SequentialCommandGroup(new TopGridSetupCommand(m_elbow, m_extender, m_claw, m_elevator), new OpenClawCommand(m_claw)));
       eventMap.put("StowEvent", new SetStowPositionCommand(m_elbow, m_extender, m_claw, m_elevator));
       eventMap.put("BalanceEvent", new BalanceCommand((SwerveDriveSubsystem)m_robotDrive, false));
+      eventMap.put("PrintEvent",  new PrintCommand("Event completed"));
   }
   
 
