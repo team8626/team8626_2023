@@ -2,7 +2,7 @@ Welcome to FRC Team 8626 - Cyber Sailors.
 
 This repository is for FRC Game 2023 - ChargedUp
 
-Our 2023 Robot is based of the followinf subsystems:
+Our 2023 Robot is based of the following subsystems:
 - Swerve Drivetrain (Rev Robotics MaxSwerve)
 - Belt Elevator (NEO and Limit Switches)
 - Arm Elbow (NEO, Through Bore (Absolute) Encoder
