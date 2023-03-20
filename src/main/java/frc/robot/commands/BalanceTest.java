@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 
 public class BalanceTest extends PIDCommand {
@@ -28,5 +29,13 @@ public class BalanceTest extends PIDCommand {
         addRequirements(drivetrain);
   }
 
-  
+  @Override
+  public void initialize(){
+    System.out.println("---------- BEGIN BalanceTest ---------");
+  }
+
+  @Override
+  public void end(boolean interrupted){
+    System.out.println("---------- END BalanceTest ---------");
+  }
 }

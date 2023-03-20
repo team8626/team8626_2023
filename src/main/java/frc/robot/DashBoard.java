@@ -13,7 +13,7 @@ public class DashBoard {
 
     enum TrajectoryEnum  {
         // BOTTOM_DELIVER, MIDDLE_DELIVER_BALANCE, TOP_DELIVER,
-        START9_CONE6_BALANCE, START9_CONE7_BALANCE, START6_EXIT_BALANCE, START9_EXIT, START1_EXIT, TWO_M_INTAKE, DO_NOTHING
+        START9_CONE6_BALANCE, START9_CONE7_BALANCE, START6_EXIT_BALANCE, START9_EXIT, START1_EXIT, TWO_M_INTAKE, TWO_M_BALANCE, DO_NOTHING
     }
 
     private static RobotContainer m_robotContainer;
@@ -55,6 +55,9 @@ public class DashBoard {
         m_autonomousModeChooser.addOption("Start9 - Exit", TrajectoryEnum.START9_EXIT);
         m_autonomousModeChooser.setDefaultOption("Start6 - Exit - Balance", TrajectoryEnum.START6_EXIT_BALANCE);
         m_autonomousModeChooser.addOption("Start1 - Exit", TrajectoryEnum.START1_EXIT);
+        m_autonomousModeChooser.addOption("TEST - 2m Intake", TrajectoryEnum.TWO_M_INTAKE);
+        m_autonomousModeChooser.addOption("TEST - 2m Balance", TrajectoryEnum.TWO_M_BALANCE);
+        m_autonomousModeChooser.addOption("Do Nothing", TrajectoryEnum.DO_NOTHING);
 
         SmartDashboard.putData("Auto Mode", m_autonomousModeChooser);
     }

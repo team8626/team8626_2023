@@ -5,6 +5,7 @@
 package frc.robot;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 
 import com.pathplanner.lib.PathConstraints;
@@ -19,7 +20,6 @@ import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-
 // Team8626 Libraries
 import frc.robot.DashBoard.TrajectoryEnum;
 import frc.robot.commands.BalanceTest;
@@ -69,6 +69,9 @@ public class Autonomous {
             case TWO_M_INTAKE:
                 startCommand = getTwoMeterIntakeCommand();
                 break;
+            case TWO_M_BALANCE:
+                startCommand = getTwoMeterBalanceCommand();
+                break;  
             case DO_NOTHING:
                 startCommand = new InstantCommand();
         }
@@ -216,12 +219,28 @@ public class Autonomous {
         List<PathPlannerTrajectory> pathGroup = PathPlanner.loadPathGroup("Test_2m_Forward", new PathConstraints(1, 3));
 
         startCommand = new SequentialCommandGroup(
-            // Test Command for intaking a game pice at 2meters away
+            // Test Command for intaking a game piece at 2meters away
             new FollowPathWithEvents(m_robot.m_robotDrive.followTrajectoryCommand( pathGroup.get(0), true),
                                     pathGroup.get(0).getMarkers(),
                                     m_robot.eventMap),
             new CloseClawCommand(m_robot.m_claw),
             new SetStowPositionCommand(m_robot.m_elbow, m_robot.m_extender, m_robot.m_claw, m_robot.m_elevator, m_robot.m_ledManager) );
+
+        return startCommand;
+    }
+    
+    private Command getTwoMeterBalanceCommand(){
+        Command startCommand = new InstantCommand();
+
+        List<PathPlannerTrajectory> pathGroup = PathPlanner.loadPathGroup("Test_2m_Forward", new PathConstraints(1, 3));
+
+        startCommand = new SequentialCommandGroup(
+            // Test Command for balancing after moving 2 meters
+            new FollowPathWithEvents(m_robot.m_robotDrive.followTrajectoryCommand( pathGroup.get(0), true),
+                                    pathGroup.get(0).getMarkers(),
+                                    new HashMap<>()),
+            new PrintCommand("---------- AUTO Ready to Balance ----------"),
+            new BalanceTest(m_robot.m_robotDrive));
 
         return startCommand;
     }
