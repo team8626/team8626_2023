@@ -60,7 +60,7 @@ public final class Constants {
 
         public static final double kLowestSpeedFactor = 0.3;
         public static final double kLowSpeedFactor = 0.5;
-        public static final double kBalancedPositionTolerance = 5;
+        public static final double kBalancedPositionTolerance = 2.5;
         public static final double kBalancedVelocityTolerance = 1;
       }
     

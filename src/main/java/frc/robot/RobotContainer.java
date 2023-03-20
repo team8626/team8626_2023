@@ -26,6 +26,7 @@ import frc.robot.Constants.XboxControllerConstants;
 import frc.robot.commands.BalanceTest;
 import frc.robot.commands.CloseClawCommand;
 import frc.robot.commands.DriveAdjustmentModeCommand;
+import frc.robot.commands.DriveToPitchCommand;
 import frc.robot.commands.MiddleGridSetupCommand;
 import frc.robot.commands.OpenClawCommand;
 import frc.robot.commands.SetArmElbowCommand;
@@ -178,10 +179,16 @@ public class RobotContainer {
           );
   
   
-  // Stow the Arm
+  /* 
   Trigger xboxStartButton = new JoystickButton(m_xboxController, XboxControllerConstants.kStartButton);
   xboxStartButton.toggleOnTrue(new BalanceTest(m_robotDrive));
-  
+  */
+  Trigger xboxStartButton = new JoystickButton(m_xboxController, XboxControllerConstants.kStartButton);
+  xboxStartButton.toggleOnTrue(new SequentialCommandGroup(
+    
+  new DriveToPitchCommand(13, m_robotDrive, m_ledManager),
+  new BalanceTest(m_robotDrive))
+  );
 
   Trigger xboxBButton = new JoystickButton(m_xboxController, XboxControllerConstants.kBButton);
   xboxBButton.toggleOnTrue(new DriveAdjustmentModeCommand(m_robotDrive, DriveSpeed.LOW_SPEED));
@@ -215,6 +222,7 @@ public class RobotContainer {
    */
   public void configureTeleopDefaultCommands(){
 
+<<<<<<< HEAD
     m_robotDrive.setDefaultCommand(
     // The left stick controls translation of the robot.
     // Turning is controlled by the X axis of the right stick.
@@ -227,6 +235,25 @@ public class RobotContainer {
             true),
         m_robotDrive));
   
+=======
+    //
+    // Swerve Drive Train Specific Bindings
+    //
+    // if(m_robotDrive.isSwerve()){
+    if(m_robotDrive instanceof SwerveDriveSubsystem){
+      m_robotDrive.setDefaultCommand(
+      // The left stick controls translation of the robot.
+      // Turning is controlled by the X axis of the right stick.
+      new RunCommand(
+          () -> ((SwerveDriveSubsystem)m_robotDrive).drive(
+              MathUtil.applyDeadband(-m_xboxController.getLeftY(), IOControlsConstants.kDriveDeadband),
+              MathUtil.applyDeadband(-m_xboxController.getLeftX(), IOControlsConstants.kDriveDeadband),
+              MathUtil.applyDeadband(-m_xboxController.getRightX(), IOControlsConstants.kDriveDeadband),
+              true,
+              true),
+          m_robotDrive));
+    }
+>>>>>>> 07826f2 (Styuff)
   }
 
   /**

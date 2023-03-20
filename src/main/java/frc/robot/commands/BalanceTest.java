@@ -7,10 +7,12 @@ package frc.robot.commands;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
+import frc.robot.Constants.SwerveDriveConstants;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 
 public class BalanceTest extends PIDCommand {
-
+  private PIDController m_PID;
+  private SwerveDriveSubsystem m_drivetrain;
   /** Creates a new BalanceCommandRemastered. */
   public BalanceTest(SwerveDriveSubsystem drivetrain) {
     super(
@@ -25,17 +27,30 @@ public class BalanceTest extends PIDCommand {
         output -> {
           drivetrain.drive(-output, 0, 0, false, true);
         });
-  
+        m_drivetrain = drivetrain;
         addRequirements(drivetrain);
+
   }
 
   @Override
-  public void initialize(){
+  public void initialize() {
     System.out.println("---------- BEGIN BalanceTest ---------");
+    m_PID = getController();
+    m_PID.setTolerance(SwerveDriveConstants.kBalancedPositionTolerance, SwerveDriveConstants.kBalancedVelocityTolerance);
+
   }
 
   @Override
-  public void end(boolean interrupted){
+  public void end(boolean interrupted) {
     System.out.println("---------- END BalanceTest ---------");
   }
+
+
+  @Override
+  public boolean isFinished() {
+    return m_PID.atSetpoint();
+  }
+
+
+  
 }
