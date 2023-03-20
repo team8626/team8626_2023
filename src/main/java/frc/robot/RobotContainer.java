@@ -222,7 +222,6 @@ public class RobotContainer {
    */
   public void configureTeleopDefaultCommands(){
 
-<<<<<<< HEAD
     m_robotDrive.setDefaultCommand(
     // The left stick controls translation of the robot.
     // Turning is controlled by the X axis of the right stick.
@@ -235,25 +234,6 @@ public class RobotContainer {
             true),
         m_robotDrive));
   
-=======
-    //
-    // Swerve Drive Train Specific Bindings
-    //
-    // if(m_robotDrive.isSwerve()){
-    if(m_robotDrive instanceof SwerveDriveSubsystem){
-      m_robotDrive.setDefaultCommand(
-      // The left stick controls translation of the robot.
-      // Turning is controlled by the X axis of the right stick.
-      new RunCommand(
-          () -> ((SwerveDriveSubsystem)m_robotDrive).drive(
-              MathUtil.applyDeadband(-m_xboxController.getLeftY(), IOControlsConstants.kDriveDeadband),
-              MathUtil.applyDeadband(-m_xboxController.getLeftX(), IOControlsConstants.kDriveDeadband),
-              MathUtil.applyDeadband(-m_xboxController.getRightX(), IOControlsConstants.kDriveDeadband),
-              true,
-              true),
-          m_robotDrive));
-    }
->>>>>>> 07826f2 (Styuff)
   }
 
   /**
