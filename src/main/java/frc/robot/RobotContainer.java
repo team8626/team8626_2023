@@ -7,70 +7,42 @@ package frc.robot;
 import java.io.IOException;
 import java.util.HashMap;
 
-import javax.sound.sampled.SourceDataLine;
-import javax.swing.plaf.TreeUI;
-
-import com.pathplanner.lib.PathConstraints;
-import com.pathplanner.lib.PathPlanner;
-import com.pathplanner.lib.PathPlannerTrajectory;
-import com.pathplanner.lib.commands.FollowPathWithEvents;
-import com.pathplanner.lib.commands.PPSwerveControllerCommand;
-
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.SynchronousInterrupt;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.XboxController.Button;
-// import edu.wpi.first.wpilibj.PS4Controller;
-// import edu.wpi.first.wpilibj.PS4Controller.Button;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.FunctionalCommand;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.IOControlsConstants;
 import frc.robot.Constants.LEDManagerConstants;
-import frc.robot.Constants.SwerveDriveConstants;
 import frc.robot.Constants.XboxControllerConstants;
-import frc.robot.commands.AutoStartPositionCommand;
-import frc.robot.commands.BalanceCommand;
-import frc.robot.commands.BalanceCommandRemastered;
 import frc.robot.commands.BalanceTest;
-import frc.robot.commands.BottomGridSetupCommand;
 import frc.robot.commands.CloseClawCommand;
-import frc.robot.commands.DoubleSubstationPickupCommand;
 import frc.robot.commands.DriveAdjustmentModeCommand;
 import frc.robot.commands.MiddleGridSetupCommand;
 import frc.robot.commands.OpenClawCommand;
 import frc.robot.commands.SetArmElbowCommand;
 import frc.robot.commands.SetFloorPositionCommand;
 import frc.robot.commands.SetStowPositionCommand;
-import frc.robot.commands.SetTraversePositionCommand;
 import frc.robot.commands.TopGridSetupCommand;
 import frc.robot.commands.UpdateLEDsCommand;
+import frc.robot.commands.auto.ReadyForGrid2;
 import frc.robot.subsystems.ClawSubsystem;
 import frc.robot.subsystems.ArmElbowSubsystem;
 import frc.robot.subsystems.ArmElbowSubsystem.ItemType;
 import frc.robot.subsystems.SwerveDriveSubsystem.DriveSpeed;
 import frc.robot.subsystems.ArmExtensionSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
-import frc.robot.subsystems.KitbotDriveSubsystem;
 import frc.robot.subsystems.LEDManagerSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 
-/**
- * Drive Types
- */
-enum DriveType {
-  SWERVE,
-  KITBOT
-}
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -78,9 +50,6 @@ enum DriveType {
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems
-  // private DriveSubsystem m_robotDrive = null;
-  // TODO: Should be null; fix initialization
   public final SwerveDriveSubsystem m_robotDrive = new SwerveDriveSubsystem();
   public final ElevatorSubsystem m_elevator = new ElevatorSubsystem();
   public final ClawSubsystem m_claw = new ClawSubsystem();
@@ -91,19 +60,13 @@ public class RobotContainer {
   
   private Alliance m_allianceColor;
 
-
-  private final static DriveType m_driveType = DriveType.SWERVE; // SWERVE or KITBOT
-  //private final SwerveDriveSubsystem m_robotDrive = new SwerveDriveSubsystem();
-  //private final KitBotDriveSubsystem m_robotDrive = new SwerveDriveSubsystem();
-
   // Define controllers
-  // private final XboxController m_xboxController = new XboxController(IOControls.kXboxControllerPort);
   private final XboxController m_xboxController = new XboxController(IOControlsConstants.kXboxControllerPort);
   private final Joystick m_flightJoystick = new Joystick(IOControlsConstants.kJoystickControllerPort);
   private final Joystick m_buttonBox = new Joystick(IOControlsConstants.kButtonBoxPort);
 
   // Declare Events Map
-  private static HashMap<String, Command> eventMap = new HashMap<>();
+  public HashMap<String, Command> eventMap = new HashMap<>();
 
   // Autonomous Mode Selection  
   private static DashBoard m_dashboard;
@@ -118,20 +81,6 @@ public class RobotContainer {
 
     // Instatiate the Dashbpard
     m_dashboard = new DashBoard(this);
-
-    /* Instantiate the drivetrain
-    switch(m_driveType){
-      case SWERVE /* Swerve : 
-        m_robotDrive = new SwerveDriveSubsystem();
-        break;
- 
-     case KITBOT /* KitBot : 
-        m_robotDrive = new KitbotDriveSubsystem();
-        break;
-    }
-    */
-   
-    m_allianceColor = DriverStation.getAlliance();
     m_autoControl = new Autonomous(m_dashboard, m_robotDrive);
 
     configureButtonBindings();
@@ -240,29 +189,6 @@ public class RobotContainer {
   Trigger xboxAButton = new JoystickButton(m_xboxController, XboxControllerConstants.kAButton);
   xboxAButton.toggleOnTrue(new DriveAdjustmentModeCommand(m_robotDrive, DriveSpeed.LOWEST_SPEED));
 
-
-
-
-
-
-
-  /*   kLeftBumper(5),
-    kRightBumper(6),
-    kLeftStick(9),
-    kRightStick(10),
-    kA(1),
-    kB(2),
-    kX(3),
-    kY(4),
-    kBack(7),
-    kStart(8);
-*/
-
-    /* 
-    Trigger stickButton8 = new JoystickButton(m_flightJoystick, 8);
-    stickButton8.toggleOnTrue(new ExtendArmCommand(m_extender));
-    */
-
   }
 
   /**
@@ -274,20 +200,14 @@ public class RobotContainer {
    * Populate Autonomous Event map...
    */
   private void configureEventsMaps() {
-    /* 
+    
       // Populate Autonomous Event map
-      eventMap.put("DeliverEvent", new SequentialCommandGroup(new TopGridSetupCommand(m_elbow, m_extender, m_claw, m_elevator, m_ledManager), 
-                                                                  new OpenClawCommand(m_claw), 
-                                                                  new SetStowPositionCommand(m_elbow, m_extender, m_claw, m_elevator, m_ledManager)));
-      eventMap.put("StowEvent", new SetStowPositionCommand(m_elbow, m_extender, m_claw, m_elevator, m_ledManager));
-      eventMap.put("BalanceEvent", new BalanceCommandRemastered(m_robotDrive, m_ledManager));
-      */
+      eventMap.put("ReadyForGrid2", new ReadyForGrid2(m_elevator, m_elbow, m_extender, m_claw, m_ledManager));
+      eventMap.put("SetupForIntake", new SetFloorPositionCommand(m_elbow, m_extender, m_claw, m_elevator, m_ledManager));
+      eventMap.put("StowArm", new SetStowPositionCommand(m_elbow, m_extender, m_claw, m_elevator, m_ledManager));
+
   }
-        
 
-
-
-  
   /**
    * Set Default Commands for Subsystems 
    * THis is called when robot enters in teleop mode.
@@ -295,83 +215,65 @@ public class RobotContainer {
    */
   public void configureTeleopDefaultCommands(){
 
-    //
-    // Swerve Drive Train Specific Bindings
-    //
-    // if(m_robotDrive.isSwerve()){
-    if(m_robotDrive instanceof SwerveDriveSubsystem){
-      m_robotDrive.setDefaultCommand(
-      // The left stick controls translation of the robot.
-      // Turning is controlled by the X axis of the right stick.
-      new RunCommand(
-          () -> ((SwerveDriveSubsystem)m_robotDrive).drive(
-              MathUtil.applyDeadband(-m_xboxController.getLeftY(), IOControlsConstants.kDriveDeadband),
-              MathUtil.applyDeadband(-m_xboxController.getLeftX(), IOControlsConstants.kDriveDeadband),
-              MathUtil.applyDeadband(-m_xboxController.getRightX(), IOControlsConstants.kDriveDeadband),
-              false,
-              true),
-          m_robotDrive));
-    }
+    m_robotDrive.setDefaultCommand(
+    // The left stick controls translation of the robot.
+    // Turning is controlled by the X axis of the right stick.
+    new RunCommand(
+        () -> (m_robotDrive).drive(
+            MathUtil.applyDeadband(-m_xboxController.getLeftY(), IOControlsConstants.kDriveDeadband),
+            MathUtil.applyDeadband(-m_xboxController.getLeftX(), IOControlsConstants.kDriveDeadband),
+            MathUtil.applyDeadband(-m_xboxController.getRightX(), IOControlsConstants.kDriveDeadband),
+            false,
+            true),
+        m_robotDrive));
+  
   }
 
   /**
    * Get Start command from the autonomous controller (Dashboard)
    */
   public Command getAutonomousCommand() {
+    // This is default behavior is nothing works... DO NOT ERASE
+    // Command retval = new DeliverFromGrid(m_elevator, m_elbow, m_extender, m_claw, m_ledManager);
 
-    // try {
-    //   retval =  
-    //  new SequentialCommandGroup(new AutoStartPositionCommand(m_elbow, m_extender, m_claw, m_elevator, m_ledManager), 
-    //  m_autoControl.getStartCommand((SwerveDriveSubsystem)m_robotDrive, eventMap));
-    PathPlannerTrajectory trajectory1 = PathPlanner.loadPath("trajectory1", new PathConstraints(1.0, 3.0));
-    PathPlannerTrajectory trajectory2 = PathPlanner.loadPath("trajectory2", new PathConstraints(2.0, 3.0));
-    PathPlannerTrajectory trajectory3 = PathPlanner.loadPath("trajectory3", new PathConstraints(1.0, 3.0));
-    PathPlannerTrajectory shortSide = PathPlanner.loadPath("Playoffs_ShortSide", new PathConstraints(1.0, 3.0));
-    PathPlannerTrajectory longSide = PathPlanner.loadPath("Playoffs_LongSide", new PathConstraints(1.0, 3.0));
+    //PathPlannerTrajectory trajectory = PathPlanner.loadPath("Start9_Cone4_Balance", new PathConstraints(2.0, 2.0));
 
-     
-           // CODE BELLOW DOES NOT WORKW
-            //
-            //  new SequentialCommandGroup(new AutoStartPositionCommand(m_elbow, m_extender, m_claw, m_elevator, m_ledManager), 
-      
-                        // new PPSwerveControllerCommand(
-                        //           trajectory1, 
-                        //           m_robotDrive::getPose,   // Pose supplier
-                        //           SwerveDriveConstants.kDriveKinematics, // SwerveDriveKinematics
-                        //           new PIDController(0, 0, 0), // X controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
-                        //           new PIDController(0, 0, 0), // Y controller (usually the same values as X controller)
-                        //           new PIDController(0, 0, 0), // Rotation controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
-                        //           m_robotDrive::setModuleStates, // Module states consumer
-                        //           true, // Should the path be automatically mirrored depending on alliance color. Optional, defaults to true
-                        //           m_robotDrive // Requires this drive subsystem
-                        //           ),
-                        //           new OpenClawCommand(m_claw),
+    // THAT WORKS, DOES ALL STEPS, MOVED TO DASHBOARD/AUTONOMOUS
+    // List<PathPlannerTrajectory> pathGroup = PathPlanner.loadPathGroup("Start9_Cone4_Balance", new PathConstraints(4, 3));
+    // Command retval = new SequentialCommandGroup(
+    //                             // Starting the game. Make sure the claw is closed and get ready for delivery
+    //                             new CloseClawCommand(m_claw),
+    //                             new ReadyForGrid2(m_elevator, m_elbow, m_extender, m_claw, m_ledManager),
+    //                             new WaitCommand(.25),
+    //                             new OpenClawCommand(m_claw),
 
-                        //           new SetStowPositionCommand(m_elbow, m_extender, m_claw, m_elevator, m_ledManager),
+    //                             // Go to pickup next piece
+    //                             new FollowPathWithEvents( m_robotDrive.followTrajectoryCommand( pathGroup.get(0), true),
+    //                                                   pathGroup.get(0).getMarkers(),
+    //                                                   eventMap),
 
-                        //           new PPSwerveControllerCommand(
-                        //             trajectory2, 
-                        //             m_robotDrive::getPose,   // Pose supplier
-                        //             SwerveDriveConstants.kDriveKinematics, // SwerveDriveKinematics
-                        //             new PIDController(0, 0, 0), // X controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
-                        //             new PIDController(0, 0, 0), // Y controller (usually the same values as X controller)
-                        //             new PIDController(0, 0, 0), // Rotation controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
-                        //             m_robotDrive::setModuleStates, // Module states consumer
-                        //             true, // Should the path be automatically mirrored depending on alliance color. Optional, defaults to true
-                        //             m_robotDrive // Requires this drive subsystem
-                        //             ),
+    //                             new CloseClawCommand(m_claw),
+    //                             new FollowPathWithEvents( m_robotDrive.followTrajectoryCommand( pathGroup.get(0), true),
+    //                             pathGroup.get(1).getMarkers(),
+    //                             eventMap),
 
-                        //             new PPSwerveControllerCommand(
-                        //               trajectory3, 
-                        //               m_robotDrive::getPose,   // Pose supplier
-                        //               SwerveDriveConstants.kDriveKinematics, // SwerveDriveKinematics
-                        //               new PIDController(0, 0, 0), // X controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
-                        //               new PIDController(0, 0, 0), // Y controller (usually the same values as X controller)
-                        //               new PIDController(0, 0, 0), // Rotation controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
-                        //               m_robotDrive::setModuleStates, // Module states consumer
-                        //               true, // Should the path be automatically mirrored depending on alliance color. Optional, defaults to true
-                        //               m_robotDrive // Requires this drive subsystem
-                        //               ));
+    //                            // At this point, we should be ready to deliver
+    //                             new WaitCommand(.25),
+    //                             new OpenClawCommand(m_claw),
+
+    //                             // Go to Charging Station
+    //                             new FollowPathWithEvents( m_robotDrive.followTrajectoryCommand( pathGroup.get(0), true),
+    //                             pathGroup.get(2).getMarkers(),
+    //                             eventMap),
+    //                             new BalanceTest(m_robotDrive));
+
+    // THAT WORKS, SHOWS MIDDLE MARKERS
+    // Command retval = new FollowPathWithEvents(m_robotDrive.followTrajectoryCommand( trajectory, true),
+    //                                         trajectory.getMarkers(),
+    //                                         eventMap);
+
+          
+      // DriverStation.reportError("[AUTO] Enable to load trajectory", e.getStackTrace());
 
       // CODE BELLOW WORKS UNTIL END OF 2ND TRAJECTORY
       /* 
@@ -398,17 +300,21 @@ public class RobotContainer {
 
 
  */
-
-    // } catch (IOException e) {
-      // TODO Auto-generated catch block
-    //   e.printStackTrace();
-    // }
-
-    return new FollowPathWithEvents(
-      m_robotDrive.followTrajectoryCommand(shortSide, true),
-      shortSide.getMarkers(),
-      eventMap);
+    Command startCommand = new InstantCommand();
+    
+    try{
+      startCommand = m_autoControl.getStartCommand(this);
+    }
+    catch(IOException e){
+      DriverStation.reportError("Could not open auto-trajectory file", e.getStackTrace());
+      startCommand = new SequentialCommandGroup(
+                                    // Starting the game. Make sure the claw is closed and get ready for delivery
+                                    new CloseClawCommand(m_claw),
+                                    new ReadyForGrid2(m_elevator, m_elbow, m_extender, m_claw, m_ledManager),
+                                    new WaitCommand(.25),
+                                    new OpenClawCommand(m_claw));
+    }
+    return startCommand;
   }
-
 }
 
