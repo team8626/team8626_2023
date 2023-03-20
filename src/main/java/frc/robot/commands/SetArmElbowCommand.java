@@ -112,7 +112,7 @@ public class SetArmElbowCommand extends InstantCommand {
           }
           m_elbow.setDesiredItem(m_newDesiredItem);
         } else {
-          System.out.printf("[SetArmElbowCommand] Same Item - Do NOthing\n"); 
+          System.out.printf("[SetArmElbowCommand] Same Item - Do Nothing\n"); 
         }
       }
 
@@ -139,7 +139,7 @@ public class SetArmElbowCommand extends InstantCommand {
       incrementAngle = 0;
       m_elbow.setDeliveryStatus(false);
     }
-
+    System.out.printf("[SetArmElbowCommand] Set angle to  (%.1f + %.1f) degrees\n", m_angle, incrementAngle); 
     m_elbow.setAngle(m_angle + (m_elbow.isSetDelivery()? incrementAngle : 0));
   }
 }
