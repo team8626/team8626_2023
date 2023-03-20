@@ -5,16 +5,11 @@
 package frc.robot.commands.auto;
 
 
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.ArmConstants;
-import frc.robot.commands.CloseClawCommand;
 import frc.robot.commands.ExtendArmCommand;
 import frc.robot.commands.MoveElevatorTopCommand;
-import frc.robot.commands.OpenClawCommand;
-import frc.robot.commands.RetractArmCommand;
 import frc.robot.commands.SetArmElbowCommand;
 import frc.robot.subsystems.ArmElbowSubsystem;
 import frc.robot.subsystems.ArmExtensionSubsystem;
