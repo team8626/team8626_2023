@@ -41,13 +41,10 @@ public class Autonomous {
     }
 
     public Command getStartCommand(RobotContainer newRobotContainer) throws IOException {
-        // SwerveDriveSubsystem m_drive = drive;
-        // HashMap<String, Command> m_map = map;
         m_autoStart = m_dashboard.getAutoSelection();
         m_robot = newRobotContainer;
 
         Command startCommand = new InstantCommand();
-        String path = "";
 
         switch(m_autoStart) {
   
