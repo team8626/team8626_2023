@@ -50,12 +50,7 @@ public class DashBoard {
      * Initialize Robot Autonomous Strategy 
      */
     private void initAutonomousStrategy(){
-        
-        // m_autonomousModeChooser.setDefaultOption("Deliver from bottom - Exit tarmac from bottom", Trajectory.BOTTOM_DELIVER);
-        // m_autonomousModeChooser.addOption("Deliver from middle - Exit tarmac from middle - Balance", Trajectory.MIDDLE_DELIVER_BALANCE);
-        // m_autonomousModeChooser.addOption("Deliver from top - Exit tarmac from top", Trajectory.TOP_DELIVER);
- 
-        m_autonomousModeChooser.addOption("Start9 - Cone6 - Balance", TrajectoryEnum.START9_CONE6_BALANCE);
+         m_autonomousModeChooser.addOption("Start9 - Cone6 - Balance", TrajectoryEnum.START9_CONE6_BALANCE);
         m_autonomousModeChooser.addOption("Start9 - Cone7 - Balance", TrajectoryEnum.START9_CONE7_BALANCE);
         m_autonomousModeChooser.addOption("Start9 - Exit", TrajectoryEnum.START9_EXIT);
         m_autonomousModeChooser.setDefaultOption("Start6 - Exit - Balance", TrajectoryEnum.START6_EXIT_BALANCE);
@@ -132,7 +127,5 @@ public class DashBoard {
             updateDashboard();
         }
     }
-    // public double getMultiplier() {
-    //     return 4.0; /* widget.getValue; */
-    // }
+
 }

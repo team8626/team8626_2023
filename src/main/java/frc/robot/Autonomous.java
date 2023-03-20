@@ -49,20 +49,8 @@ public class Autonomous {
         Command startCommand = new InstantCommand();
         String path = "";
 
-       //  BOTTOM_DELIVER, MIDDLE_DELIVER_BALANCE, TOP_DELIVER
         switch(m_autoStart) {
-            // case BOTTOM_DELIVER: 
-            //     path = "BottomExit_Deliver";
-            //     break;
-
-            // case TOP_DELIVER:
-            //     path = "TopExit_Deliver";
-            //     break;
-
-            // case MIDDLE_DELIVER_BALANCE:
-            //     path = "MiddleExit_Deliver_Balance";
-            //     path = "MiddleExit_Deliver_Reverse_Balance";
-            //     break;
+  
             case START9_CONE6_BALANCE:
                 startCommand = getStart9Cone6BalanceCommand();
                 break;
@@ -238,5 +226,3 @@ public class Autonomous {
         return startCommand;
     }
 }
-
-//Start9_Cone4_Balance
