@@ -6,22 +6,15 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.subsystems.ClawSubsystem;
-import frc.robot.subsystems.ArmElbowSubsystem;
-import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.ElevatorSubsystem;
 
 public class DashBoard {
 
-    enum Trajectory {
-        BOTTOM_DELIVER, MIDDLE_DELIVER_BALANCE, TOP_DELIVER
+    enum TrajectoryEnum  {
+        // BOTTOM_DELIVER, MIDDLE_DELIVER_BALANCE, TOP_DELIVER,
+        START9_CONE6_BALANCE, START9_CONE7_BALANCE, START6_EXIT_BALANCE, START9_EXIT, START1_EXIT, TWO_M_INTAKE, DO_NOTHING
     }
-
-   
 
     private static RobotContainer m_robotContainer;
     private final Notifier m_thread = new Notifier(new dashboardThread());
@@ -29,7 +22,7 @@ public class DashBoard {
 	
     // private DesiredMode mCachedDesiredMode = null;
     // private StartingPosition mCachedStartingPosition = null;
-    SendableChooser<Trajectory> m_autonomousModeChooser = new SendableChooser<>();
+    SendableChooser<TrajectoryEnum> m_autonomousModeChooser = new SendableChooser<>();
     
 
     // SimpleWidget m_balanceMultiplier = new SimpleWidget();
@@ -40,30 +33,16 @@ public class DashBoard {
     static double m_shortOldTime = 0.0;
     static double m_longOldTime  = 0.0;   
 
-// private final SubsystemBase m_drive;
-// private final ElevatorSubsystem m_elevator;
     /**
      * Class Constructor
      * Initialize the Dashboard with defaul values of "settable" inputs.
      */
     public DashBoard(RobotContainer newRobotcontainer) {
-    //public DashBoard(SubsystemBase drive, ElevatorSubsystem elevator) {
-        // m_drive = drive;
-        // m_elevator = elevator;
         m_robotContainer = newRobotcontainer;
         if(kEnableDashBoard){
-            //SmartDashboard.putBoolean("Compressor ENABLE", true);
-            //SmartDashboard.putBoolean("Limelight-LED Toggle", false);
-
             initAutonomousStrategy();
-        
-
-            
         }
         m_thread.startPeriodic(kShortInterval);
-
-    
-
         initSubsystems();
     }
 
@@ -72,20 +51,23 @@ public class DashBoard {
      */
     private void initAutonomousStrategy(){
         
-        m_autonomousModeChooser.setDefaultOption("Deliver from bottom - Exit tarmac from bottom", Trajectory.BOTTOM_DELIVER);
-        m_autonomousModeChooser.addOption("Deliver from middle - Exit tarmac from middle - Balance", Trajectory.MIDDLE_DELIVER_BALANCE);
-        m_autonomousModeChooser.addOption("Deliver from top - Exit tarmac from top", Trajectory.TOP_DELIVER);
+        // m_autonomousModeChooser.setDefaultOption("Deliver from bottom - Exit tarmac from bottom", Trajectory.BOTTOM_DELIVER);
+        // m_autonomousModeChooser.addOption("Deliver from middle - Exit tarmac from middle - Balance", Trajectory.MIDDLE_DELIVER_BALANCE);
+        // m_autonomousModeChooser.addOption("Deliver from top - Exit tarmac from top", Trajectory.TOP_DELIVER);
  
+        m_autonomousModeChooser.addOption("Start9 - Cone6 - Balance", TrajectoryEnum.START9_CONE6_BALANCE);
+        m_autonomousModeChooser.addOption("Start9 - Cone7 - Balance", TrajectoryEnum.START9_CONE7_BALANCE);
+        m_autonomousModeChooser.addOption("Start9 - Exit", TrajectoryEnum.START9_EXIT);
+        m_autonomousModeChooser.setDefaultOption("Start6 - Exit - Balance", TrajectoryEnum.START6_EXIT_BALANCE);
+        m_autonomousModeChooser.addOption("Start1 - Exit", TrajectoryEnum.START1_EXIT);
 
         SmartDashboard.putData("Auto Mode", m_autonomousModeChooser);
     }
-    
-  
 
     /** 
      * Returns Selected Robot Autonomous Startup Mode
      */  
-    public Trajectory getAutoSelection() {
+    public TrajectoryEnum getAutoSelection() {
         return m_autonomousModeChooser.getSelected();
     }
 
@@ -107,7 +89,6 @@ public class DashBoard {
 
     // Initialize Dashboard for all subsystems.
     private void initSubsystems() {
-      //  m_drive.initDashboard();
       m_robotContainer.m_claw.initDashboard();
       m_robotContainer.m_elbow.initDashboard();
       m_robotContainer.m_elevator.initDashboard();
@@ -117,11 +98,9 @@ public class DashBoard {
 
     // Update values that need high frequency refresh.
     private static void updateShortInterval() {
-    
+        // Pulsing to indicate Dashboard is updated
+        dashboardFlash();
 
-         // Pulsing to indicate Dashboard is updated
-         dashboardFlash();
-        
         //  m_elevator.updateDashboard();
         m_robotContainer.m_claw.updateDashboard();
         m_robotContainer.m_elbow.updateDashboard();
@@ -134,7 +113,6 @@ public class DashBoard {
     private static void updateLongInterval(){
      
     }
-
 
     //Flash a light on the dashboard so that you know that the dashboard is refreshing.
     static int t = 0;
@@ -154,7 +132,7 @@ public class DashBoard {
             updateDashboard();
         }
     }
-    public double getMultiplier() {
-        return 4.0; /* widget.getValue; */
-    }
+    // public double getMultiplier() {
+    //     return 4.0; /* widget.getValue; */
+    // }
 }

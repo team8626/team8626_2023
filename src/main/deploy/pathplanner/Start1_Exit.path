@@ -2,71 +2,47 @@
   "waypoints": [
     {
       "anchorPoint": {
-        "x": 1.8930579226853983,
-        "y": 0.4682981059212988
+        "x": 1.74,
+        "y": 0.51
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.8948147228119339,
-        "y": 0.4682981059212988
+        "x": 2.74,
+        "y": 0.5100000000000051
       },
       "holonomicAngle": 180.0,
       "isReversal": false,
       "velOverride": null,
-      "isLocked": false,
+      "isLocked": true,
       "isStopPoint": false,
       "stopEvent": {
         "names": [
-          "DeliverEvent"
+          "readyForGrid2",
+          "releaseGamePiece"
         ],
         "executionBehavior": "sequential",
-        "waitBehavior": "none",
-        "waitTime": 1.0
-      }
-    },
-    {
-      "anchorPoint": {
-        "x": 2.627318727876931,
-        "y": 0.7
-      },
-      "prevControl": {
-        "x": 2.0975475562665182,
-        "y": 0.6739905318384573
-      },
-      "nextControl": {
-        "x": 5.0438755819053505,
-        "y": 0.8186424666414873
-      },
-      "holonomicAngle": -180.0,
-      "isReversal": false,
-      "velOverride": null,
-      "isLocked": false,
-      "isStopPoint": false,
-      "stopEvent": {
-        "names": [],
-        "executionBehavior": "parallel",
         "waitBehavior": "none",
         "waitTime": 0
       }
     },
     {
       "anchorPoint": {
-        "x": 5.674500944677245,
-        "y": 0.9010221594847072
+        "x": 5.5,
+        "y": 1.0
       },
       "prevControl": {
-        "x": 5.674500718161764,
-        "y": 0.9010221594847072
+        "x": 4.488805036510209,
+        "y": 0.9999999999999998
       },
       "nextControl": {
-        "x": 5.674501171192726,
-        "y": 0.9010221594847072
+        "x": 6.511194963489791,
+        "y": 1.0000000000000002
       },
       "holonomicAngle": 180.0,
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
-      "isStopPoint": false,
+      "isStopPoint": true,
       "stopEvent": {
         "names": [],
         "executionBehavior": "parallel",
@@ -76,12 +52,12 @@
     },
     {
       "anchorPoint": {
-        "x": 6.234039615267101,
-        "y": 0.8993124077498901
+        "x": 6.42,
+        "y": 0.92
       },
       "prevControl": {
-        "x": 6.201674063987469,
-        "y": 0.9257413280393717
+        "x": 6.111353960233171,
+        "y": 0.92
       },
       "nextControl": null,
       "holonomicAngle": 0,
@@ -100,5 +76,12 @@
   "maxVelocity": 2.0,
   "maxAcceleration": null,
   "isReversed": null,
-  "markers": []
+  "markers": [
+    {
+      "position": 0.11614213423295454,
+      "names": [
+        "StowArm"
+      ]
+    }
+  ]
 }

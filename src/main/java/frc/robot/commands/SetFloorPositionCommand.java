@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.ArmElbowSubsystem;
@@ -29,9 +30,13 @@ LEDManagerSubsystem m_ledManager;
     m_ledManager = LEDManager;
 
   addCommands(
-      new ParallelCommandGroup(new SetArmElbowCommand(m_elbow, m_ledManager, ArmConstants.kFloorElbowAngle), new RetractArmCommand(m_extender), new MoveElevatorBottomCommand(elevator)),
-      new OpenClawCommand(m_claw)
-             );
+      new PrintCommand("---------- BEGIN SetFloorPositionCommand ---------"),
+      new RetractArmCommand(m_extender),
+      new SetArmElbowCommand(m_elbow, m_ledManager, ArmConstants.kFloorElbowAngle),
+      new OpenClawCommand(m_claw),
+      new MoveElevatorBottomCommand(elevator),
+      new PrintCommand("---------- END SetFloorPositionCommand ---------")
+    );
   }
 
 }
