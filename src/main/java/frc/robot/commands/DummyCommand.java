@@ -5,14 +5,14 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.ClawSubsystem;
+import frc.robot.subsystems.SwerveDriveSubsystem;
 
 public class DummyCommand extends CommandBase {
   private int count = 0;
 
-  public DummyCommand(ClawSubsystem claw) {
+  public DummyCommand(SwerveDriveSubsystem drive) {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(claw);
+    addRequirements(drive);
   }
 
   // Called when the command is initially scheduled.
