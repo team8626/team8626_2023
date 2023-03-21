@@ -31,13 +31,13 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
     
     // Start the Camera Server
-    try {
-      UsbCamera camera = CameraServer.startAutomaticCapture();
-      camera.setResolution(640, 480);
-    } catch (VideoException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
+    // try {
+    //   UsbCamera camera = CameraServer.startAutomaticCapture();
+    //   camera.setResolution(640, 480);
+    // } catch (VideoException e) {
+    //   // TODO Auto-generated catch block
+    //   e.printStackTrace();
+    // }
   }
 
   /**
