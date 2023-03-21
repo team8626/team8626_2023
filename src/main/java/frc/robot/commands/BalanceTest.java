@@ -15,8 +15,10 @@ public class BalanceTest extends PIDCommand {
   private PIDController m_PID;
   private LEDManagerSubsystem m_ledManager;
   private SwerveDriveSubsystem m_drivetrain;
+  private boolean m_continuous;
   /** Creates a new BalanceCommandRemastered. */
-  public BalanceTest(SwerveDriveSubsystem drivetrain, LEDManagerSubsystem ledManager) {
+  public BalanceTest(SwerveDriveSubsystem drivetrain, LEDManagerSubsystem ledManager, boolean continuous
+  ) {
     super(
         // The controller that the command will use
         //0.005 P 0.00001 D
@@ -31,6 +33,7 @@ public class BalanceTest extends PIDCommand {
         });
         m_drivetrain = drivetrain;
         m_ledManager = ledManager;
+        m_continuous = continuous;
         addRequirements(drivetrain);
 
   }
@@ -38,21 +41,27 @@ public class BalanceTest extends PIDCommand {
   @Override
   public void initialize() {
     System.out.println("---------- BEGIN BalanceTest ---------");
-    m_ledManager.setColor(LEDManagerConstants.kColorWHITE);
     m_PID = getController();
     m_PID.setTolerance(SwerveDriveConstants.kBalancedPositionTolerance, SwerveDriveConstants.kBalancedVelocityTolerance);
   }
 
   @Override
+  public void execute() {
+   m_ledManager.setColor(
+    (m_PID.atSetpoint()? m_ledManager.getAllianceColor(): LEDManagerConstants.kColorWHITE)
+   );
+  }
+
+
+  @Override
   public void end(boolean interrupted) {
-    m_ledManager.setAllianceColor();
     System.out.println("---------- END BalanceTest ---------");
   }
 
 
   @Override
   public boolean isFinished() {
-    return m_PID.atSetpoint();
+    return m_PID.atSetpoint() && !m_continuous;
   }
 
 

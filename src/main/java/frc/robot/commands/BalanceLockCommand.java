@@ -17,6 +17,6 @@ public class BalanceLockCommand extends SequentialCommandGroup {
   public BalanceLockCommand(SwerveDriveSubsystem drivetrain, LEDManagerSubsystem ledManager) {
     m_drivetrain = drivetrain;
     m_ledManager = ledManager;
-    addCommands(new BalanceTest(m_drivetrain, m_ledManager), new BalanceLockCommand(m_drivetrain, m_ledManager));
+    addCommands(new BalanceTest(m_drivetrain, m_ledManager, false), new LockDrivetrainCommand(drivetrain));
   }
 }

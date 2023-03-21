@@ -36,5 +36,13 @@ public class LEDManagerSubsystem extends SubsystemBase {
         setColor(LEDManagerConstants.kColorALLIANCERED); 
       }
   }
+  public byte getAllianceColor() {
+    // Set LEDS to Alliance Color
+    if(DriverStation.getAlliance() == DriverStation.Alliance.Blue){
+      return LEDManagerConstants.kColorALLIANCEBLUE;
+    } else {
+      return LEDManagerConstants.kColorALLIANCERED;
+    }
+}
 }
 
