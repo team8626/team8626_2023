@@ -47,11 +47,7 @@ private boolean m_setDelivery;
     m_elbowPIDController = m_elbowMotor.getPIDController();
     m_elbowPIDController.setFeedbackDevice(m_elbowEncoder);
 
-
-    // TODO: Set Limit Switches
-    // m_elbowMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
      m_elbowMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
-    //  m_elbowMotor.setSoftLimit(SoftLimitDirection.kForward, ArmConstants.kSoftLimitBottom);
      m_elbowMotor.setSoftLimit(SoftLimitDirection.kReverse, ArmConstants.kSoftLimitTop);
 
     // Apply position and velocity conversion factors for the turning encoder. We
@@ -61,8 +57,6 @@ private boolean m_setDelivery;
 
     m_elbowEncoder.setInverted(ArmConstants.kElbowEncoderInverted);
     m_elbowPIDController.setPositionPIDWrappingEnabled(false);
-    // m_elbowPIDController.setPositionPIDWrappingMinInput(ArmConstants.kElbowEncoderPositionPIDMinInput);
-    // m_elbowPIDController.setPositionPIDWrappingMaxInput(ArmConstants.kElbowEncoderPositionPIDMaxInput);
 
     // Set the PID gains for the turning motor. Note these are example gains, and you
     // may need to tune them for your own robot!
@@ -71,9 +65,6 @@ private boolean m_setDelivery;
     m_elbowPIDController.setD(ArmConstants.kElbowD);
     m_elbowPIDController.setFF(ArmConstants.kElbowFF);
     m_elbowPIDController.setOutputRange(ArmConstants.kElbowMinOutput, ArmConstants.kElbowMaxOutput);
-
-    // TODO: Try this to =slow down arm going down
-    //m_elbowPIDController.setSmartMotionMaxVelocity(10, 0); // Max Speed: 10 degreres per second
 
     m_elbowMotor.setIdleMode(ArmConstants.kElbowMotorIdleMode);
     m_elbowMotor.setSmartCurrentLimit(ArmConstants.kElbowMotorCurrentLimit);
