@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-import com.revrobotics.ColorSensorV3.LEDCurrent;
-
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.cscore.VideoException;
@@ -13,7 +11,6 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.PrintCommand;
 import frc.robot.Constants.LEDManagerConstants;
 
 public class Robot extends TimedRobot {
@@ -57,12 +54,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
-    // Set LEDS to AllIance Color
-    if(m_allianceColor == DriverStation.Alliance.Blue){
-      // m_robotContainer.m_ledManager.setColor(LEDManagerConstants.kColorALLIANCEBLUE); 
-    } else {
-      // m_robotContainer.m_ledManager.setColor(LEDManagerConstants.kColorALLIANCERED); 
-    }
+    m_robotContainer.m_ledManager.setAllianceColor();
   }
 
   @Override
@@ -76,22 +68,12 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    // Set LEDS to Alliance Color
-    m_allianceColor = DriverStation.getAlliance();
-    if(m_allianceColor == DriverStation.Alliance.Blue){
-      m_robotContainer.m_ledManager.setColor(LEDManagerConstants.kColorALLIANCEBLUE); 
-    } else {
-      m_robotContainer.m_ledManager.setColor(LEDManagerConstants.kColorALLIANCERED); 
-    }
-    
+    m_robotContainer.m_ledManager.setAllianceColor();
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
  
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
-   /* 
-    new PrintCommand("Delivering node, exiting Tarmac from the left side, and balancing").schedule();
-    */
   }
  
   /** 
@@ -118,13 +100,7 @@ public class Robot extends TimedRobot {
     m_robotContainer.configureTeleopDefaultCommands();
     
     // Set LEDS to AllIance Color
-    m_allianceColor = DriverStation.getAlliance();
-    if(m_allianceColor == DriverStation.Alliance.Blue){
-      m_robotContainer.m_ledManager.setColor(LEDManagerConstants.kColorALLIANCEBLUE); 
-    } else {
-      m_robotContainer.m_ledManager.setColor(LEDManagerConstants.kColorALLIANCERED); 
-    }
-
+    m_robotContainer.m_ledManager.setAllianceColor();
   }
 
   /** 
@@ -138,7 +114,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopExit() {
-    m_robotContainer.m_ledManager.setColor(LEDManagerConstants.kColorRAINBOW); 
+    m_robotContainer.m_ledManager.setColor(LEDManagerConstants.kColorPINK); 
   }
 
   /**
