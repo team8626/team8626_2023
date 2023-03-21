@@ -82,13 +82,6 @@ public class SwerveDriveSubsystem extends SubsystemBase /*implements DriveSubsys
 
   /** Creates a new SwerveDriveSubsystem. */
   public SwerveDriveSubsystem() {
-      // TODO: Should we do this here (Done in KitBot, not in Swerve...)
-      // // Reset Encoders
-      // resetEncoders();;
-
-      // // Reset Gyrometer
-      // m_gyro.calibrate();
-      // m_gyro.reset();      
   }
 
   @Override
