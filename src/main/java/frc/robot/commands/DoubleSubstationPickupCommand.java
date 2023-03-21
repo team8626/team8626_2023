@@ -5,29 +5,34 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.ArmElbowSubsystem;
 import frc.robot.subsystems.ArmExtensionSubsystem;
+import frc.robot.subsystems.ClawSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.LEDManagerSubsystem;
 
 public class DoubleSubstationPickupCommand extends ParallelCommandGroup {
   ArmElbowSubsystem m_elbow;
+  ClawSubsystem m_claw;
   ArmExtensionSubsystem m_extender;
   ElevatorSubsystem m_elevator;
   LEDManagerSubsystem m_ledManager;
 
-public DoubleSubstationPickupCommand(ArmElbowSubsystem elbow, ArmExtensionSubsystem extender, ElevatorSubsystem elevator, LEDManagerSubsystem LEDManager) {
+public DoubleSubstationPickupCommand(ArmElbowSubsystem elbow, ArmExtensionSubsystem extender, ClawSubsystem claw, ElevatorSubsystem elevator, LEDManagerSubsystem LEDManager) {
   m_elbow = elbow;
+  m_claw = claw;
   m_extender = extender;
   m_elevator = elevator;
   m_ledManager = LEDManager;
   
-    addCommands(
-       new RetractArmCommand(m_extender), new SetArmElbowCommand(m_elbow, LEDManager, ArmConstants.kSubstationlbowAngle), new MoveElevatorTopCommand(m_elevator)
-       
-               );
-
+  addCommands(
+    new RetractArmCommand(m_extender),
+    new SequentialCommandGroup(
+      new MoveElevatorTopCommand(m_elevator),
+      new SetArmElbowCommand(m_elbow, m_ledManager, ArmConstants.kSubstationlbowAngle, false)
+      )
+    );
   }
-
 }
