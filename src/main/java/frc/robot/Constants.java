@@ -266,18 +266,5 @@ public final class Constants {
         public static final int kButtonBoxPort = 2;    
         public static final double kDriveDeadband = 0.05;
     }
-
-    public final static class XboxControllerConstants {
-
-        public static final int kLeftBumper = 5;
-        public static final int kRightBumper = 6;
-        public static final int kBButton = 2;
-        public static final int kXButton = 3;
-        public static final int kStartButton = 8;
-        public static final int kAButton = 2;
-    
-    }
-
-
 }
 

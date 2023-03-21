@@ -88,12 +88,12 @@ public class Autonomous {
             new OpenClawCommand(m_robot.m_claw),
 
             // Go to pickup next piece
-            new FollowPathWithEvents(m_robot.m_robotDrive.followTrajectoryCommand( pathGroup.get(0), true),
+            new FollowPathWithEvents(m_robot.m_drive.followTrajectoryCommand( pathGroup.get(0), true),
                                     pathGroup.get(0).getMarkers(),
                                     m_robot.eventMap),
 
             new CloseClawCommand(m_robot.m_claw),
-            new FollowPathWithEvents(m_robot.m_robotDrive.followTrajectoryCommand( pathGroup.get(1), false),
+            new FollowPathWithEvents(m_robot.m_drive.followTrajectoryCommand( pathGroup.get(1), false),
                                     pathGroup.get(1).getMarkers(),
                                     m_robot.eventMap),
 
@@ -102,11 +102,11 @@ public class Autonomous {
             new OpenClawCommand(m_robot.m_claw),
 
             // Go to Charging Station
-            new FollowPathWithEvents(m_robot.m_robotDrive.followTrajectoryCommand( pathGroup.get(2), false),
+            new FollowPathWithEvents(m_robot.m_drive.followTrajectoryCommand( pathGroup.get(2), false),
                                     pathGroup.get(2).getMarkers(),
                                     m_robot.eventMap),
             new PrintCommand("---------- AUTO Ready to Balance ----------"),
-            new BalanceTest(m_robot.m_robotDrive));
+            new BalanceTest(m_robot.m_drive, m_robot.m_ledManager));
 
         return startCommand;
     }
@@ -124,12 +124,12 @@ public class Autonomous {
             new OpenClawCommand(m_robot.m_claw),
 
             // Go to pickup next piece
-            new FollowPathWithEvents(m_robot.m_robotDrive.followTrajectoryCommand( pathGroup.get(0), true),
+            new FollowPathWithEvents(m_robot.m_drive.followTrajectoryCommand( pathGroup.get(0), true),
                                     pathGroup.get(0).getMarkers(),
                                     m_robot.eventMap),
 
             new CloseClawCommand(m_robot.m_claw),
-            new FollowPathWithEvents(m_robot.m_robotDrive.followTrajectoryCommand( pathGroup.get(1), false),
+            new FollowPathWithEvents(m_robot.m_drive.followTrajectoryCommand( pathGroup.get(1), false),
                                     pathGroup.get(1).getMarkers(),
                                     m_robot.eventMap),
 
@@ -138,11 +138,11 @@ public class Autonomous {
             new OpenClawCommand(m_robot.m_claw),
 
             // Go to Charging Station
-            new FollowPathWithEvents(m_robot.m_robotDrive.followTrajectoryCommand( pathGroup.get(2), false),
+            new FollowPathWithEvents(m_robot.m_drive.followTrajectoryCommand( pathGroup.get(2), false),
                                     pathGroup.get(2).getMarkers(),
                                     m_robot.eventMap),
             new PrintCommand("---------- AUTO Ready to Balance ----------"),
-            new BalanceTest(m_robot.m_robotDrive));
+            new BalanceTest(m_robot.m_drive, m_robot.m_ledManager));
 
         return startCommand;
     }
@@ -160,11 +160,11 @@ public class Autonomous {
             new OpenClawCommand(m_robot.m_claw),
 
             // Exit the Community & Comme Back for Balancing
-            new FollowPathWithEvents(m_robot.m_robotDrive.followTrajectoryCommand( pathGroup.get(0), true),
+            new FollowPathWithEvents(m_robot.m_drive.followTrajectoryCommand( pathGroup.get(0), true),
                                     pathGroup.get(0).getMarkers(),
                                     m_robot.eventMap),
             new PrintCommand("---------- AUTO Ready to Balance ----------"),
-            new BalanceTest(m_robot.m_robotDrive));
+            new BalanceTest(m_robot.m_drive, m_robot.m_ledManager));
 
         return startCommand;
     }
@@ -182,7 +182,7 @@ public class Autonomous {
             new OpenClawCommand(m_robot.m_claw),
 
             // Exit the Community
-            new FollowPathWithEvents(m_robot.m_robotDrive.followTrajectoryCommand( pathGroup.get(0), true),
+            new FollowPathWithEvents(m_robot.m_drive.followTrajectoryCommand( pathGroup.get(0), true),
                                     pathGroup.get(0).getMarkers(),
                                     m_robot.eventMap));
 
@@ -202,7 +202,7 @@ public class Autonomous {
             new OpenClawCommand(m_robot.m_claw),
 
             // Go to pickup next piece
-            new FollowPathWithEvents(m_robot.m_robotDrive.followTrajectoryCommand( pathGroup.get(0), true),
+            new FollowPathWithEvents(m_robot.m_drive.followTrajectoryCommand( pathGroup.get(0), true),
                                     pathGroup.get(0).getMarkers(),
                                     m_robot.eventMap));
 
@@ -217,7 +217,7 @@ public class Autonomous {
 
         startCommand = new SequentialCommandGroup(
             // Test Command for intaking a game piece at 2meters away
-            new FollowPathWithEvents(m_robot.m_robotDrive.followTrajectoryCommand( pathGroup.get(0), true),
+            new FollowPathWithEvents(m_robot.m_drive.followTrajectoryCommand( pathGroup.get(0), true),
                                     pathGroup.get(0).getMarkers(),
                                     m_robot.eventMap),
             new CloseClawCommand(m_robot.m_claw),
@@ -233,11 +233,11 @@ public class Autonomous {
 
         startCommand = new SequentialCommandGroup(
             // Test Command for balancing after moving 2 meters
-            new FollowPathWithEvents(m_robot.m_robotDrive.followTrajectoryCommand( pathGroup.get(0), true),
+            new FollowPathWithEvents(m_robot.m_drive.followTrajectoryCommand( pathGroup.get(0), true),
                                     pathGroup.get(0).getMarkers(),
                                     new HashMap<>()),
             new PrintCommand("---------- AUTO Ready to Balance ----------"),
-            new BalanceTest(m_robot.m_robotDrive));
+            new BalanceTest(m_robot.m_drive, m_robot.m_ledManager));
 
         return startCommand;
     }

@@ -26,7 +26,7 @@
               "Colors/Color when false": "#808080FF"
             }
           },
-          "0,1": {
+          "0,0": {
             "size": [
               2,
               1
@@ -35,45 +35,6 @@
               "_type": "ComboBox Chooser",
               "_source0": "network_table:///SmartDashboard/Auto Mode",
               "_title": "Auto Mode",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
-          "0,0": {
-            "size": [
-              2,
-              1
-            ],
-            "content": {
-              "_type": "ComboBox Chooser",
-              "_source0": "network_table:///SmartDashboard/Starting Position",
-              "_title": "Starting Position",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
-          "0,3": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Speed",
-              "_title": "Speed",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
-          "1,3": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Rot",
-              "_title": "Rot",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -340,6 +301,33 @@
               "_glyph": 148,
               "_showGlyph": false,
               "Visuals/Orientation": "HORIZONTAL"
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Vison",
+      "autoPopulate": false,
+      "autoPopulatePrefix": "",
+      "widgetPane": {
+        "gridSize": 128.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "titleType": 0,
+        "tiles": {
+          "4,0": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Toggle Button",
+              "_source0": "network_table:///photonvision/SnakeEyes8626/driverMode",
+              "_title": "photonvision/SnakeEyes8626/driverMode",
+              "_glyph": 148,
+              "_showGlyph": false
             }
           }
         }

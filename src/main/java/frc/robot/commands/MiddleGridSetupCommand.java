@@ -5,29 +5,31 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.ArmElbowSubsystem;
 import frc.robot.subsystems.ArmExtensionSubsystem;
-import frc.robot.subsystems.ClawSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.LEDManagerSubsystem;
 
 public class MiddleGridSetupCommand  extends ParallelCommandGroup {
   ArmElbowSubsystem m_elbow;
   ArmExtensionSubsystem m_extender;
-  ClawSubsystem m_claw;
   ElevatorSubsystem m_elevator;
   LEDManagerSubsystem m_ledManager;
 
-  public MiddleGridSetupCommand (ArmElbowSubsystem elbow, ArmExtensionSubsystem extender, ClawSubsystem claw, ElevatorSubsystem elevator, LEDManagerSubsystem LEDManager) {
+  public MiddleGridSetupCommand (ArmElbowSubsystem elbow, ArmExtensionSubsystem extender, ElevatorSubsystem elevator, LEDManagerSubsystem LEDManager) {
     m_elbow = elbow;
     m_extender = extender;
-    m_claw = claw;
     m_elevator = elevator;
     m_ledManager = LEDManager;
 
     addCommands(
-        new RetractArmCommand(m_extender), new SetArmElbowCommand(m_elbow, m_ledManager, ArmConstants.kMiddleGridElbowAngle, true), new MoveElevatorTopCommand(m_elevator)
-                );
+      new ExtendArmCommand(m_extender),
+      new SequentialCommandGroup(
+        new MoveElevatorTopCommand(m_elevator),
+        new SetArmElbowCommand(m_elbow, m_ledManager, ArmConstants.kMiddleGridElbowAngle, true)
+        )
+    );
   }
 }

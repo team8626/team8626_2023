@@ -6,15 +6,17 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
-import edu.wpi.first.wpilibj2.command.PrintCommand;
+import frc.robot.Constants.LEDManagerConstants;
 import frc.robot.Constants.SwerveDriveConstants;
+import frc.robot.subsystems.LEDManagerSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 
 public class BalanceTest extends PIDCommand {
   private PIDController m_PID;
+  private LEDManagerSubsystem m_ledManager;
   private SwerveDriveSubsystem m_drivetrain;
   /** Creates a new BalanceCommandRemastered. */
-  public BalanceTest(SwerveDriveSubsystem drivetrain) {
+  public BalanceTest(SwerveDriveSubsystem drivetrain, LEDManagerSubsystem ledManager) {
     super(
         // The controller that the command will use
         //0.005 P 0.00001 D
@@ -28,6 +30,7 @@ public class BalanceTest extends PIDCommand {
           drivetrain.drive(-output, 0, 0, false, true);
         });
         m_drivetrain = drivetrain;
+        m_ledManager = ledManager;
         addRequirements(drivetrain);
 
   }
@@ -35,13 +38,14 @@ public class BalanceTest extends PIDCommand {
   @Override
   public void initialize() {
     System.out.println("---------- BEGIN BalanceTest ---------");
+    m_ledManager.setColor(LEDManagerConstants.kColorWHITE);
     m_PID = getController();
     m_PID.setTolerance(SwerveDriveConstants.kBalancedPositionTolerance, SwerveDriveConstants.kBalancedVelocityTolerance);
-
   }
 
   @Override
   public void end(boolean interrupted) {
+    m_ledManager.setAllianceColor();
     System.out.println("---------- END BalanceTest ---------");
   }
 
