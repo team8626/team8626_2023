@@ -48,7 +48,7 @@ public class BalanceTest extends PIDCommand {
   @Override
   public void execute() {
    m_ledManager.setColor(
-    (m_PID.atSetpoint()? m_ledManager.getAllianceColor(): LEDManagerConstants.kColorWHITE)
+    (Math.abs(m_PID.getPositionError()) > SwerveDriveConstants.kBalancedPositionTolerance? m_ledManager.getAllianceColor(): LEDManagerConstants.kColorWHITE)
    );
   }
 
