@@ -20,19 +20,17 @@ public class DoubleSubstationPickupCommand extends ParallelCommandGroup {
   ElevatorSubsystem m_elevator;
   LEDManagerSubsystem m_ledManager;
 
-public DoubleSubstationPickupCommand(ArmElbowSubsystem elbow, ArmExtensionSubsystem extender, ClawSubsystem claw, ElevatorSubsystem elevator, LEDManagerSubsystem LEDManager) {
-  m_elbow = elbow;
-  m_claw = claw;
-  m_extender = extender;
-  m_elevator = elevator;
-  m_ledManager = LEDManager;
-  
-  addCommands(
-    new RetractArmCommand(m_extender),
-    new SequentialCommandGroup(
+  public DoubleSubstationPickupCommand(ArmElbowSubsystem elbow, ArmExtensionSubsystem extender, ActiveClawSubsystem claw, ElevatorSubsystem elevator, LEDManagerSubsystem LEDManager) {
+    m_elbow = elbow;
+    m_claw = claw;
+    m_extender = extender;
+    m_elevator = elevator;
+    m_ledManager = LEDManager;
+    
+    addCommands(
+      new RetractArmCommand(m_extender),
       new MoveElevatorTopCommand(m_elevator),
       new SetArmElbowCommand(m_elbow, m_ledManager, ArmConstants.kSubstationlbowAngle, false)
-      )
     );
   }
 }

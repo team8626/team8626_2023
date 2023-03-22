@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.ArmElbowSubsystem;
 import frc.robot.subsystems.ArmExtensionSubsystem;
-import frc.robot.subsystems.ClawSubsystem;
+import frc.robot.subsystems.ActiveClawSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.LEDManagerSubsystem;
 
@@ -17,11 +17,11 @@ public class SetFloorPositionCommand extends SequentialCommandGroup {
 
 ArmElbowSubsystem m_elbow;
 ArmExtensionSubsystem m_extender;
-ClawSubsystem m_claw;
+ActiveClawSubsystem m_claw;
 ElevatorSubsystem m_elevator;
 LEDManagerSubsystem m_ledManager;
 
-  public SetFloorPositionCommand(ArmElbowSubsystem elbow, ArmExtensionSubsystem extender, ClawSubsystem claw, ElevatorSubsystem elevator, LEDManagerSubsystem LEDManager) {
+  public SetFloorPositionCommand(ArmElbowSubsystem elbow, ArmExtensionSubsystem extender, ActiveClawSubsystem claw, ElevatorSubsystem elevator, LEDManagerSubsystem LEDManager) {
     m_elbow = elbow;
     m_extender = extender;
     m_claw = claw;
@@ -29,12 +29,10 @@ LEDManagerSubsystem m_ledManager;
     m_ledManager = LEDManager;
 
   addCommands(
-      new PrintCommand("---------- BEGIN SetFloorPositionCommand ---------"),
       new RetractArmCommand(m_extender),
       new SetArmElbowCommand(m_elbow, m_ledManager, ArmConstants.kFloorElbowAngle),
-      new OpenClawCommand(m_claw),
-      new MoveElevatorBottomCommand(elevator),
-      new PrintCommand("---------- END SetFloorPositionCommand ---------")
+      new MoveElevatorBottomCommand(elevator)
+      // new OpenClawCommand(m_claw),
     );
   }
 

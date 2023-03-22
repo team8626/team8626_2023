@@ -4,8 +4,10 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -13,11 +15,12 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class ArmExtensionSubsystem extends SubsystemBase {
 
 // Pneumatics
-  private final DoubleSolenoid m_Cylinder = new DoubleSolenoid(PneumaticsModuleType.REVPH, 9 /* 0 */, 14 /* 1 */);
+  //private final DoubleSolenoid m_Cylinder = new DoubleSolenoid(PneumaticsModuleType.REVPH, 9 /* 0 */, 14 /* 1 */);
+  
+  private final Solenoid m_armCylinder = new Solenoid(PneumaticsModuleType.CTREPCM, 0);
 
   // Subsystem State
   private boolean m_extended;
-
 
   public ArmExtensionSubsystem() {
 
@@ -46,11 +49,6 @@ public class ArmExtensionSubsystem extends SubsystemBase {
     }
   } 
 
-  // Set assembly passive
-  public void rest(){
-    m_Cylinder.set(Value.kOff);
-  }
-
   public boolean isExtended() {
     return m_extended;
   }
@@ -58,7 +56,7 @@ public class ArmExtensionSubsystem extends SubsystemBase {
   // Extend the arm extension
   public void extend(){
     // Extend Cylinders
-    m_Cylinder.set(Value.kForward);
+    m_armCylinder.set(true);
 
     // Update Subsytem Status
     m_extended = true;
@@ -68,7 +66,7 @@ public class ArmExtensionSubsystem extends SubsystemBase {
   // Retract the arm extension
   public void retract(){
     // Retract Cylinders
-    m_Cylinder.set(Value.kReverse);
+    m_armCylinder.set(false);
  
   // Update Subsytem Status
       m_extended = false;

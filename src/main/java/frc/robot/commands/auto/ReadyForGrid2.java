@@ -4,9 +4,8 @@
 
 package frc.robot.commands.auto;
 
-
-import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.commands.ExtendArmCommand;
 import frc.robot.commands.MoveElevatorTopCommand;
@@ -32,11 +31,9 @@ public class ReadyForGrid2  extends SequentialCommandGroup {
     m_ledManager = LEDManager;
 
     addCommands(
-        new PrintCommand("---------- BEGIN ReadyForGrid2 ---------"),
-        new SequentialCommandGroup( new MoveElevatorTopCommand(m_elevator),
-                                    new SetArmElbowCommand(m_elbow, m_ledManager, ArmConstants.kMiddleGridElbowAngle)),
-        new ExtendArmCommand(m_extender),
-        new PrintCommand("---------- END ReadyForGrid2 ---------")
+        new ParallelCommandGroup( new MoveElevatorTopCommand(m_elevator),
+                                  new SetArmElbowCommand(m_elbow, m_ledManager, ArmConstants.kMiddleGridElbowAngle)),
+        new ExtendArmCommand(m_extender)
       );
   }
 }

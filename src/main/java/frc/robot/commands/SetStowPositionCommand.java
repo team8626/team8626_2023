@@ -29,12 +29,9 @@ LEDManagerSubsystem m_ledManager;
     m_ledManager = LEDManager;
 
     addCommands(
-        new PrintCommand("---------- BEGIN SetStowPositionCommand ---------"),
-        new CloseClawCommand(m_claw), 
         new RetractArmCommand(m_extender),
         new MoveElevatorTopCommand(m_elevator),
-        new SetArmElbowCommand(m_elbow, m_ledManager, ArmConstants.kStowedElbowAngle),
-        new PrintCommand("---------- END SetStowPositionCommand ---------")
+        new SetArmElbowCommand(m_elbow, m_ledManager, ArmConstants.kStowedElbowAngle)
     );
   }
 }
