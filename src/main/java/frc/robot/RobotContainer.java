@@ -99,7 +99,7 @@ public class RobotContainer {
     
     // Claw Controls
     m_xboxController.leftBumper().onTrue(new OpenClawCommand(m_claw));
-    m_xboxController.leftBumper().onTrue(new CloseClawCommand(m_claw));
+    m_xboxController.rightBumper().onTrue(new CloseClawCommand(m_claw));
   
     // Set Swerve Modules to Cross (X) Position
     m_xboxController.x().toggleOnTrue(new ParallelCommandGroup( 
@@ -129,61 +129,6 @@ public class RobotContainer {
                                           new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorALLIANCEBLUE):
                                           new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorALLIANCERED));
     m_buttonBox.button_9().onTrue(new SetArmElbowCommand(m_elbow, m_ledManager, ItemType.CUBE));
-
-/* 
-    // new JoystickButton(m_buttonBox, 1) 
-    // .onTrue(new ParallelCommandGroup(new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorCONE), 
-    //                                 new TopGridSetupCommand(m_elbow, m_extender, m_claw, m_elevator, m_ledManager)));
-    Trigger topLeftButton= new JoystickButton(m_buttonBox, 1);
-    topLeftButton.toggleOnTrue(new TopGridSetupCommand(m_elbow, m_extender, m_claw, m_elevator, m_ledManager));
-
-    // new JoystickButton(m_buttonBox, 2) 
-    // .onTrue(new ParallelCommandGroup(new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorCONE), 
-    //                                 new MiddleGridSetupCommand(m_elbow, m_extender, m_claw, m_elevator, m_ledManager)));
-    Trigger middleLeftButton = new JoystickButton(m_buttonBox, 2);
-    middleLeftButton.toggleOnTrue(new MiddleGridSetupCommand(m_elbow, m_extender, m_claw, m_elevator, m_ledManager));
-
-    // new JoystickButton(m_buttonBox, 3) 
-    // .onTrue(new ParallelCommandGroup(new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorCONE), 
-    //                                 new BottomGridSetupCommand(m_elbow, m_extender, m_elevator, m_ledManager)));
-    //Trigger bottomLeftButton = new JoystickButton(m_buttonBox, 3);
-   // bottomLeftButton.toggleOnTrue(new BottomGridSetupCommand(m_elbow, m_extender, m_elevator, m_ledManager));
-
-    // Predefined Arm positions for Game Pieces pickup
-   // Trigger topCenterButton = new JoystickButton(m_buttonBox, 4);
-   // topCenterButton.toggleOnTrue(new DoubleSubstationPickupCommand(m_elbow, m_extender, m_elevator, m_ledManager));
-
-    //Trigger middleCenterButton = new JoystickButton(m_buttonBox, 5);
-   // middleCenterButton.toggleOnTrue(new SetFloorPositionCommand(m_elbow, m_extender, m_claw, m_elevator, m_ledManager));
-
-    // Safe position for traveling
-  //  Trigger bottomCenterButton = new JoystickButton(m_buttonBox, 6);
-  //  bottomCenterButton.toggleOnTrue(new SetTraversePositionCommand(m_elbow, m_extender, m_claw, m_elevator, m_ledManager));
-
-    // LED Control Buttons
-    // new JoystickButton(m_buttonBox, 7) 
-    // .onTrue(new ParallelCommandGroup(new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorCONE), 
-    //                                 new SetArmElbowCommand(m_elbow, m_ledManager, ItemType.CONE)));
-    Trigger topRightButton = new JoystickButton(m_buttonBox, 7);
-    topRightButton.toggleOnTrue(new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorALLIANCERED));
-                                
-    // new JoystickButton(m_buttonBox, 8) 
-    //   .onTrue(m_allianceColor == DriverStation.Alliance.Blue? 
-    //           new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorALLIANCEBLUE):
-    //           new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorALLIANCERED)
-    //         );
-
-    Trigger middleRightButton = new JoystickButton(m_buttonBox, 8);
-    middleRightButton.toggleOnTrue(new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorRAINBOW));
-
-    // new JoystickButton(m_buttonBox, 9) 
-    // .onTrue(new ParallelCommandGroup(new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorCUBE), 
-    //                                  new SetArmElbowCommand(m_elbow, m_ledManager, ItemType.CUBE)));
-    Trigger bottomRightButton = new JoystickButton(m_buttonBox, 9);
-    bottomRightButton.toggleOnTrue(new ParallelCommandGroup(new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorCUBE), 
-                                     new SetArmElbowCommand(m_elbow, m_ledManager, ItemType.CUBE)));
-*/
-
   }
 
   /**
@@ -217,10 +162,9 @@ public class RobotContainer {
             MathUtil.applyDeadband(-m_xboxController.getLeftY(), IOControlsConstants.kDriveDeadband),
             MathUtil.applyDeadband(-m_xboxController.getLeftX(), IOControlsConstants.kDriveDeadband),
             MathUtil.applyDeadband(-m_xboxController.getRightX(), IOControlsConstants.kDriveDeadband),
-            false,
+            true,
             true),
         m_drive));
-  
   }
 
   /**
