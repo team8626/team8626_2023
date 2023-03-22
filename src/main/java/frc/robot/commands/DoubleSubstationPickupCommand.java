@@ -5,7 +5,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.ArmElbowSubsystem;
 import frc.robot.subsystems.ArmExtensionSubsystem;
@@ -20,7 +19,7 @@ public class DoubleSubstationPickupCommand extends ParallelCommandGroup {
   ElevatorSubsystem m_elevator;
   LEDManagerSubsystem m_ledManager;
 
-  public DoubleSubstationPickupCommand(ArmElbowSubsystem elbow, ArmExtensionSubsystem extender, ActiveClawSubsystem claw, ElevatorSubsystem elevator, LEDManagerSubsystem LEDManager) {
+  public DoubleSubstationPickupCommand(ArmElbowSubsystem elbow, ArmExtensionSubsystem extender, ClawSubsystem claw, ElevatorSubsystem elevator, LEDManagerSubsystem LEDManager) {
     m_elbow = elbow;
     m_claw = claw;
     m_extender = extender;

@@ -4,12 +4,11 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.ArmElbowSubsystem;
 import frc.robot.subsystems.ArmExtensionSubsystem;
-import frc.robot.subsystems.ActiveClawSubsystem;
+import frc.robot.subsystems.ClawSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.LEDManagerSubsystem;
 
@@ -17,11 +16,11 @@ public class SetFloorPositionCommand extends SequentialCommandGroup {
 
 ArmElbowSubsystem m_elbow;
 ArmExtensionSubsystem m_extender;
-ActiveClawSubsystem m_claw;
+ClawSubsystem m_claw;
 ElevatorSubsystem m_elevator;
 LEDManagerSubsystem m_ledManager;
 
-  public SetFloorPositionCommand(ArmElbowSubsystem elbow, ArmExtensionSubsystem extender, ActiveClawSubsystem claw, ElevatorSubsystem elevator, LEDManagerSubsystem LEDManager) {
+  public SetFloorPositionCommand(ArmElbowSubsystem elbow, ArmExtensionSubsystem extender, ClawSubsystem claw, ElevatorSubsystem elevator, LEDManagerSubsystem LEDManager) {
     m_elbow = elbow;
     m_extender = extender;
     m_claw = claw;
