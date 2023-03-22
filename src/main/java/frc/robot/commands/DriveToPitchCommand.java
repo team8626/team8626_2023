@@ -4,9 +4,7 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.ActiveClawSubsystem;
 import frc.robot.subsystems.LEDManagerSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 import frc.robot.Constants.LEDManagerConstants;
@@ -16,7 +14,6 @@ public class DriveToPitchCommand extends CommandBase {
   private SwerveDriveSubsystem m_drive;
   private LEDManagerSubsystem m_ledManager;
   private float m_targetAngle;
-  private Timer m_timer = new Timer();
 
   public DriveToPitchCommand(float targetAngle, SwerveDriveSubsystem drive, LEDManagerSubsystem ledManager) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -52,7 +49,6 @@ public class DriveToPitchCommand extends CommandBase {
     if(m_drive.getPitch() >= m_targetAngle){
       retval = true;
     }
-
     return retval;
   }
 }
