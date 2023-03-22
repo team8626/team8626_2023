@@ -109,7 +109,7 @@ public class RobotContainer {
         );
     
     // Start Balancing
-    m_xboxController.start().toggleOnTrue(new BalanceTest(m_drive, m_ledManager));
+    m_xboxController.start().toggleOnTrue(new BalanceTest(m_drive, m_ledManager, true));
 
     // Speed Adjustment
     m_xboxController.b().toggleOnTrue(new DriveAdjustmentModeCommand(m_drive, DriveSpeed.LOW_SPEED));

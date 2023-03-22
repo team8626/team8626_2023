@@ -106,7 +106,7 @@ public class Autonomous {
                                     pathGroup.get(2).getMarkers(),
                                     m_robot.eventMap),
             new PrintCommand("---------- AUTO Ready to Balance ----------"),
-            new BalanceTest(m_robot.m_drive, m_robot.m_ledManager));
+            new BalanceTest(m_robot.m_drive, m_robot.m_ledManager, true));
 
         return startCommand;
     }
@@ -142,7 +142,7 @@ public class Autonomous {
                                     pathGroup.get(2).getMarkers(),
                                     m_robot.eventMap),
             new PrintCommand("---------- AUTO Ready to Balance ----------"),
-            new BalanceTest(m_robot.m_drive, m_robot.m_ledManager));
+            new BalanceTest(m_robot.m_drive, m_robot.m_ledManager, true));
 
         return startCommand;
     }
@@ -164,7 +164,7 @@ public class Autonomous {
                                     pathGroup.get(0).getMarkers(),
                                     m_robot.eventMap),
             new PrintCommand("---------- AUTO Ready to Balance ----------"),
-            new BalanceTest(m_robot.m_drive, m_robot.m_ledManager));
+            new BalanceTest(m_robot.m_drive, m_robot.m_ledManager, true));
 
         return startCommand;
     }
@@ -237,7 +237,7 @@ public class Autonomous {
                                     pathGroup.get(0).getMarkers(),
                                     new HashMap<>()),
             new PrintCommand("---------- AUTO Ready to Balance ----------"),
-            new BalanceTest(m_robot.m_drive, m_robot.m_ledManager));
+            new BalanceTest(m_robot.m_drive, m_robot.m_ledManager, true));
 
         return startCommand;
     }
