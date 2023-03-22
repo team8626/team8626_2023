@@ -4,11 +4,13 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ClawSubsystem;
 
 public class OpenClawCommand extends CommandBase {
   ClawSubsystem m_claw;
+  private Timer m_timer = new Timer();
 
   public OpenClawCommand(ClawSubsystem claw) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -19,25 +21,33 @@ public class OpenClawCommand extends CommandBase {
   // Called when the command is initially scheduled
   @Override
   public void initialize() {
-    m_claw.homeSubsystem();
+    //m_claw.homeSubsystem();
+    m_timer.reset();
+    m_timer.start();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_claw.openPneumatic();
+    m_claw.open();
     System.out.printf("[OpenClawCommand] Opening Claw\n");
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_claw.stop();
+    m_claw.stopMotor();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return  m_claw.isOpened();
+    boolean retval = false;
+    if(m_timer.hasElapsed(3.0)){
+      m_claw.stopMotor();
+      m_claw.setClosed();
+      retval = true;
+    }
+    return retval;
   }
 }
