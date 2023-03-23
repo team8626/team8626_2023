@@ -85,7 +85,7 @@ public class Autonomous {
             new CloseClawCommand(m_robot.m_claw),
             new MiddleGridSetupCommand(m_robot.m_elevator, m_robot.m_elbow, m_robot.m_extender, m_robot.m_ledManager),
             new WaitCommand(.25),
-            new OpenClawCommand(m_robot.m_claw),
+            new OpenClawCommand(m_robot.m_claw, m_robot.m_elbow),
 
             // Go to pickup next piece
             new FollowPathWithEvents(m_robot.m_drive.followTrajectoryCommand( pathGroup.get(0), true),
@@ -99,7 +99,7 @@ public class Autonomous {
 
             // At this point, we should be ready to deliver
             new WaitCommand(.25),
-            new OpenClawCommand(m_robot.m_claw),
+            new OpenClawCommand(m_robot.m_claw, m_robot.m_elbow),
 
             // Go to Charging Station
             new FollowPathWithEvents(m_robot.m_drive.followTrajectoryCommand( pathGroup.get(2), false),
@@ -121,7 +121,7 @@ public class Autonomous {
             new CloseClawCommand(m_robot.m_claw),
             new MiddleGridSetupCommand(m_robot.m_elevator, m_robot.m_elbow, m_robot.m_extender, m_robot.m_ledManager),
             new WaitCommand(.25),
-            new OpenClawCommand(m_robot.m_claw),
+            new OpenClawCommand(m_robot.m_claw, m_robot.m_elbow),
 
             // Go to pickup next piece
             new FollowPathWithEvents(m_robot.m_drive.followTrajectoryCommand( pathGroup.get(0), true),
@@ -135,7 +135,7 @@ public class Autonomous {
 
             // At this point, we should be ready to deliver
             new WaitCommand(.25),
-            new OpenClawCommand(m_robot.m_claw),
+            new OpenClawCommand(m_robot.m_claw, m_robot.m_elbow),
 
             // Go to Charging Station
             new FollowPathWithEvents(m_robot.m_drive.followTrajectoryCommand( pathGroup.get(2), false),
@@ -157,7 +157,7 @@ public class Autonomous {
             new CloseClawCommand(m_robot.m_claw),
             new MiddleGridSetupCommand(m_robot.m_elevator, m_robot.m_elbow, m_robot.m_extender, m_robot.m_ledManager),
             new WaitCommand(.25),
-            new OpenClawCommand(m_robot.m_claw),
+            new OpenClawCommand(m_robot.m_claw, m_robot.m_elbow),
 
             // Exit the Community & Comme Back for Balancing
             new FollowPathWithEvents(m_robot.m_drive.followTrajectoryCommand( pathGroup.get(0), true),
@@ -179,7 +179,7 @@ public class Autonomous {
             new CloseClawCommand(m_robot.m_claw),
             new MiddleGridSetupCommand(m_robot.m_elevator, m_robot.m_elbow, m_robot.m_extender, m_robot.m_ledManager),
             new WaitCommand(.25),
-            new OpenClawCommand(m_robot.m_claw),
+            new OpenClawCommand(m_robot.m_claw, m_robot.m_elbow),
 
             // Exit the Community
             new FollowPathWithEvents(m_robot.m_drive.followTrajectoryCommand( pathGroup.get(0), true),
@@ -199,7 +199,7 @@ public class Autonomous {
             new CloseClawCommand(m_robot.m_claw),
             new MiddleGridSetupCommand(m_robot.m_elevator, m_robot.m_elbow, m_robot.m_extender, m_robot.m_ledManager),
             new WaitCommand(.25),
-            new OpenClawCommand(m_robot.m_claw),
+            new OpenClawCommand(m_robot.m_claw, m_robot.m_elbow),
 
             // Go to pickup next piece
             new FollowPathWithEvents(m_robot.m_drive.followTrajectoryCommand( pathGroup.get(0), true),

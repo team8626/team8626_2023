@@ -35,7 +35,7 @@ LEDManagerSubsystem m_ledManager;
       new MoveElevatorBottomCommand(elevator),
       new ExtendArmCommand(m_extender)
 
-      // new OpenClawCommand(m_claw),
+      // new OpenClawCommand(m_robot.m_claw, m_elbow),
     );
   }
 
