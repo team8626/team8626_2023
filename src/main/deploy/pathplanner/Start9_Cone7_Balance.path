@@ -17,7 +17,7 @@
       "isStopPoint": false,
       "stopEvent": {
         "names": [
-          "readyForGrid2",
+          "MiddleGridSetupCommand",
           "releaseGamePiece"
         ],
         "executionBehavior": "sequential",
@@ -210,7 +210,7 @@
     {
       "position": 4.281370960582383,
       "names": [
-        "ReadyForGrid2"
+        "MiddleGridSetupCommand"
       ]
     },
     {

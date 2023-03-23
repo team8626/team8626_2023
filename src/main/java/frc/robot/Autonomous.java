@@ -22,11 +22,11 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 // Team8626 Libraries
 import frc.robot.DashBoard.TrajectoryEnum;
-import frc.robot.commands.BalanceTest;
-import frc.robot.commands.CloseClawCommand;
-import frc.robot.commands.OpenClawCommand;
-import frc.robot.commands.SetStowPositionCommand;
-import frc.robot.commands.auto.ReadyForGrid2;
+import frc.robot.commands.auto.BalanceTest;
+import frc.robot.commands.presets.MiddleGridSetupCommand;
+import frc.robot.commands.presets.SetStowPositionCommand;
+import frc.robot.commands.subsystems.CloseClawCommand;
+import frc.robot.commands.subsystems.OpenClawCommand;
 
 public class Autonomous {
 
@@ -83,7 +83,7 @@ public class Autonomous {
         startCommand = new SequentialCommandGroup(
             // Starting the game. Make sure the claw is closed and get ready for delivery
             new CloseClawCommand(m_robot.m_claw),
-            new ReadyForGrid2(m_robot.m_elevator, m_robot.m_elbow, m_robot.m_extender, m_robot.m_claw, m_robot.m_ledManager),
+            new MiddleGridSetupCommand(m_robot.m_elevator, m_robot.m_elbow, m_robot.m_extender, m_robot.m_ledManager),
             new WaitCommand(.25),
             new OpenClawCommand(m_robot.m_claw),
 
@@ -119,7 +119,7 @@ public class Autonomous {
         startCommand = new SequentialCommandGroup(
             // Starting the game. Make sure the claw is closed and get ready for delivery
             new CloseClawCommand(m_robot.m_claw),
-            new ReadyForGrid2(m_robot.m_elevator, m_robot.m_elbow, m_robot.m_extender, m_robot.m_claw, m_robot.m_ledManager),
+            new MiddleGridSetupCommand(m_robot.m_elevator, m_robot.m_elbow, m_robot.m_extender, m_robot.m_ledManager),
             new WaitCommand(.25),
             new OpenClawCommand(m_robot.m_claw),
 
@@ -155,7 +155,7 @@ public class Autonomous {
         startCommand = new SequentialCommandGroup(
             // Starting the game. Make sure the claw is closed and get ready for delivery
             new CloseClawCommand(m_robot.m_claw),
-            new ReadyForGrid2(m_robot.m_elevator, m_robot.m_elbow, m_robot.m_extender, m_robot.m_claw, m_robot.m_ledManager),
+            new MiddleGridSetupCommand(m_robot.m_elevator, m_robot.m_elbow, m_robot.m_extender, m_robot.m_ledManager),
             new WaitCommand(.25),
             new OpenClawCommand(m_robot.m_claw),
 
@@ -177,7 +177,7 @@ public class Autonomous {
         startCommand = new SequentialCommandGroup(
             // Starting the game. Make sure the claw is closed and get ready for delivery
             new CloseClawCommand(m_robot.m_claw),
-            new ReadyForGrid2(m_robot.m_elevator, m_robot.m_elbow, m_robot.m_extender, m_robot.m_claw, m_robot.m_ledManager),
+            new MiddleGridSetupCommand(m_robot.m_elevator, m_robot.m_elbow, m_robot.m_extender, m_robot.m_ledManager),
             new WaitCommand(.25),
             new OpenClawCommand(m_robot.m_claw),
 
@@ -197,7 +197,7 @@ public class Autonomous {
         startCommand = new SequentialCommandGroup(
             // Starting the game. Make sure the claw is closed and get ready for delivery
             new CloseClawCommand(m_robot.m_claw),
-            new ReadyForGrid2(m_robot.m_elevator, m_robot.m_elbow, m_robot.m_extender, m_robot.m_claw, m_robot.m_ledManager),
+            new MiddleGridSetupCommand(m_robot.m_elevator, m_robot.m_elbow, m_robot.m_extender, m_robot.m_ledManager),
             new WaitCommand(.25),
             new OpenClawCommand(m_robot.m_claw),
 
@@ -221,7 +221,7 @@ public class Autonomous {
                                     pathGroup.get(0).getMarkers(),
                                     m_robot.eventMap),
             new CloseClawCommand(m_robot.m_claw),
-            new SetStowPositionCommand(m_robot.m_elbow, m_robot.m_extender, m_robot.m_claw, m_robot.m_elevator, m_robot.m_ledManager) );
+            new SetStowPositionCommand(m_robot.m_elevator, m_robot.m_elbow, m_robot.m_extender, m_robot.m_claw, m_robot.m_ledManager) );
 
         return startCommand;
     }

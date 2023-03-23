@@ -2,39 +2,42 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.subsystems;
+
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.ClawSubsystem;
+import frc.robot.subsystems.ElevatorSubsystem;
 
-public class OpenClawCommand extends CommandBase {
-  private ClawSubsystem m_claw;
-
-  public OpenClawCommand(ClawSubsystem claw) {
+public class MoveElevatorBottomCommand extends CommandBase {
+  /** Creates a new MoveElevatorTop. */
+  ElevatorSubsystem m_elevator;
+  public MoveElevatorBottomCommand(ElevatorSubsystem elevator) {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(claw);
-    m_claw = claw;
+    addRequirements(elevator);
+    m_elevator = elevator;
   }
 
-  // Called when the command is initially scheduled
+  /*  Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-    m_claw.open();
-  }
-
+  public void initialize() {}
+*/
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    m_elevator.setMotor(-1);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    m_elevator.setMotor(0);
+    
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return m_claw.isOpened();
+    // return false;
+    return  m_elevator.getBottomPressed();
   }
 }

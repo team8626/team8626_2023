@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.auto;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
@@ -17,8 +17,7 @@ public class BalanceTest extends PIDCommand {
   private SwerveDriveSubsystem m_drivetrain;
   private boolean m_continuous;
   /** Creates a new BalanceCommandRemastered. */
-  public BalanceTest(SwerveDriveSubsystem drivetrain, LEDManagerSubsystem ledManager, boolean continuous
-  ) {
+  public BalanceTest(SwerveDriveSubsystem drivetrain, LEDManagerSubsystem ledManager, boolean continuous) {
     super(
         // The controller that the command will use
         //0.005 P 0.00001 D
@@ -34,8 +33,7 @@ public class BalanceTest extends PIDCommand {
         m_drivetrain = drivetrain;
         m_ledManager = ledManager;
         m_continuous = continuous;
-        addRequirements(drivetrain);
-
+        addRequirements(m_drivetrain);
   }
 
   @Override
