@@ -20,20 +20,18 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.IOControlsConstants;
 import frc.robot.Constants.LEDManagerConstants;
-import frc.robot.commands.BalanceTest;
-import frc.robot.commands.BottomGridSetupCommand;
-import frc.robot.commands.CloseClawCommand;
-import frc.robot.commands.DoubleSubstationPickupCommand;
-import frc.robot.commands.DriveAdjustmentModeCommand;
-import frc.robot.commands.MiddleGridSetupCommand;
-import frc.robot.commands.OpenClawCommand;
-import frc.robot.commands.SetArmElbowCommand;
-import frc.robot.commands.SetFloorPositionCommand;
-import frc.robot.commands.SetStowPositionCommand;
-import frc.robot.commands.SpinIntakeCommand;
-import frc.robot.commands.TopGridSetupCommand;
-import frc.robot.commands.UpdateLEDsCommand;
-import frc.robot.commands.auto.ReadyForGrid2;
+import frc.robot.commands.auto.BalanceTest;
+import frc.robot.commands.presets.MiddleGridSetupCommand;
+import frc.robot.commands.presets.BottomGridSetupCommand;
+import frc.robot.commands.presets.DoubleSubstationPickupCommand;
+import frc.robot.commands.presets.SetFloorPositionCommand;
+import frc.robot.commands.presets.SetStowPositionCommand;
+import frc.robot.commands.presets.TopGridSetupCommand;
+import frc.robot.commands.subsystems.CloseClawCommand;
+import frc.robot.commands.subsystems.DriveAdjustmentModeCommand;
+import frc.robot.commands.subsystems.OpenClawCommand;
+import frc.robot.commands.subsystems.SetArmElbowCommand;
+import frc.robot.commands.subsystems.UpdateLEDsCommand;
 import frc.robot.subsystems.ClawSubsystem;
 import frc.robot.subsystems.ArmElbowSubsystem;
 import frc.robot.subsystems.ArmElbowSubsystem.ItemType;
@@ -117,19 +115,18 @@ public class RobotContainer {
     m_xboxController.a().toggleOnTrue(new DriveAdjustmentModeCommand(m_drive, DriveSpeed.LOWEST_SPEED));
 
     // Predefined Arm positions for Game Pieces delivery
-    m_buttonBox.button_1().onTrue(new TopGridSetupCommand(m_elbow, m_extender, m_elevator, m_ledManager));
-    m_buttonBox.button_2().onTrue(new MiddleGridSetupCommand(m_elbow, m_extender, m_elevator, m_ledManager));
-    m_buttonBox.button_3().onTrue(new BottomGridSetupCommand(m_elbow, m_extender, m_elevator, m_ledManager));
+    m_buttonBox.button_1().onTrue(new TopGridSetupCommand(m_elevator, m_elbow, m_extender, m_ledManager));
+    m_buttonBox.button_2().onTrue(new MiddleGridSetupCommand(m_elevator, m_elbow, m_extender, m_ledManager));
+    m_buttonBox.button_3().onTrue(new BottomGridSetupCommand(m_elevator, m_elbow, m_extender, m_ledManager));
 
-    m_buttonBox.button_4().onTrue(new DoubleSubstationPickupCommand(m_elbow, m_extender, m_claw, m_elevator, m_ledManager));
-    m_buttonBox.button_5().onTrue(new SetFloorPositionCommand(m_elbow, m_extender, m_claw, m_elevator, m_ledManager));
-    m_buttonBox.button_6().onTrue(new SetStowPositionCommand(m_elbow, m_extender, m_claw, m_elevator, m_ledManager));
+    m_buttonBox.button_4().onTrue(new DoubleSubstationPickupCommand(m_elevator, m_elbow, m_extender, m_claw, m_ledManager));
+    m_buttonBox.button_5().onTrue(new SetFloorPositionCommand(m_elevator, m_elbow, m_extender, m_claw, m_ledManager));
+    m_buttonBox.button_6().onTrue(new SetStowPositionCommand(m_elevator, m_elbow, m_extender, m_claw, m_ledManager));
 
     m_buttonBox.button_7().onTrue(new SetArmElbowCommand(m_elbow, m_ledManager, ItemType.CONE));
-    m_buttonBox.button_8().toggleOnTrue(new SpinIntakeCommand(m_claw));
-    // m_buttonBox.button_8().onTrue(m_allianceColor == DriverStation.Alliance.Blue? 
-    //                                       new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorALLIANCEBLUE):
-    //                                       new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorALLIANCERED));
+    m_buttonBox.button_8().onTrue(m_allianceColor == DriverStation.Alliance.Blue? 
+                                          new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorALLIANCEBLUE):
+                                          new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorALLIANCERED));
     m_buttonBox.button_9().onTrue(new SetArmElbowCommand(m_elbow, m_ledManager, ItemType.CUBE));
   }
 
@@ -144,9 +141,9 @@ public class RobotContainer {
   private void configureEventsMaps() {
     
       // Populate Autonomous Event map
-      eventMap.put("ReadyForGrid2", new ReadyForGrid2(m_elevator, m_elbow, m_extender, m_claw, m_ledManager));
-      eventMap.put("SetupForIntake", new SetFloorPositionCommand(m_elbow, m_extender, m_claw, m_elevator, m_ledManager));
-      eventMap.put("StowArm", new SetStowPositionCommand(m_elbow, m_extender, m_claw, m_elevator, m_ledManager));
+      eventMap.put("MiddleGridSetupCommand", new MiddleGridSetupCommand(m_elevator, m_elbow, m_extender, m_ledManager));
+      eventMap.put("SetupForIntake", new SetFloorPositionCommand(m_elevator, m_elbow, m_extender, m_claw, m_ledManager));
+      eventMap.put("StowArm", new SetStowPositionCommand(m_elevator, m_elbow, m_extender, m_claw, m_ledManager));
   }
 
   /**
@@ -156,9 +153,10 @@ public class RobotContainer {
    */
   public void configureTeleopDefaultCommands(){
 
-    Command startCommand = new SetStowPositionCommand(m_elbow, m_extender, m_claw, m_elevator, m_ledManager);
+    // Force position at beginning of Teleop.
+    Command startCommand = new SetStowPositionCommand(m_elevator, m_elbow, m_extender, m_claw, m_ledManager);
     startCommand.schedule();
-    
+
     m_drive.setDefaultCommand(
     // The left stick controls translation of the robot.
     // Turning is controlled by the X axis of the right stick.
@@ -186,7 +184,7 @@ public class RobotContainer {
       startCommand = new SequentialCommandGroup(
                                     // Starting the game. Make sure the claw is closed and get ready for delivery
                                     new CloseClawCommand(m_claw),
-                                    new ReadyForGrid2(m_elevator, m_elbow, m_extender, m_claw, m_ledManager),
+                                    new MiddleGridSetupCommand(m_elevator, m_elbow, m_extender, m_ledManager),
                                     new WaitCommand(.25),
                                     new OpenClawCommand(m_claw));
     }
