@@ -5,13 +5,13 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.ActiveClawSubsystem;
+import frc.robot.subsystems.ClawSubsystem;
 
 
 public class SpinIntakeCommand extends CommandBase {
-  private ActiveClawSubsystem m_claw;
+  private ClawSubsystem m_claw;
 
-  public SpinIntakeCommand(ActiveClawSubsystem claw) {
+  public SpinIntakeCommand(ClawSubsystem claw) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(claw);
     m_claw = claw;
@@ -21,8 +21,6 @@ public class SpinIntakeCommand extends CommandBase {
   @Override
   public void initialize() {
     m_claw.startSpin();
-    System.out.printf("[SpinIntakeCommand] Start Spin\n");
-
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -34,7 +32,6 @@ public class SpinIntakeCommand extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     m_claw.stopSpin();
-    System.out.printf("[SpinIntakeCommand] Stop Spin\n");
   }
 
   // Returns true when the command should end.

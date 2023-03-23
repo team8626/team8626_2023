@@ -6,13 +6,14 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.ArmElbowSubsystem;
 import frc.robot.subsystems.ArmExtensionSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.LEDManagerSubsystem;
 
-public class TopGridSetupCommand  extends ParallelCommandGroup {
+public class TopGridSetupCommand  extends SequentialCommandGroup {
   ArmElbowSubsystem m_elbow;
   ArmExtensionSubsystem m_extender;
   ElevatorSubsystem m_elevator;
@@ -26,11 +27,10 @@ public TopGridSetupCommand (ArmElbowSubsystem elbow, ArmExtensionSubsystem exten
   
 
   addCommands(
-    new ExtendArmCommand(m_extender),
-    new SequentialCommandGroup(
       new MoveElevatorTopCommand(m_elevator),
-      new SetArmElbowCommand(m_elbow, m_ledManager, ArmConstants.kTopGridElbowAngle, true)
-      )
+      new SetArmElbowCommand(m_elbow, m_ledManager, ArmConstants.kTopGridElbowAngle, true),
+      new WaitCommand(2),
+      new ExtendArmCommand(m_extender)
     );
   }
 }

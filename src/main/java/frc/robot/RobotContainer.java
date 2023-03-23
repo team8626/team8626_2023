@@ -30,6 +30,7 @@ import frc.robot.commands.OpenClawCommand;
 import frc.robot.commands.SetArmElbowCommand;
 import frc.robot.commands.SetFloorPositionCommand;
 import frc.robot.commands.SetStowPositionCommand;
+import frc.robot.commands.SpinIntakeCommand;
 import frc.robot.commands.TopGridSetupCommand;
 import frc.robot.commands.UpdateLEDsCommand;
 import frc.robot.commands.auto.ReadyForGrid2;
@@ -125,9 +126,10 @@ public class RobotContainer {
     m_buttonBox.button_6().onTrue(new SetStowPositionCommand(m_elbow, m_extender, m_claw, m_elevator, m_ledManager));
 
     m_buttonBox.button_7().onTrue(new SetArmElbowCommand(m_elbow, m_ledManager, ItemType.CONE));
-    m_buttonBox.button_8().onTrue(m_allianceColor == DriverStation.Alliance.Blue? 
-                                          new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorALLIANCEBLUE):
-                                          new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorALLIANCERED));
+    m_buttonBox.button_8().toggleOnTrue(new SpinIntakeCommand(m_claw));
+    // m_buttonBox.button_8().onTrue(m_allianceColor == DriverStation.Alliance.Blue? 
+    //                                       new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorALLIANCEBLUE):
+    //                                       new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorALLIANCERED));
     m_buttonBox.button_9().onTrue(new SetArmElbowCommand(m_elbow, m_ledManager, ItemType.CUBE));
   }
 
@@ -154,6 +156,9 @@ public class RobotContainer {
    */
   public void configureTeleopDefaultCommands(){
 
+    Command startCommand = new SetStowPositionCommand(m_elbow, m_extender, m_claw, m_elevator, m_ledManager);
+    startCommand.schedule();
+    
     m_drive.setDefaultCommand(
     // The left stick controls translation of the robot.
     // Turning is controlled by the X axis of the right stick.

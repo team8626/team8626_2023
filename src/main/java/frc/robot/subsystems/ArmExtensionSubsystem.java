@@ -4,17 +4,15 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.ArmConstants;
+import frc.robot.Constants.PneumaticConstants;
 
 public class ArmExtensionSubsystem extends SubsystemBase {
-
-// Pneumatics
-  //private final DoubleSolenoid m_Cylinder = new DoubleSolenoid(PneumaticsModuleType.REVPH, 9 /* 0 */, 14 /* 1 */);
-  
-  private final Solenoid m_armCylinder = new Solenoid(PneumaticsModuleType.CTREPCM, 0);
+  // Pneumatics
+  private final Solenoid m_armCylinder = new Solenoid(PneumaticConstants.kPCMtype, ArmConstants.kSolenoidChannel);
 
   // Subsystem State
   private boolean m_extended;
@@ -22,10 +20,8 @@ public class ArmExtensionSubsystem extends SubsystemBase {
   public ArmExtensionSubsystem() {
 
      // Initialize Start-Up State
-    
      this.retract();
      m_extended = false;
-
   }
 
   // Initialize Dashboard

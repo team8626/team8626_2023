@@ -6,6 +6,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -188,6 +189,8 @@ public final class Constants {
     // Arm subsystem constants
     public final static class ArmConstants {
         public static final int kCANElbow = 8; // SPARKMAX
+        public static int kSolenoidChannel = 0; 
+
         public static final boolean kElbowEncoderInverted = false;
 
         public static final double kElbowEncoderPositionFactor = 360; // degrees
@@ -209,40 +212,29 @@ public final class Constants {
 
         public static final double kStowedElbowAngle = 348;
         public static final double kBottomGridElbowAngle = 324;
-        public static final double kMiddleGridElbowAngle = 270;
-        public static final double kTopGridElbowAngle = 255;
+        public static final double kMiddleGridElbowAngle = 255;
+        public static final double kTopGridElbowAngle = 235;
         public static final double kFloorElbowAngle = 295;
         public static final double kTraverseElbowAngle = 210;
         public static final double kSubstationlbowAngle = 270;
         public static final double kCubeAngleIncrement = 10;
         public static final double kConeAngleIncrement = 0;
 
-        public static final float kSoftLimitBottom = 345;
-        public static final float kSoftLimitTop = 200;
+        public static final float kSoftLimitBottom = 359;
+        public static final float kSoftLimitTop = 260;
     }
     
+    public final static class PneumaticConstants {
+        public static PneumaticsModuleType kPCMtype = PneumaticsModuleType.CTREPCM;
+    }
+
     // Claw subsystem constants
     public final static class ClawConstants {
         // RoboRio/Can addresses
         public static int kCANMotorClaw = 20;  // Talon SPX
-
-        public static int kDIOLimitSwitch = 5; // DIO
-        public static int kDIOEncoderA = 6;    // DIO
-        public static int kDIOEncoderB = 7;    // DIO
-                
-        // Settings
-        public static double kTicksPerRev = 7.0 * 40.0 * (50/14); // quadrature cycles - 7 on motor, 40:1 for gearbox, Claw Gears: 50:14
-       
-        // TODO: These next two need to be calibrated
-        public static int kSoftCloseAngle = 10; // Degrees
-        public static int kHardCloseAngle = 20; // Degrees
-
-        // PID Controller Constants
-        public static double kP = 1.0;    
-        public static double kI = 0.0;    
-        public static double kD = 0.0;    
+        public static int kSolenoidChannel = 3; 
     }
-    
+
     // LEDManager constants
     public final static class LEDManagerConstants {
         public static int kDIOCom1 = 0; // DIO
