@@ -22,7 +22,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 // Team8626 Libraries
 import frc.robot.DashBoard.TrajectoryEnum;
-import frc.robot.commands.auto.BalanceTest;
+import frc.robot.commands.auto.BalanceLockCommand;
 import frc.robot.commands.presets.MiddleGridSetupCommand;
 import frc.robot.commands.presets.SetStowPositionCommand;
 import frc.robot.commands.subsystems.CloseClawCommand;
@@ -106,7 +106,7 @@ public class Autonomous {
                                     pathGroup.get(2).getMarkers(),
                                     m_robot.eventMap),
             new PrintCommand("---------- AUTO Ready to Balance ----------"),
-            new BalanceTest(m_robot.m_drive, m_robot.m_ledManager, true));
+            new BalanceLockCommand(m_robot.m_drive, m_robot.m_ledManager));
 
         return startCommand;
     }
@@ -142,7 +142,7 @@ public class Autonomous {
                                     pathGroup.get(2).getMarkers(),
                                     m_robot.eventMap),
             new PrintCommand("---------- AUTO Ready to Balance ----------"),
-            new BalanceTest(m_robot.m_drive, m_robot.m_ledManager, true));
+            new BalanceLockCommand(m_robot.m_drive, m_robot.m_ledManager));
 
         return startCommand;
     }
@@ -164,7 +164,7 @@ public class Autonomous {
                                     pathGroup.get(0).getMarkers(),
                                     m_robot.eventMap),
             new PrintCommand("---------- AUTO Ready to Balance ----------"),
-            new BalanceTest(m_robot.m_drive, m_robot.m_ledManager, true));
+            new BalanceLockCommand(m_robot.m_drive, m_robot.m_ledManager));
 
         return startCommand;
     }
@@ -217,6 +217,7 @@ public class Autonomous {
 
         startCommand = new SequentialCommandGroup(
             // Test Command for intaking a game piece at 2meters away
+            new SetStowPositionCommand(m_robot.m_elevator, m_robot.m_elbow, m_robot.m_extender, m_robot.m_claw, m_robot.m_ledManager),
             new FollowPathWithEvents(m_robot.m_drive.followTrajectoryCommand( pathGroup.get(0), true),
                                     pathGroup.get(0).getMarkers(),
                                     m_robot.eventMap),
@@ -233,11 +234,12 @@ public class Autonomous {
 
         startCommand = new SequentialCommandGroup(
             // Test Command for balancing after moving 2 meters
+            new SetStowPositionCommand(m_robot.m_elevator, m_robot.m_elbow, m_robot.m_extender, m_robot.m_claw, m_robot.m_ledManager),
             new FollowPathWithEvents(m_robot.m_drive.followTrajectoryCommand( pathGroup.get(0), true),
                                     pathGroup.get(0).getMarkers(),
                                     new HashMap<>()),
             new PrintCommand("---------- AUTO Ready to Balance ----------"),
-            new BalanceTest(m_robot.m_drive, m_robot.m_ledManager, true));
+            new BalanceLockCommand(m_robot.m_drive, m_robot.m_ledManager));
 
         return startCommand;
     }

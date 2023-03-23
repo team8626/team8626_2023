@@ -26,6 +26,7 @@ import frc.robot.commands.presets.BottomGridSetupCommand;
 import frc.robot.commands.presets.DoubleSubstationPickupCommand;
 import frc.robot.commands.presets.SetFloorPositionCommand;
 import frc.robot.commands.presets.SetStowPositionCommand;
+import frc.robot.commands.presets.SetTraversePositionCommand;
 import frc.robot.commands.presets.TopGridSetupCommand;
 import frc.robot.commands.subsystems.CloseClawCommand;
 import frc.robot.commands.subsystems.DriveAdjustmentModeCommand;
@@ -121,7 +122,7 @@ public class RobotContainer {
 
     m_buttonBox.button_4().onTrue(new DoubleSubstationPickupCommand(m_elevator, m_elbow, m_extender, m_claw, m_ledManager));
     m_buttonBox.button_5().onTrue(new SetFloorPositionCommand(m_elevator, m_elbow, m_extender, m_claw, m_ledManager));
-    m_buttonBox.button_6().onTrue(new SetStowPositionCommand(m_elevator, m_elbow, m_extender, m_claw, m_ledManager));
+    m_buttonBox.button_6().onTrue(new SetTraversePositionCommand(m_elevator, m_elbow, m_extender, m_ledManager));
 
     m_buttonBox.button_7().onTrue(new SetArmElbowCommand(m_elbow, m_ledManager, ItemType.CONE));
     m_buttonBox.button_8().onTrue(m_allianceColor == DriverStation.Alliance.Blue? 
@@ -183,6 +184,7 @@ public class RobotContainer {
       DriverStation.reportError("Could not open auto-trajectory file", e.getStackTrace());
       startCommand = new SequentialCommandGroup(
                                     // Starting the game. Make sure the claw is closed and get ready for delivery
+                                    new SetStowPositionCommand(m_elevator, m_elbow, m_extender, m_claw, m_ledManager),
                                     new CloseClawCommand(m_claw),
                                     new MiddleGridSetupCommand(m_elevator, m_elbow, m_extender, m_ledManager),
                                     new WaitCommand(.25),

@@ -307,22 +307,10 @@ public class SwerveDriveSubsystem extends SubsystemBase /*implements DriveSubsys
     );
   }
 
-  /**
-   * Returns Drivetrain Type...
-   */
-  public boolean isSwerve(){
-    return true;
+  public void setPowerFactor(double factor) {
+    m_powerFactor = factor;
   }
 
-public void setPowerFactor(double factor) {
-  m_powerFactor = factor;
-}
-
-
-
-  public boolean isKitBot(){
-    return !isSwerve();
-  }
   public void initDashboard() {
     SmartDashboard.putNumber("Pitch Angle", getPitch()); 
     SmartDashboard.putNumber("Roll Angle", m_gyro.getRoll()); 

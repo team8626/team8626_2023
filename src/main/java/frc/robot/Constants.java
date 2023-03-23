@@ -131,52 +131,6 @@ public final class Constants {
         public static final double kFreeSpeedRpm = 5676;
     }
 
-    // Ensign driveTrain (AM14U) subsystem constants
-    public final static class KitbotDriveTrain {
-        // CAN Bus addresses for motors
-        public static int kCANMotorFL = 10;  // USING Victor SPX
-        public static int kCANMotorRL = 11;  // USING Victor SPX
-        public static int kCANMotorFR = 22;  // USING Victor SPX
-        public static int kCANMotorRR = 7;  // USING Victor SPX
-     
-
-        public static boolean kLeftMotorsInverted = false;
-        public static boolean kRightMotorsInverted = false;
-        
-        // Encoder Ports
-        public static int[] kLeftEncoderPorts = {0,1};
-        public static int[] kRightEncoderPorts = {2,3};
-
-        public static boolean kLeftEncoderReversed = true;
-        public static boolean kRightEncoderReversed = false;
-
-        // Power Multiplicators
-        public static double kPowerRatioLowSpeed = 0.5;
-        public static double kPowerRatioHighSpeed = 1.0;
-
-        // Drivetrain Characteristics
-        public static double kWheelDiameter = Units.inchesToMeters(6.0) ;
-        public static int kEncoderPulsesPerRev = 8192; // Through bore Encoder
-        public static double kEncoderMetersPerPulse = kWheelDiameter * Math.PI / kEncoderPulsesPerRev;
-        public static final double kTrackwidthMeters = Units.inchesToMeters(21.75);
-
-        // TODO update placeholder values _ NEED TO DO CHARACTERIZATION
-        public static final double ks = 1;
-        public static final double kv = 3;
-
-        // public static final double ksVolts = 0.22;
-        // public static final double kvVoltSecondsPerMeter = 1.98;
-        // public static final double kaVoltSecondsSquaredPerMeter = 0.2;
-        // public static final double kMaxAvailableVoltage = 10.5; // Assumes Battery "sag" for PID/Ramsete Controllers
-        // public static final double kPDriveVel = 8.5;
-
-        // public static final double kMaxSpeedMetersPerSecond = 3;
-        // public static final double kMaxAccelerationMetersPerSecondSquared = 3;
-
-        // Reasonable baseline values for a RAMSETE follower in units of meters and seconds
-        public static final double kRamseteB = 2;
-        public static final double kRamseteZeta = 0.7;    }
-
     // Elevator subsystem constants
     public final static class ElevatorConstants {
         public static final int kCANElevator = 9; // SPARKMAX
@@ -214,9 +168,9 @@ public final class Constants {
         public static final double kMiddleGridElbowAngle = 255;
         public static final double kTopGridElbowAngle = 235;
         public static final double kFloorElbowAngle = 295;
-        public static final double kTraverseElbowAngle = 210;
+        public static final double kTraverseElbowAngle = 348;
         public static final double kSubstationlbowAngle = 270;
-        public static final double kCubeAngleIncrement = 10;
+        public static final double kCubeAngleIncrement = 15;
         public static final double kConeAngleIncrement = 0;
 
         public static final float kSoftLimitBottom = 359;
