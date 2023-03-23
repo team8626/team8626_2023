@@ -175,6 +175,7 @@ public final class Constants {
 
         public static final float kSoftLimitBottom = 359;
         public static final float kSoftLimitTop = 260;
+        public static final double kMaxOpenClawAngle = 305;
     }
     
     public final static class PneumaticConstants {
