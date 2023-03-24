@@ -9,6 +9,7 @@ import java.util.HashMap;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -21,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.IOControlsConstants;
 import frc.robot.Constants.LEDManagerConstants;
 import frc.robot.commands.auto.BalanceTest;
+import frc.robot.commands.auto.BruteForceBalanceCommand;
 import frc.robot.commands.presets.MiddleGridSetupCommand;
 import frc.robot.commands.presets.BottomGridSetupCommand;
 import frc.robot.commands.presets.DoubleSubstationPickupCommand;
@@ -41,6 +43,7 @@ import frc.utils.CommandButtonController;
 import frc.robot.subsystems.ArmExtensionSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.LEDManagerSubsystem;
+import frc.robot.subsystems.PneumaticSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 
 /**
@@ -51,11 +54,13 @@ import frc.robot.subsystems.SwerveDriveSubsystem;
  */
 public class RobotContainer {
   public final SwerveDriveSubsystem m_drive = new SwerveDriveSubsystem();
+  public final PneumaticSubsystem m_pneumatic = new PneumaticSubsystem();
   public final ElevatorSubsystem m_elevator = new ElevatorSubsystem();
   public final ClawSubsystem m_claw = new ClawSubsystem();
   public final ArmElbowSubsystem m_elbow = new ArmElbowSubsystem();
   public final ArmExtensionSubsystem m_extender = new ArmExtensionSubsystem();
   public final LEDManagerSubsystem m_ledManager = new LEDManagerSubsystem();
+
   // private final ArmExtensionSubsystem m_armExtension = new ArmExtensionSubsystem();
   
   private Alliance m_allianceColor;
@@ -110,7 +115,8 @@ public class RobotContainer {
     
     // Start Balancing
     m_xboxController.start().toggleOnTrue(new BalanceTest(m_drive, m_ledManager, true));
-
+    m_xboxController.back().toggleOnTrue(new BruteForceBalanceCommand(m_drive, m_ledManager));
+    
     // Speed Adjustment
     m_xboxController.b().toggleOnTrue(new DriveAdjustmentModeCommand(m_drive, DriveSpeed.LOW_SPEED));
     m_xboxController.a().toggleOnTrue(new DriveAdjustmentModeCommand(m_drive, DriveSpeed.LOWEST_SPEED));
