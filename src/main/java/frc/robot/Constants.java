@@ -164,9 +164,11 @@ public final class Constants {
         public static final int kElbowMotorCurrentLimit = 40; // amps
 
         public static final double kStowedElbowAngle = 348;
-        public static final double kBottomGridElbowAngle = 324;
-        public static final double kMiddleGridElbowAngle = 255;
-        public static final double kTopGridElbowAngle = 235;
+
+        public static final double kTopGridElbowAngle = 240;
+        public static final double kMiddleGridElbowAngle = 260;
+        public static final double kBottomGridElbowAngle = 300;
+
         public static final double kFloorElbowAngle = 295;
         public static final double kTraverseElbowAngle = 348;
         public static final double kSubstationlbowAngle = 270;
@@ -174,12 +176,14 @@ public final class Constants {
         public static final double kConeAngleIncrement = 0;
 
         public static final float kSoftLimitBottom = 359;
-        public static final float kSoftLimitTop = 260;
+        public static final float kSoftLimitTop = 220;
         public static final double kMaxOpenClawAngle = 305;
     }
     
     public final static class PneumaticConstants {
-        public static PneumaticsModuleType kPCMtype = PneumaticsModuleType.CTREPCM;
+        public static PneumaticsModuleType kPCMtype = PneumaticsModuleType.REVPH;
+        public static double kMinPressure = 100;
+        public static double kMaxPressure = 120;
     }
 
     // Claw subsystem constants
