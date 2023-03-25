@@ -9,7 +9,6 @@ import java.util.HashMap;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -103,7 +102,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
     
     // Claw Controls
-    m_xboxController.leftBumper().onTrue(new OpenClawCommand(m_robot.m_claw, m_elbow));
+    m_xboxController.leftBumper().onTrue(new OpenClawCommand(m_claw, m_elbow));
     m_xboxController.rightBumper().onTrue(new CloseClawCommand(m_claw));
   
     // Set Swerve Modules to Cross (X) Position
@@ -196,7 +195,7 @@ public class RobotContainer {
                                     new CloseClawCommand(m_claw),
                                     new MiddleGridSetupCommand(m_elevator, m_elbow, m_extender, m_ledManager),
                                     new WaitCommand(.25),
-                                    new OpenClawCommand(m_robot.m_claw, m_elbow));
+                                    new OpenClawCommand(m_claw, m_elbow));
     }
     return startCommand;
   }
