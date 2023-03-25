@@ -111,10 +111,12 @@ public class RobotContainer {
           new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorPINK),
           new RunCommand(
                 () -> ((SwerveDriveSubsystem)m_drive).setX(), m_drive))
-        );
+    );
     
     // Start Balancing
-    m_xboxController.start().toggleOnTrue(new BalanceTest(m_drive, m_ledManager, true));
+    m_xboxController.start().toggleOnTrue(new SequentialCommandGroup( 
+          new BalanceTest(m_drive, m_ledManager, true))
+    );
     m_xboxController.back().toggleOnTrue(new BruteForceBalanceCommand(m_drive, m_ledManager));
     
     // Speed Adjustment

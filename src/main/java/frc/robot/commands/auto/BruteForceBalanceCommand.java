@@ -62,13 +62,13 @@ public class BruteForceBalanceCommand extends CommandBase {
     // This is it!
     else {
       m_drive.drive(0, 0, 0, false, true);
-      m_drive.setX();
     }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    m_drive.setX();
     m_ledManager.setAllianceColor();
   }
   
