@@ -182,7 +182,7 @@ public final class Constants {
     
     public final static class PneumaticConstants {
         public static PneumaticsModuleType kPCMtype = PneumaticsModuleType.REVPH;
-        public static double kMinPressure = 100;
+        public static double kMinPressure = 80;
         public static double kMaxPressure = 120;
     }
 
