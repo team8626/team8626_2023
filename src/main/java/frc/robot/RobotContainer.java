@@ -21,7 +21,6 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.IOControlsConstants;
 import frc.robot.Constants.LEDManagerConstants;
 import frc.robot.commands.auto.BalanceTest;
-import frc.robot.commands.auto.BruteForceBalanceCommand;
 import frc.robot.commands.presets.MiddleGridSetupCommand;
 import frc.robot.commands.presets.BottomGridSetupCommand;
 import frc.robot.commands.presets.DoubleSubstationPickupCommand;
@@ -32,7 +31,6 @@ import frc.robot.commands.presets.TopGridSetupCommand;
 import frc.robot.commands.subsystems.CloseClawCommand;
 import frc.robot.commands.subsystems.DriveAdjustmentModeCommand;
 import frc.robot.commands.subsystems.OpenClawCommand;
-import frc.robot.commands.subsystems.ResetOdometryCommand;
 import frc.robot.commands.subsystems.SetArmElbowCommand;
 import frc.robot.commands.subsystems.UpdateLEDsCommand;
 import frc.robot.subsystems.ClawSubsystem;
@@ -64,7 +62,7 @@ public class RobotContainer {
   // private final ArmExtensionSubsystem m_armExtension = new ArmExtensionSubsystem();
   
   private Alliance m_allianceColor;
-  private boolean m_reverseStart = false;
+ 
 
   // Define controllers
   private final CommandXboxController m_xboxController = new CommandXboxController(IOControlsConstants.kXboxControllerPort);
@@ -158,9 +156,9 @@ public class RobotContainer {
   }
 
 
-  public void setReverseStart(){
-    m_reverseStart = true;
-  }
+ 
+  
+  
   
   /**
    * Set Default Commands for Subsystems 
@@ -175,19 +173,19 @@ public class RobotContainer {
 
     // TODO: THis hsould be handled by resetOdometry... Seems to be not working
     // This is a workaround...
-    if(this.m_reverseStart){
-      m_drive.setDefaultCommand(
-      // The left stick controls translation of the robot.
-      // Turning is controlled by the X axis of the right stick.
-      new RunCommand(
-          () -> (m_drive).drive(
-              MathUtil.applyDeadband(m_xboxController.getLeftY(), IOControlsConstants.kDriveDeadband),
-              MathUtil.applyDeadband(m_xboxController.getLeftX(), IOControlsConstants.kDriveDeadband),
-              MathUtil.applyDeadband(-m_xboxController.getRightX(), IOControlsConstants.kDriveDeadband),
-              true,
-              true),
-          m_drive));
-    } else {
+    // if(m_reverseStart){
+    //   m_drive.setDefaultCommand(
+    //   // The left stick controls translation of the robot.
+    //   // Turning is controlled by the X axis of the right stick.
+    //   new RunCommand(
+    //       () -> (m_drive).drive(
+    //           MathUtil.applyDeadband(m_xboxController.getLeftY(), IOControlsConstants.kDriveDeadband),
+    //           MathUtil.applyDeadband(m_xboxController.getLeftX(), IOControlsConstants.kDriveDeadband),
+    //           MathUtil.applyDeadband(-m_xboxController.getRightX(), IOControlsConstants.kDriveDeadband),
+    //           true,
+    //           true),
+    //       m_drive));
+    // } else {
       m_drive.setDefaultCommand(
         // The left stick controls translation of the robot.
         // Turning is controlled by the X axis of the right stick.
@@ -199,39 +197,11 @@ public class RobotContainer {
                 true,
                 true),
             m_drive));     
-    }
+    // }
   }
 
   private void toggleControls(){
-    m_reverseStart = !m_reverseStart;
-
-    if(this.m_reverseStart){
-      System.out.println("Reversing Controls");
-      m_drive.setDefaultCommand(
-      // The left stick controls translation of the robot.
-      // Turning is controlled by the X axis of the right stick.
-      new RunCommand(
-          () -> (m_drive).drive(
-              MathUtil.applyDeadband(m_xboxController.getLeftY(), IOControlsConstants.kDriveDeadband),
-              MathUtil.applyDeadband(m_xboxController.getLeftX(), IOControlsConstants.kDriveDeadband),
-              MathUtil.applyDeadband(-m_xboxController.getRightX(), IOControlsConstants.kDriveDeadband),
-              true,
-              true),
-          m_drive));
-    } else {
-      System.out.println("Stop Reversing Controls");
-      m_drive.setDefaultCommand(
-        // The left stick controls translation of the robot.
-        // Turning is controlled by the X axis of the right stick.
-        new RunCommand(
-            () -> (m_drive).drive(
-                MathUtil.applyDeadband(-m_xboxController.getLeftY(), IOControlsConstants.kDriveDeadband),
-                MathUtil.applyDeadband(-m_xboxController.getLeftX(), IOControlsConstants.kDriveDeadband),
-                MathUtil.applyDeadband(-m_xboxController.getRightX(), IOControlsConstants.kDriveDeadband),
-                true,
-                true),
-            m_drive));     
-    }
+    m_drive.setReverseStart(!m_drive.getReverseStart());
   }
 
   /**

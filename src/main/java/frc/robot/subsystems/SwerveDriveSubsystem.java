@@ -55,6 +55,8 @@ public class SwerveDriveSubsystem extends SubsystemBase /*implements DriveSubsys
 
   private static double m_powerFactor = 1;
 
+  private boolean m_reverseStart = false;
+
   public enum DriveSpeed {
   LOWEST_SPEED, 
   LOW_SPEED
@@ -187,8 +189,8 @@ public class SwerveDriveSubsystem extends SubsystemBase /*implements DriveSubsys
       m_currentRotation = rot;
     }
 
-    xSpeedCommanded *= m_powerFactor;
-    ySpeedCommanded *= m_powerFactor;
+    xSpeedCommanded = xSpeedCommanded * m_powerFactor * ((m_reverseStart)?-1:1);
+    ySpeedCommanded = ySpeedCommanded * m_powerFactor * ((m_reverseStart)?-1:1);
     m_currentRotation *= m_powerFactor;
 
     // Convert the commanded speeds into the correct units for the drivetrain
@@ -216,6 +218,14 @@ public class SwerveDriveSubsystem extends SubsystemBase /*implements DriveSubsys
     m_frontRight.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
     m_rearLeft.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
     m_rearRight.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
+  }
+
+  public void setReverseStart(boolean reversed){
+    m_reverseStart = reversed;
+  }
+
+  public boolean getReverseStart(){
+    return m_reverseStart;
   }
 
   /**
@@ -315,9 +325,11 @@ public class SwerveDriveSubsystem extends SubsystemBase /*implements DriveSubsys
   public void initDashboard() {
     SmartDashboard.putNumber("Pitch Angle", getPitch()); 
     SmartDashboard.putNumber("Roll Angle", m_gyro.getRoll()); 
+    SmartDashboard.putBoolean("Reversed Drive", getReverseStart());
   }
   public void updateDashboard() {
    SmartDashboard.putNumber("Pitch Angle", getPitch()); 
    SmartDashboard.putNumber("Roll Angle", m_gyro.getRoll()); 
+   SmartDashboard.putBoolean("Reversed Drive", getReverseStart());
   }
 }

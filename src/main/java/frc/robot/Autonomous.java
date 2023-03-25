@@ -24,7 +24,6 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.DashBoard.TrajectoryEnum;
 import frc.robot.commands.auto.BalanceLockCommand;
 import frc.robot.commands.auto.BalanceTest;
-import frc.robot.commands.auto.DriveToPitchCommand;
 import frc.robot.commands.presets.MiddleGridSetupCommand;
 import frc.robot.commands.presets.SetStowPositionCommand;
 import frc.robot.commands.subsystems.CloseClawCommand;
@@ -49,38 +48,48 @@ public class Autonomous {
         Command startCommand = new InstantCommand();
 
         switch(m_autoStart) {
-  
+            case START9_EXIT_BALANCE:
+            startCommand = getStart9ExitBalanceCommand();
+            m_robot.m_drive.setReverseStart(true);
+
+            break;
+
             case START9_CONE6_BALANCE:
                 startCommand = getStart9Cone6BalanceCommand();
-                m_robot.setReverseStart();
+                m_robot.m_drive.setReverseStart(true);
 
                 break;
             case START9_CONE7_BALANCE:
                 startCommand = getStart9Cone7BalanceCommand();
-                m_robot.setReverseStart();
+                m_robot.m_drive.setReverseStart(true);
 
                 break;
             case START6_EXIT_BALANCE:
                 startCommand = getStart6ExitBalanceCommand();
-                m_robot.setReverseStart();
+                m_robot.m_drive.setReverseStart(true);
 
                 break;
             case START9_EXIT:
                 startCommand = getStart9ExitCommand();
+                m_robot.m_drive.setReverseStart(true);
                 break;
             case START1_EXIT:
                 startCommand = getStart1ExitCommand();
-                m_robot.setReverseStart();
+                m_robot.m_drive.setReverseStart(true);
 
                 break;
             case TWO_M_INTAKE:
                 startCommand = getTwoMeterIntakeCommand();
+                m_robot.m_drive.setReverseStart(false);
                 break;
             case TWO_M_BALANCE:
                 startCommand = getTwoMeterBalanceCommand();
+                m_robot.m_drive.setReverseStart(false);
                 break;  
             case DO_NOTHING:
                 startCommand = new InstantCommand();
+                m_robot.m_drive.setReverseStart(false);
+
         }
         return startCommand;
     }
@@ -92,6 +101,7 @@ public class Autonomous {
 
         startCommand = new SequentialCommandGroup(
             // Starting the game. Make sure the claw is closed and get ready for delivery
+            new WaitCommand(5),
             new CloseClawCommand(m_robot.m_claw),
             new MiddleGridSetupCommand(m_robot.m_elevator, m_robot.m_elbow, m_robot.m_extender, m_robot.m_ledManager),
             new WaitCommand(.25),
@@ -129,6 +139,7 @@ public class Autonomous {
 
         startCommand = new SequentialCommandGroup(
             // Starting the game. Make sure the claw is closed and get ready for delivery
+            new WaitCommand(5),
             new CloseClawCommand(m_robot.m_claw),
             new MiddleGridSetupCommand(m_robot.m_elevator, m_robot.m_elbow, m_robot.m_extender, m_robot.m_ledManager),
             new WaitCommand(.25),
@@ -162,10 +173,34 @@ public class Autonomous {
     private Command getStart6ExitBalanceCommand(){
         Command startCommand = new InstantCommand();
 
-        List<PathPlannerTrajectory> pathGroup = PathPlanner.loadPathGroup("Start6_Exit_Balance", new PathConstraints(2, 2));
+        List<PathPlannerTrajectory> pathGroup = PathPlanner.loadPathGroup("Start6_Exit_Balance", new PathConstraints(1.5, 2));
 
         startCommand = new SequentialCommandGroup(
             // Starting the game. Make sure the claw is closed and get ready for delivery
+            new WaitCommand(5),
+            new CloseClawCommand(m_robot.m_claw),
+            new MiddleGridSetupCommand(m_robot.m_elevator, m_robot.m_elbow, m_robot.m_extender, m_robot.m_ledManager),
+            new WaitCommand(.25),
+            new OpenClawCommand(m_robot.m_claw, m_robot.m_elbow),
+            new SetStowPositionCommand(m_robot.m_elevator, m_robot.m_elbow, m_robot.m_extender, m_robot.m_claw, m_robot.m_ledManager),
+            new FollowPathWithEvents(m_robot.m_drive.followTrajectoryCommand( pathGroup.get(0), true),
+                                    pathGroup.get(0).getMarkers(),
+                                    m_robot.eventMap),
+            new PrintCommand("---------- AUTO Ready to Balance ----------"),
+            new BalanceTest(m_robot.m_drive, m_robot.m_ledManager, false)
+            );
+
+        return startCommand;
+    }
+
+    private Command getStart9ExitBalanceCommand(){
+        Command startCommand = new InstantCommand();
+
+        List<PathPlannerTrajectory> pathGroup = PathPlanner.loadPathGroup("Start9_Exit_Balance", new PathConstraints(1.5, 2));
+
+        startCommand = new SequentialCommandGroup(
+            // Starting the game. Make sure the claw is closed and get ready for delivery
+            new WaitCommand(5),
             new CloseClawCommand(m_robot.m_claw),
             new MiddleGridSetupCommand(m_robot.m_elevator, m_robot.m_elbow, m_robot.m_extender, m_robot.m_ledManager),
             new WaitCommand(.25),
@@ -188,6 +223,7 @@ public class Autonomous {
 
         startCommand = new SequentialCommandGroup(
             // Starting the game. Make sure the claw is closed and get ready for delivery
+            new WaitCommand(5),
             new CloseClawCommand(m_robot.m_claw),
             new MiddleGridSetupCommand(m_robot.m_elevator, m_robot.m_elbow, m_robot.m_extender, m_robot.m_ledManager),
             new WaitCommand(.25),
@@ -197,7 +233,7 @@ public class Autonomous {
             // Exit the Community
             new FollowPathWithEvents(m_robot.m_drive.followTrajectoryCommand( pathGroup.get(0), true),
                                     pathGroup.get(0).getMarkers(),
-                                    m_robot.eventMap));
+                                    new HashMap<>()));
 
         return startCommand;
     }
@@ -209,6 +245,7 @@ public class Autonomous {
 
         startCommand = new SequentialCommandGroup(
             // Starting the game. Make sure the claw is closed and get ready for delivery
+            new WaitCommand(5),
             new CloseClawCommand(m_robot.m_claw),
             new MiddleGridSetupCommand(m_robot.m_elevator, m_robot.m_elbow, m_robot.m_extender, m_robot.m_ledManager),
             new WaitCommand(.25),
