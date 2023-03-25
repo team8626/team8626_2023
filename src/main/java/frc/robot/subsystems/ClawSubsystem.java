@@ -65,6 +65,7 @@ public class ClawSubsystem extends SubsystemBase {
         m_motorActive = true;
 
     m_clawCylinder.set(false);
+    m_isClosed = true;
   }
 
   public void open(){ 
@@ -75,6 +76,7 @@ public class ClawSubsystem extends SubsystemBase {
     m_motorActive = true;
 
     m_clawCylinder.set(true);
+    m_isClosed = false;
   }
 
   private void stopMotor(){ 
