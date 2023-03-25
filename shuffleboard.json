@@ -11,10 +11,10 @@
         "vgap": 16.0,
         "titleType": 0,
         "tiles": {
-          "8,0": {
+          "0,3": {
             "size": [
-              1,
-              2
+              2,
+              1
             ],
             "content": {
               "_type": "Boolean Box",
@@ -28,7 +28,7 @@
           },
           "0,0": {
             "size": [
-              2,
+              6,
               1
             ],
             "content": {
@@ -39,7 +39,7 @@
               "_showGlyph": false
             }
           },
-          "2,0": {
+          "0,1": {
             "size": [
               2,
               1
@@ -55,21 +55,6 @@
           "2,1": {
             "size": [
               2,
-              1
-            ],
-            "content": {
-              "_type": "Boolean Box",
-              "_source0": "network_table:///SmartDashboard/Claw Homed",
-              "_title": "SmartDashboard/Claw Homed",
-              "_glyph": 148,
-              "_showGlyph": false,
-              "Colors/Color when true": "#7CFC00FF",
-              "Colors/Color when false": "#8B0000FF"
-            }
-          },
-          "6,0": {
-            "size": [
-              2,
               2
             ],
             "content": {
@@ -83,7 +68,7 @@
               "Visuals/Show value": true
             }
           },
-          "4,0": {
+          "4,1": {
             "size": [
               2,
               1
@@ -96,7 +81,7 @@
               "_showGlyph": false
             }
           },
-          "4,1": {
+          "4,2": {
             "size": [
               2,
               1
@@ -111,88 +96,58 @@
               "Colors/Color when false": "#8B0000FF"
             }
           },
-          "6,2": {
+          "1,2": {
             "size": [
-              3,
-              2
+              1,
+              1
             ],
             "content": {
-              "_type": "Camera Stream",
-              "_source0": "camera_server://Port_1181_MJPEG_Server",
-              "_title": "Port_1181_MJPEG_Server",
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Roll Angle",
+              "_title": "Roll Angle",
               "_glyph": 148,
-              "_showGlyph": false,
-              "Crosshair/Show crosshair": true,
-              "Crosshair/Crosshair color": "#FFFFFFFF",
-              "Controls/Show controls": true,
-              "Controls/Rotation": "NONE",
-              "compression": -1.0,
-              "fps": -1,
-              "imageWidth": -1,
-              "imageHeight": -1
+              "_showGlyph": false
             }
           },
-          "6,4": {
+          "0,2": {
             "size": [
-              3,
-              2
+              1,
+              1
             ],
             "content": {
-              "_type": "Camera Stream",
-              "_source0": "camera_server://Port_1182_MJPEG_Server",
-              "_title": "Port_1182_MJPEG_Server",
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Pitch Angle",
+              "_title": "Pitch Angle",
               "_glyph": 148,
-              "_showGlyph": false,
-              "Crosshair/Show crosshair": true,
-              "Crosshair/Crosshair color": "#FFFFFFFF",
-              "Controls/Show controls": true,
-              "Controls/Rotation": "NONE",
-              "compression": -1.0,
-              "fps": -1,
-              "imageWidth": -1,
-              "imageHeight": -1
+              "_showGlyph": false
             }
           },
-          "3,2": {
+          "2,3": {
             "size": [
-              3,
-              2
+              2,
+              1
             ],
             "content": {
-              "_type": "Camera Stream",
-              "_source0": "camera_server://Port_1183_MJPEG_Server",
-              "_title": "Port_1183_MJPEG_Server",
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Desired Angle",
+              "_title": "SmartDashboard/Desired Angle",
               "_glyph": 148,
-              "_showGlyph": false,
-              "Crosshair/Show crosshair": true,
-              "Crosshair/Crosshair color": "#FFFFFFFF",
-              "Controls/Show controls": true,
-              "Controls/Rotation": "NONE",
-              "compression": -1.0,
-              "fps": -1,
-              "imageWidth": -1,
-              "imageHeight": -1
+              "_showGlyph": false
             }
           },
-          "3,4": {
+          "4,3": {
             "size": [
-              3,
-              2
+              2,
+              1
             ],
             "content": {
-              "_type": "Camera Stream",
-              "_source0": "camera_server://Port_1184_MJPEG_Server",
-              "_title": "Port_1184_MJPEG_Server",
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Claw Motor",
+              "_title": "SmartDashboard/Claw Motor",
               "_glyph": 148,
               "_showGlyph": false,
-              "Crosshair/Show crosshair": true,
-              "Crosshair/Crosshair color": "#FFFFFFFF",
-              "Controls/Show controls": true,
-              "Controls/Rotation": "NONE",
-              "compression": -1.0,
-              "fps": -1,
-              "imageWidth": -1,
-              "imageHeight": -1
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
             }
           }
         }
