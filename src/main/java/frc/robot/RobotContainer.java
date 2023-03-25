@@ -32,6 +32,7 @@ import frc.robot.commands.presets.TopGridSetupCommand;
 import frc.robot.commands.subsystems.CloseClawCommand;
 import frc.robot.commands.subsystems.DriveAdjustmentModeCommand;
 import frc.robot.commands.subsystems.OpenClawCommand;
+import frc.robot.commands.subsystems.ResetOdometryCommand;
 import frc.robot.commands.subsystems.SetArmElbowCommand;
 import frc.robot.commands.subsystems.UpdateLEDsCommand;
 import frc.robot.subsystems.ClawSubsystem;
