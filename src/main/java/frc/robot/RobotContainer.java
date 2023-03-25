@@ -24,6 +24,7 @@ import frc.robot.commands.auto.BalanceTest;
 import frc.robot.commands.presets.MiddleGridSetupCommand;
 import frc.robot.commands.presets.BottomGridSetupCommand;
 import frc.robot.commands.presets.DoubleSubstationPickupCommand;
+import frc.robot.commands.presets.LockArmCommand;
 import frc.robot.commands.presets.SetFloorPositionCommand;
 import frc.robot.commands.presets.SetStowPositionCommand;
 import frc.robot.commands.presets.SetTraversePositionCommand;
@@ -124,10 +125,11 @@ public class RobotContainer {
     m_xboxController.a().toggleOnTrue(new DriveAdjustmentModeCommand(m_drive, DriveSpeed.LOWEST_SPEED));
 
     // Predefined Arm positions for Game Pieces delivery
-    m_buttonBox.button_1().onTrue(new TopGridSetupCommand(m_elevator, m_elbow, m_extender, m_ledManager));
+    m_buttonBox.button_1().onTrue(new LockArmCommand(m_elevator, m_elbow, m_extender, m_ledManager));
+    // m_buttonBox.button_1().onTrue(new TopGridSetupCommand(m_elevator, m_elbow, m_extender, m_ledManager));
     m_buttonBox.button_2().onTrue(new MiddleGridSetupCommand(m_elevator, m_elbow, m_extender, m_ledManager));
     m_buttonBox.button_3().onTrue(new BottomGridSetupCommand(m_elevator, m_elbow, m_extender, m_ledManager));
-
+    
     m_buttonBox.button_4().onTrue(new DoubleSubstationPickupCommand(m_elevator, m_elbow, m_extender, m_claw, m_ledManager));
     m_buttonBox.button_5().onTrue(new SetFloorPositionCommand(m_elevator, m_elbow, m_extender, m_claw, m_ledManager));
     m_buttonBox.button_6().onTrue(new SetTraversePositionCommand(m_elevator, m_elbow, m_extender, m_ledManager));

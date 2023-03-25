@@ -23,7 +23,7 @@ public class BalanceTest extends PIDCommand {
     super(
         // The controller that the command will use
         //0.005 P 0.00001 D
-        new PIDController(0.005, 0, 0.00001),
+        new PIDController(0.01, 0, 0.00001),
         // This should return the measurement
         () -> drivetrain.getPitch(),
         // This should return the setpoint (can also be a constant)
