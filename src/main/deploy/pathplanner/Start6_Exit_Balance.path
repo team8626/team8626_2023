@@ -73,15 +73,8 @@
       }
     }
   ],
-  "maxVelocity": 1.0,
+  "maxVelocity": 1.5,
   "maxAcceleration": null,
   "isReversed": null,
-  "markers": [
-    {
-      "position": 0.08513405539772731,
-      "names": [
-        "StowArm"
-      ]
-    }
-  ]
+  "markers": []
 }
