@@ -54,12 +54,17 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
-    // m_robotContainer.m_ledManager.setAllianceColor();
     m_robotContainer.m_ledManager.setColor(LEDManagerConstants.kColorPINK);
   }
 
   @Override
-  public void disabledPeriodic() {}
+  public void disabledPeriodic() {
+    if(DriverStation.isDSAttached()){
+      m_robotContainer.m_ledManager.setAllianceColor();
+    } else {
+      m_robotContainer.m_ledManager.setColor(LEDManagerConstants.kColorPINK);
+    }
+  }
 
   @Override
   public void disabledExit() {}

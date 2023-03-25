@@ -63,6 +63,7 @@ public class RobotContainer {
   // private final ArmExtensionSubsystem m_armExtension = new ArmExtensionSubsystem();
   
   private Alliance m_allianceColor;
+  private boolean m_reverseStart = false;
 
   // Define controllers
   private final CommandXboxController m_xboxController = new CommandXboxController(IOControlsConstants.kXboxControllerPort);
@@ -116,8 +117,9 @@ public class RobotContainer {
     m_xboxController.start().toggleOnTrue(new SequentialCommandGroup( 
           new BalanceTest(m_drive, m_ledManager, true))
     );
-    m_xboxController.back().toggleOnTrue(new BruteForceBalanceCommand(m_drive, m_ledManager));
     
+    m_xboxController.back().onTrue(new InstantCommand(this::toggleControls));
+
     // Speed Adjustment
     m_xboxController.b().toggleOnTrue(new DriveAdjustmentModeCommand(m_drive, DriveSpeed.LOW_SPEED));
     m_xboxController.a().toggleOnTrue(new DriveAdjustmentModeCommand(m_drive, DriveSpeed.LOWEST_SPEED));
@@ -154,6 +156,11 @@ public class RobotContainer {
       eventMap.put("StowArm", new SetStowPositionCommand(m_elevator, m_elbow, m_extender, m_claw, m_ledManager));
   }
 
+
+  public void setReverseStart(){
+    m_reverseStart = true;
+  }
+  
   /**
    * Set Default Commands for Subsystems 
    * THis is called when robot enters in teleop mode.
@@ -165,17 +172,65 @@ public class RobotContainer {
     Command startCommand = new SetStowPositionCommand(m_elevator, m_elbow, m_extender, m_claw, m_ledManager);
     startCommand.schedule();
 
-    m_drive.setDefaultCommand(
-    // The left stick controls translation of the robot.
-    // Turning is controlled by the X axis of the right stick.
-    new RunCommand(
-        () -> (m_drive).drive(
-            MathUtil.applyDeadband(-m_xboxController.getLeftY(), IOControlsConstants.kDriveDeadband),
-            MathUtil.applyDeadband(-m_xboxController.getLeftX(), IOControlsConstants.kDriveDeadband),
-            MathUtil.applyDeadband(-m_xboxController.getRightX(), IOControlsConstants.kDriveDeadband),
-            true,
-            true),
-        m_drive));
+    // TODO: THis hsould be handled by resetOdometry... Seems to be not working
+    // This is a workaround...
+    if(this.m_reverseStart){
+      m_drive.setDefaultCommand(
+      // The left stick controls translation of the robot.
+      // Turning is controlled by the X axis of the right stick.
+      new RunCommand(
+          () -> (m_drive).drive(
+              MathUtil.applyDeadband(m_xboxController.getLeftY(), IOControlsConstants.kDriveDeadband),
+              MathUtil.applyDeadband(m_xboxController.getLeftX(), IOControlsConstants.kDriveDeadband),
+              MathUtil.applyDeadband(-m_xboxController.getRightX(), IOControlsConstants.kDriveDeadband),
+              true,
+              true),
+          m_drive));
+    } else {
+      m_drive.setDefaultCommand(
+        // The left stick controls translation of the robot.
+        // Turning is controlled by the X axis of the right stick.
+        new RunCommand(
+            () -> (m_drive).drive(
+                MathUtil.applyDeadband(-m_xboxController.getLeftY(), IOControlsConstants.kDriveDeadband),
+                MathUtil.applyDeadband(-m_xboxController.getLeftX(), IOControlsConstants.kDriveDeadband),
+                MathUtil.applyDeadband(-m_xboxController.getRightX(), IOControlsConstants.kDriveDeadband),
+                true,
+                true),
+            m_drive));     
+    }
+  }
+
+  private void toggleControls(){
+    m_reverseStart = !m_reverseStart;
+
+    if(this.m_reverseStart){
+      System.out.println("Reversing Controls");
+      m_drive.setDefaultCommand(
+      // The left stick controls translation of the robot.
+      // Turning is controlled by the X axis of the right stick.
+      new RunCommand(
+          () -> (m_drive).drive(
+              MathUtil.applyDeadband(m_xboxController.getLeftY(), IOControlsConstants.kDriveDeadband),
+              MathUtil.applyDeadband(m_xboxController.getLeftX(), IOControlsConstants.kDriveDeadband),
+              MathUtil.applyDeadband(-m_xboxController.getRightX(), IOControlsConstants.kDriveDeadband),
+              true,
+              true),
+          m_drive));
+    } else {
+      System.out.println("Stop Reversing Controls");
+      m_drive.setDefaultCommand(
+        // The left stick controls translation of the robot.
+        // Turning is controlled by the X axis of the right stick.
+        new RunCommand(
+            () -> (m_drive).drive(
+                MathUtil.applyDeadband(-m_xboxController.getLeftY(), IOControlsConstants.kDriveDeadband),
+                MathUtil.applyDeadband(-m_xboxController.getLeftX(), IOControlsConstants.kDriveDeadband),
+                MathUtil.applyDeadband(-m_xboxController.getRightX(), IOControlsConstants.kDriveDeadband),
+                true,
+                true),
+            m_drive));     
+    }
   }
 
   /**
@@ -190,12 +245,13 @@ public class RobotContainer {
     catch(IOException e){
       DriverStation.reportError("Could not open auto-trajectory file", e.getStackTrace());
       startCommand = new SequentialCommandGroup(
-                                    // Starting the game. Make sure the claw is closed and get ready for delivery
-                                    new SetStowPositionCommand(m_elevator, m_elbow, m_extender, m_claw, m_ledManager),
                                     new CloseClawCommand(m_claw),
+                                    new SetStowPositionCommand(m_elevator, m_elbow, m_extender, m_claw, m_ledManager),
                                     new MiddleGridSetupCommand(m_elevator, m_elbow, m_extender, m_ledManager),
                                     new WaitCommand(.25),
-                                    new OpenClawCommand(m_claw, m_elbow));
+                                    new OpenClawCommand(m_claw, m_elbow),
+                                    new SetStowPositionCommand(m_elevator, m_elbow, m_extender, m_claw, m_ledManager)
+      );
     }
     return startCommand;
   }

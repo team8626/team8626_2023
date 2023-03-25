@@ -14,12 +14,14 @@ public class DriveToPitchCommand extends CommandBase {
   private SwerveDriveSubsystem m_drive;
   private LEDManagerSubsystem m_ledManager;
   private float m_targetAngle;
+  private boolean m_reverse = false;
 
-  public DriveToPitchCommand(float targetAngle, SwerveDriveSubsystem drive, LEDManagerSubsystem ledManager) {
+  public DriveToPitchCommand(float targetAngle, boolean reverse, SwerveDriveSubsystem drive, LEDManagerSubsystem ledManager) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_drive = drive;
     m_ledManager = ledManager;
     m_targetAngle = targetAngle;
+    m_reverse = reverse;
     addRequirements(drive, ledManager);
   }
 
@@ -31,8 +33,12 @@ public class DriveToPitchCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    double speed = 0.4;
+    if(m_reverse){
+      speed *= -1;
+    }
     m_ledManager.setColor(LEDManagerConstants.kColorPINK);
-    m_drive.drive(0.4, 0, 0, false, false);
+    m_drive.drive(speed, 0, 0, false, false);
   }
 
   // Called once the command ends or is interrupted.

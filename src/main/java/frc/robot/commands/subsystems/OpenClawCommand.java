@@ -12,22 +12,25 @@ import frc.robot.subsystems.ClawSubsystem;
 public class OpenClawCommand extends CommandBase {
   private ClawSubsystem m_claw;
   private ArmElbowSubsystem m_elbow;
-  private boolean invalidAngle;
+  private boolean m_invalidAngle;
+
   public OpenClawCommand(ClawSubsystem claw, ArmElbowSubsystem elbow) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(claw);
     m_claw = claw;
     m_elbow = elbow;
-    invalidAngle = false;
+    m_invalidAngle = false;
     
   }
 
   // Called when the command is initially scheduled
   @Override
   public void initialize() {
-    invalidAngle = (m_elbow.getDesiredAngle() > ArmConstants.kMaxOpenClawAngle);
-    m_claw.open();
-    
+    if(m_elbow.getDesiredAngle() > ArmConstants.kMaxOpenClawAngle) {
+      m_invalidAngle = true;
+    } else {
+      m_claw.open();
+    }    
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -44,6 +47,6 @@ public class OpenClawCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return m_claw.isOpened() || invalidAngle;
+    return m_claw.isOpened() || m_invalidAngle;
   }
 }

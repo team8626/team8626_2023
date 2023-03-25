@@ -54,6 +54,9 @@
         }
       },
       "SmartDashboard": {
+        "Auto Mode": {
+          "open": true
+        },
         "Field": {
           "open": true
         },

@@ -121,6 +121,7 @@ public class SwerveDriveSubsystem extends SubsystemBase /*implements DriveSubsys
             m_rearRight.getPosition()
         },
         pose);
+        System.out.printf("Resetting Odometry - Angle: %f\n", pose.getRotation().getDegrees());
   }
 
   /**
