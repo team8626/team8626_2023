@@ -101,11 +101,12 @@ public class Autonomous {
 
         startCommand = new SequentialCommandGroup(
             // Starting the game. Make sure the claw is closed and get ready for delivery
-            new WaitCommand(5),
+            new WaitCommand(7),
             new CloseClawCommand(m_robot.m_claw),
             new MiddleGridSetupCommand(m_robot.m_elevator, m_robot.m_elbow, m_robot.m_extender, m_robot.m_ledManager),
             new WaitCommand(.25),
             new OpenClawCommand(m_robot.m_claw, m_robot.m_elbow),
+            
             new SetStowPositionCommand(m_robot.m_elevator, m_robot.m_elbow, m_robot.m_extender, m_robot.m_claw, m_robot.m_ledManager),
 
             // Go to pickup next piece
@@ -139,7 +140,7 @@ public class Autonomous {
 
         startCommand = new SequentialCommandGroup(
             // Starting the game. Make sure the claw is closed and get ready for delivery
-            new WaitCommand(5),
+            new WaitCommand(7),
             new CloseClawCommand(m_robot.m_claw),
             new MiddleGridSetupCommand(m_robot.m_elevator, m_robot.m_elbow, m_robot.m_extender, m_robot.m_ledManager),
             new WaitCommand(.25),
@@ -177,7 +178,7 @@ public class Autonomous {
 
         startCommand = new SequentialCommandGroup(
             // Starting the game. Make sure the claw is closed and get ready for delivery
-            new WaitCommand(5),
+            new WaitCommand(7),
             new CloseClawCommand(m_robot.m_claw),
             new MiddleGridSetupCommand(m_robot.m_elevator, m_robot.m_elbow, m_robot.m_extender, m_robot.m_ledManager),
             new WaitCommand(.25),
@@ -200,7 +201,7 @@ public class Autonomous {
 
         startCommand = new SequentialCommandGroup(
             // Starting the game. Make sure the claw is closed and get ready for delivery
-            new WaitCommand(5),
+            new WaitCommand(7),
             new CloseClawCommand(m_robot.m_claw),
             new MiddleGridSetupCommand(m_robot.m_elevator, m_robot.m_elbow, m_robot.m_extender, m_robot.m_ledManager),
             new WaitCommand(.25),
@@ -223,11 +224,12 @@ public class Autonomous {
 
         startCommand = new SequentialCommandGroup(
             // Starting the game. Make sure the claw is closed and get ready for delivery
-            new WaitCommand(5),
+            new WaitCommand(7),
             new CloseClawCommand(m_robot.m_claw),
             new MiddleGridSetupCommand(m_robot.m_elevator, m_robot.m_elbow, m_robot.m_extender, m_robot.m_ledManager),
             new WaitCommand(.25),
             new OpenClawCommand(m_robot.m_claw, m_robot.m_elbow),
+            new WaitCommand(.5),
             new SetStowPositionCommand(m_robot.m_elevator, m_robot.m_elbow, m_robot.m_extender, m_robot.m_claw, m_robot.m_ledManager),
 
             // Exit the Community
@@ -245,7 +247,7 @@ public class Autonomous {
 
         startCommand = new SequentialCommandGroup(
             // Starting the game. Make sure the claw is closed and get ready for delivery
-            new WaitCommand(5),
+            new WaitCommand(7),
             new CloseClawCommand(m_robot.m_claw),
             new MiddleGridSetupCommand(m_robot.m_elevator, m_robot.m_elbow, m_robot.m_extender, m_robot.m_ledManager),
             new WaitCommand(.25),
