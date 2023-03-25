@@ -55,6 +55,10 @@ public class SwerveDriveSubsystem extends SubsystemBase /*implements DriveSubsys
 
   private static double m_powerFactor = 1;
 
+  private static double balancekP;
+  private static double balancekI;
+  private static double balancekD;
+
   public enum DriveSpeed {
   LOWEST_SPEED, 
   LOW_SPEED
@@ -314,9 +318,37 @@ public class SwerveDriveSubsystem extends SubsystemBase /*implements DriveSubsys
   public void initDashboard() {
     SmartDashboard.putNumber("Pitch Angle", getPitch()); 
     SmartDashboard.putNumber("Roll Angle", m_gyro.getRoll()); 
+    SmartDashboard.putNumber("Balance kP", 0.005);
+    SmartDashboard.putNumber("Balance kI", 0);
+    SmartDashboard.putNumber("Balance kD", 0.00001);
   }
   public void updateDashboard() {
    SmartDashboard.putNumber("Pitch Angle", getPitch()); 
    SmartDashboard.putNumber("Roll Angle", m_gyro.getRoll()); 
   }
+
+public void setBalancekP(double kP) {
+balancekP = kP;
+}
+
+public double getBalancekP() {
+  return balancekP;
+}
+
+public void setBalancekI(double kI) {
+    balancekI = kI;
+}
+
+public double getBalancekI() {
+  return balancekI;
+}
+
+public void setBalancekD(double kD) {
+  balancekD = kD;
+}
+
+public double getBalancekD() {
+return balancekD;
+}
+
 }

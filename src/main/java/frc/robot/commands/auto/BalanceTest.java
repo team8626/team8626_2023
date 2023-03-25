@@ -16,6 +16,7 @@ public class BalanceTest extends PIDCommand {
   private LEDManagerSubsystem m_ledManager;
   private SwerveDriveSubsystem m_drivetrain;
   private boolean m_continuous;
+  private double currP;
   /** Creates a new BalanceCommandRemastered. */
   public BalanceTest(SwerveDriveSubsystem drivetrain, LEDManagerSubsystem ledManager, boolean continuous) {
     super(
@@ -41,6 +42,9 @@ public class BalanceTest extends PIDCommand {
     System.out.println("---------- BEGIN BalanceTest ---------");
     m_PID = getController();
     m_PID.setTolerance(SwerveDriveConstants.kBalancedPositionTolerance, SwerveDriveConstants.kBalancedVelocityTolerance);
+    m_PID.setP(m_drivetrain.getBalancekP());
+    m_PID.setI(m_drivetrain.getBalancekI());
+    m_PID.setD(m_drivetrain.getBalancekD());
   }
 
   @Override
@@ -48,6 +52,10 @@ public class BalanceTest extends PIDCommand {
    m_ledManager.setColor(
     (Math.abs(m_PID.getPositionError()) > SwerveDriveConstants.kBalancedPositionTolerance? m_ledManager.getAllianceColor(): LEDManagerConstants.kColorWHITE)
    );
+
+ 
+
+
   }
 
 

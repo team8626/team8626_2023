@@ -9,6 +9,7 @@ import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.cscore.VideoException;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants.LEDManagerConstants;
@@ -38,6 +39,9 @@ public class Robot extends TimedRobot {
     //   // TODO Auto-generated catch block
     //   e.printStackTrace();
     // }
+    SmartDashboard.putNumber("Balance kP", 0.005);
+    SmartDashboard.putNumber("Balance kI", 0);
+    SmartDashboard.putNumber("Balance kD", 0.00001);
   }
 
   /**
@@ -101,6 +105,9 @@ public class Robot extends TimedRobot {
     
     // Set LEDS to AllIance Color
     m_robotContainer.m_ledManager.setAllianceColor();
+    m_robotContainer.m_drive.setBalancekP(SmartDashboard.getNumber("Balance kP", 0.005));
+    m_robotContainer.m_drive.setBalancekI(SmartDashboard.getNumber("Balance kI", 0));
+    m_robotContainer.m_drive.setBalancekD(SmartDashboard.getNumber("Balance kD", 0.00001));
   }
 
   /** 

@@ -92,6 +92,7 @@ public class DashBoard {
       m_robotContainer.m_elevator.initDashboard();
       m_robotContainer.m_extender.initDashboard();
       m_robotContainer.m_drive.initDashboard();
+    
     }
 
     // Update values that need high frequency refresh.

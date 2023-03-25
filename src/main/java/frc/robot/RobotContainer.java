@@ -98,7 +98,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
     
     // Claw Controls
-    m_xboxController.leftBumper().onTrue(new OpenClawCommand(m_robot.m_claw, m_elbow));
+    m_xboxController.leftBumper().onTrue(new OpenClawCommand(m_claw, m_elbow));
     m_xboxController.rightBumper().onTrue(new CloseClawCommand(m_claw));
   
     // Set Swerve Modules to Cross (X) Position
@@ -188,7 +188,7 @@ public class RobotContainer {
                                     new CloseClawCommand(m_claw),
                                     new MiddleGridSetupCommand(m_elevator, m_elbow, m_extender, m_ledManager),
                                     new WaitCommand(.25),
-                                    new OpenClawCommand(m_robot.m_claw, m_elbow));
+                                    new OpenClawCommand(m_claw, m_elbow));
     }
     return startCommand;
   }
