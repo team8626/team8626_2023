@@ -27,48 +27,21 @@
     },
     {
       "anchorPoint": {
-        "x": 4.0,
+        "x": 7.0,
         "y": 4.98
       },
       "prevControl": {
-        "x": 2.9888050365102092,
+        "x": 5.988805036510209,
         "y": 4.98
-      },
-      "nextControl": {
-        "x": 5.011194963489791,
-        "y": 4.98
-      },
-      "holonomicAngle": 180.0,
-      "isReversal": false,
-      "velOverride": null,
-      "isLocked": false,
-      "isStopPoint": false,
-      "stopEvent": {
-        "names": [],
-        "executionBehavior": "parallel",
-        "waitBehavior": "none",
-        "waitTime": 0
-      }
-    },
-    {
-      "anchorPoint": {
-        "x": 6.42,
-        "y": 5.5
-      },
-      "prevControl": {
-        "x": 5.361284377262186,
-        "y": 5.5
       },
       "nextControl": null,
-      "holonomicAngle": 0,
+      "holonomicAngle": 180.0,
       "isReversal": false,
       "velOverride": null,
       "isLocked": true,
       "isStopPoint": false,
       "stopEvent": {
-        "names": [
-          "GrabGamePiece"
-        ],
+        "names": [],
         "executionBehavior": "parallel",
         "waitBehavior": "none",
         "waitTime": 0

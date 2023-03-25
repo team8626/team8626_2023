@@ -2,40 +2,37 @@
   "waypoints": [
     {
       "anchorPoint": {
-        "x": 1.74,
+        "x": 1.8544048679351701,
         "y": 0.51
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.74,
-        "y": 0.5100000000000051
+        "x": 2.8544048679351706,
+        "y": 0.51
       },
-      "holonomicAngle": 180.0,
+      "holonomicAngle": 0,
       "isReversal": false,
       "velOverride": null,
-      "isLocked": true,
+      "isLocked": false,
       "isStopPoint": false,
       "stopEvent": {
-        "names": [
-          "MiddleGridSetupCommand",
-          "releaseGamePiece"
-        ],
-        "executionBehavior": "sequential",
+        "names": [],
+        "executionBehavior": "parallel",
         "waitBehavior": "none",
         "waitTime": 0
       }
     },
     {
       "anchorPoint": {
-        "x": 6.42,
-        "y": 0.92
+        "x": 7.0,
+        "y": 0.51
       },
       "prevControl": {
-        "x": 6.111353960233171,
-        "y": 0.92
+        "x": 6.0,
+        "y": 0.51
       },
       "nextControl": null,
-      "holonomicAngle": 180.0,
+      "holonomicAngle": 0,
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
@@ -48,15 +45,5 @@
       }
     }
   ],
-  "maxVelocity": 2.0,
-  "maxAcceleration": null,
-  "isReversed": null,
-  "markers": [
-    {
-      "position": 0.11614213423295454,
-      "names": [
-        "StowArm"
-      ]
-    }
-  ]
+  "markers": []
 }
