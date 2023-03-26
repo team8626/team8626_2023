@@ -9,13 +9,15 @@ import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.cscore.VideoException;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants.LEDManagerConstants;
 
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
-  DriverStation.Alliance m_allianceColor =  DriverStation.getAlliance();
+  DriverStation.Alliance m_allianceColor = DriverStation.getAlliance();
+  private Timer m_gameTimer;
 
   public Command getAutonomousCommand() {
     return m_robotContainer.getAutonomousCommand();
@@ -74,19 +76,24 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+    m_gameTimer.start();
     m_robotContainer.m_ledManager.setAllianceColor();
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
  
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
+    
   }
  
   /** 
    * This function is called periodically during autonomous. 
    */
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+    if(m_gameTimer.get() > 14.5) m_robotContainer.m_drive.setX();
+   
+  }
 
   /** 
    * This function is called when leaving autonomous mode. 
@@ -121,6 +128,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopExit() {
     m_robotContainer.m_ledManager.setColor(LEDManagerConstants.kColorPINK); 
+    m_gameTimer.stop();
   }
 
   /**
