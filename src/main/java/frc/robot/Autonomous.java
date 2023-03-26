@@ -56,6 +56,11 @@ public class Autonomous {
             m_robot.m_drive.setReverseStart(true);
 
             break;
+            case DELIVER_STAY:
+            startCommand = getDeliverStayCommand();
+            m_robot.m_drive.setReverseStart(true);
+
+            break;
 
             case START9_CONE6_BALANCE:
                 startCommand = getStart9Cone6BalanceCommand();
@@ -185,7 +190,7 @@ public class Autonomous {
 
         startCommand = new SequentialCommandGroup(
             // Starting the game. Make sure the claw is closed and get ready for delivery
-            new WaitCommand(3),
+            new WaitCommand(4),
             new CloseClawCommand(m_robot.m_claw),
             new MiddleGridSetupCommand(m_robot.m_elevator, m_robot.m_elbow, m_robot.m_extender, m_robot.m_ledManager),
             new WaitCommand(.25),
@@ -225,6 +230,23 @@ public class Autonomous {
                                     m_robot.eventMap),
             new PrintCommand("---------- AUTO Ready to Balance ----------"),
             new BalanceTest(m_robot.m_drive, m_robot.m_ledManager, false)
+            );
+
+        return startCommand;
+    }
+
+    private Command getDeliverStayCommand(){
+        Command startCommand = new InstantCommand();
+
+        startCommand = new SequentialCommandGroup(
+            // Starting the game. Make sure the claw is closed and get ready for delivery
+            new WaitCommand(7),
+            new CloseClawCommand(m_robot.m_claw),
+            new MiddleGridSetupCommand(m_robot.m_elevator, m_robot.m_elbow, m_robot.m_extender, m_robot.m_ledManager),
+            new WaitCommand(.25),
+            new OpenClawCommand(m_robot.m_claw, m_robot.m_elbow),
+            new WaitCommand(.5),
+            new LockArmCommand(m_robot.m_elevator, m_robot.m_elbow, m_robot.m_extender, m_robot.m_claw, m_robot.m_ledManager)
             );
 
         return startCommand;

@@ -17,7 +17,7 @@ import frc.robot.Constants.LEDManagerConstants;
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   DriverStation.Alliance m_allianceColor = DriverStation.getAlliance();
-  private Timer m_gameTimer;
+  private Timer m_gameTimer = new Timer();
 
   public Command getAutonomousCommand() {
     return m_robotContainer.getAutonomousCommand();
