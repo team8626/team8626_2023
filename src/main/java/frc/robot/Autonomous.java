@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.DashBoard.TrajectoryEnum;
 import frc.robot.commands.auto.BalanceLockCommand;
 import frc.robot.commands.auto.BalanceTest;
+import frc.robot.commands.presets.LockArmCommand;
 import frc.robot.commands.presets.MiddleGridSetupCommand;
 import frc.robot.commands.presets.SetStowPositionCommand;
 import frc.robot.commands.subsystems.CloseClawCommand;
@@ -188,10 +189,14 @@ public class Autonomous {
             new WaitCommand(.25),
             new OpenClawCommand(m_robot.m_claw, m_robot.m_elbow),
             new WaitCommand(.5),
-            new SetStowPositionCommand(m_robot.m_elevator, m_robot.m_elbow, m_robot.m_extender, m_robot.m_claw, m_robot.m_ledManager),
+            new LockArmCommand(m_robot.m_elevator, m_robot.m_elbow, m_robot.m_extender, m_robot.m_claw, m_robot.m_ledManager),
             new FollowPathWithEvents(m_robot.m_drive.followTrajectoryCommand( pathGroup.get(0), true),
                                     pathGroup.get(0).getMarkers(),
                                     m_robot.eventMap),
+            new WaitCommand(.5),
+            new FollowPathWithEvents(m_robot.m_drive.followTrajectoryCommand( pathGroup.get(1), false),
+            pathGroup.get(0).getMarkers(),
+            m_robot.eventMap),
             new PrintCommand("---------- AUTO Ready to Balance ----------"),
             new BalanceTest(m_robot.m_drive, m_robot.m_ledManager, false)
             );
@@ -236,7 +241,7 @@ public class Autonomous {
             new WaitCommand(.25),
             new OpenClawCommand(m_robot.m_claw, m_robot.m_elbow),
             new WaitCommand(.5),
-            new SetStowPositionCommand(m_robot.m_elevator, m_robot.m_elbow, m_robot.m_extender, m_robot.m_claw, m_robot.m_ledManager),
+            new LockArmCommand(m_robot.m_elevator, m_robot.m_elbow, m_robot.m_extender, m_robot.m_claw, m_robot.m_ledManager),
 
             // Exit the Community
             new FollowPathWithEvents(m_robot.m_drive.followTrajectoryCommand( pathGroup.get(0), true),
@@ -259,7 +264,7 @@ public class Autonomous {
             new WaitCommand(.25),
             new OpenClawCommand(m_robot.m_claw, m_robot.m_elbow),
             new WaitCommand(.5),
-            new SetStowPositionCommand(m_robot.m_elevator, m_robot.m_elbow, m_robot.m_extender, m_robot.m_claw, m_robot.m_ledManager),
+            new LockArmCommand(m_robot.m_elevator, m_robot.m_elbow, m_robot.m_extender, m_robot.m_claw, m_robot.m_ledManager),
 
             // Go to pickup next piece
             new FollowPathWithEvents(m_robot.m_drive.followTrajectoryCommand( pathGroup.get(0), true),

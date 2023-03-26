@@ -125,7 +125,7 @@ public class RobotContainer {
     m_xboxController.a().toggleOnTrue(new DriveAdjustmentModeCommand(m_drive, DriveSpeed.LOWEST_SPEED));
 
     // Predefined Arm positions for Game Pieces delivery
-    m_buttonBox.button_1().onTrue(new LockArmCommand(m_elevator, m_elbow, m_extender, m_ledManager));
+    m_buttonBox.button_1().onTrue(new LockArmCommand(m_elevator, m_elbow, m_extender, m_claw, m_ledManager));
     // m_buttonBox.button_1().onTrue(new TopGridSetupCommand(m_elevator, m_elbow, m_extender, m_ledManager));
     m_buttonBox.button_2().onTrue(new MiddleGridSetupCommand(m_elevator, m_elbow, m_extender, m_ledManager));
     m_buttonBox.button_3().onTrue(new BottomGridSetupCommand(m_elevator, m_elbow, m_extender, m_ledManager));
