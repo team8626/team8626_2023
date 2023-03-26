@@ -23,7 +23,7 @@ public class BalanceTest extends PIDCommand {
     super(
         // The controller that the command will use
         //0.005 P 0.00001 D
-        new PIDController(0.006, 0, 0.00001),
+        new PIDController(0.0055, 0, 0.0007),
         // This should return the measurement
         () -> drivetrain.getPitch(),
         // This should return the setpoint (can also be a constant)
@@ -46,7 +46,7 @@ public class BalanceTest extends PIDCommand {
     m_timer.reset();
     m_timer.start();
     m_PID = getController();
-    m_PID.setTolerance(SwerveDriveConstants.kBalancedPositionTolerance, SwerveDriveConstants.kBalancedVelocityTolerance);
+    m_PID.setTolerance(SwerveDriveConstants.kBalancedPositionTolerance /* , SwerveDriveConstants.kBalancedVelocityTolerance */);
   }
 
   @Override

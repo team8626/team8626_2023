@@ -25,6 +25,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.DashBoard.TrajectoryEnum;
 import frc.robot.commands.auto.BalanceLockCommand;
 import frc.robot.commands.auto.BalanceTest;
+import frc.robot.commands.auto.NewAutoBalance;
 import frc.robot.commands.presets.LockArmCommand;
 import frc.robot.commands.presets.MiddleGridSetupCommand;
 import frc.robot.commands.presets.SetStowPositionCommand;
@@ -316,19 +317,6 @@ public class Autonomous {
     }
     
     private Command getTwoMeterBalanceCommand(){
-        Command startCommand = new InstantCommand();
-
-        List<PathPlannerTrajectory> pathGroup = PathPlanner.loadPathGroup("Test_2m_Forward", new PathConstraints(1, 3));
-
-        startCommand = new SequentialCommandGroup(
-            // Test Command for balancing after moving 2 meters
-            new SetStowPositionCommand(m_robot.m_elevator, m_robot.m_elbow, m_robot.m_extender, m_robot.m_claw, m_robot.m_ledManager),
-            new FollowPathWithEvents(m_robot.m_drive.followTrajectoryCommand( pathGroup.get(0), true),
-                                    pathGroup.get(0).getMarkers(),
-                                    new HashMap<>()),
-            new PrintCommand("---------- AUTO Ready to Balance ----------"),
-            new BalanceLockCommand(m_robot.m_drive, m_robot.m_ledManager));
-
-        return startCommand;
+        return new NewAutoBalance(m_robot.m_drive, m_robot.m_elevator, m_robot.m_ledManager, m_robot.m_elbow, m_robot.m_extender, m_robot.m_claw);
     }
 }
