@@ -115,7 +115,7 @@ public class RobotContainer {
     
     // Start Balancing
     m_xboxController.start().toggleOnTrue(new SequentialCommandGroup( 
-          new BalanceTest(m_drive, m_ledManager, true))
+          new BalanceTest(m_drive, m_ledManager))
     );
     
     m_xboxController.back().onTrue(new InstantCommand(this::toggleControls));

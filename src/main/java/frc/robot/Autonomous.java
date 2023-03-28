@@ -13,7 +13,6 @@ import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.commands.FollowPathWithEvents;
 
-import edu.wpi.first.wpilibj.Timer;
 // WPI Libraries
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -206,7 +205,7 @@ public class Autonomous {
             pathGroup.get(0).getMarkers(),
             m_robot.eventMap),
             new PrintCommand("---------- AUTO Ready to Balance ----------"),
-            new BalanceTest(m_robot.m_drive, m_robot.m_ledManager, false)
+            new BalanceTest(m_robot.m_drive, m_robot.m_ledManager)
             );
 
         return startCommand;
@@ -230,7 +229,7 @@ public class Autonomous {
                                     pathGroup.get(0).getMarkers(),
                                     m_robot.eventMap),
             new PrintCommand("---------- AUTO Ready to Balance ----------"),
-            new BalanceTest(m_robot.m_drive, m_robot.m_ledManager, false)
+            new BalanceTest(m_robot.m_drive, m_robot.m_ledManager)
             );
 
         return startCommand;
