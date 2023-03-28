@@ -57,8 +57,6 @@ public class BalanceTest extends PIDCommand {
 
 
   @Override
-  // TODO@nedf123
-  // Always return false, and enable setX if stable for more than 1 second
   public boolean isFinished() {
     boolean retval = false;
     if(m_PID.atSetpoint()){
