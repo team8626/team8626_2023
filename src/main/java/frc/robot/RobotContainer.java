@@ -173,16 +173,6 @@ public class RobotContainer {
     Command startCommand = new SetStowPositionCommand(m_elevator, m_elbow, m_extender, m_claw, m_ledManager);
     startCommand.schedule();
 
-    // TODO: THis hsould be handled by resetOdometry... Seems to be not working
-    // This is a workaround...
-    // if(m_reverseStart){
-    //   m_drive.setDefaultCommand(
-    //   // The left stick controls translation of the robot.
-    //   // Turning is controlled by the X axis of the right stick.
-    //   new RunCommand(
-    //       () -> (m_drive).drive(
-    //           MathUtil.applyDeadband(m_xboxController.getLeftY(), IOControlsConstants.kDriveDeadband),
-    //           MathUtil.applyDeadband(m_xboxController.getLeftX(), IOControlsConstants.kDriveDeadband),
     //           MathUtil.applyDeadband(-m_xboxController.getRightX(), IOControlsConstants.kDriveDeadband),
     //           true,
     //           true),

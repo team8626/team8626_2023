@@ -57,6 +57,7 @@ public class BalanceTest extends PIDCommand {
 
 
   @Override
+  // TODO: issue #7
   public boolean isFinished() {
     boolean retval = false;
     if(m_PID.atSetpoint()){
