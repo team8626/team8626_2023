@@ -47,6 +47,6 @@ public class OpenClawCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return m_claw.isOpened(); // || m_invalidAngle;
+    return m_claw.isOpened(); 
   }
 }

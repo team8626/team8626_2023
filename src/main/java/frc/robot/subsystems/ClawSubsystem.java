@@ -25,13 +25,25 @@ public class ClawSubsystem extends SubsystemBase {
   //private final Solenoid m_clawCylinder = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 15, 8);
   private final Solenoid m_clawCylinder = new Solenoid(PneumaticConstants.kPCMtype, ClawConstants.kSolenoidChannel);
 
+  private enum ClawStates {
+    CLOSING, CLOSED,
+    OPENING, OPENED
+  }
+
+  private ClawStates m_clawState = ClawStates.CLOSED; 
+
+  private final PneumaticSubsystem m_pneumatic;
+
   private boolean m_isClosed = true;
   private Timer m_timer = new Timer();
   private boolean m_motorActive = true;
   private boolean m_activeIntake = true;
 
   // Class Constructor
-  public ClawSubsystem() {
+  public ClawSubsystem(PneumaticSubsystem pneumatic) {
+
+    m_pneumatic = pneumatic;
+
     m_clawMotor.setNeutralMode(NeutralMode.Coast); // Using Coast since we have a pneumatic cylinder
     // m_cylinderOpen.set(true);
     // m_cylinderClose.set(false);
@@ -48,13 +60,11 @@ public class ClawSubsystem extends SubsystemBase {
 
 
   public void initDashboard(){
-    SmartDashboard.putBoolean("Claw Closed", m_isClosed);
-    SmartDashboard.putBoolean("Claw Motor", m_motorActive);
+    SmartDashboard.putString("Claw State", getStateString());
   }
 
   public void updateDashboard(){
-    SmartDashboard.putBoolean("Claw Closed", m_isClosed);
-    SmartDashboard.putBoolean("Claw Motor", m_motorActive);
+    SmartDashboard.putString("Claw State", getStateString());
   }
 
   public void close(){ 
@@ -65,7 +75,7 @@ public class ClawSubsystem extends SubsystemBase {
         m_motorActive = true;
 
     m_clawCylinder.set(false);
-    m_isClosed = true;
+    setClawState(ClawStates.CLOSING);
   }
 
   public void open(){ 
@@ -76,7 +86,7 @@ public class ClawSubsystem extends SubsystemBase {
     m_motorActive = true;
 
     m_clawCylinder.set(true);
-    m_isClosed = false;
+    setClawState(ClawStates.OPENING);
   }
 
   private void stopMotor(){ 
@@ -110,17 +120,61 @@ public class ClawSubsystem extends SubsystemBase {
   }
 
   public boolean isClosed() {
-    return m_isClosed;
+    return (m_clawState == ClawStates.CLOSED);
   }
 
   public boolean isOpened() {
-    return !m_isClosed;
+    return (m_clawState == ClawStates.OPENED);
   }
+
+  public ClawStates getClawState() {
+    return m_clawState;
+    }
+
+  public void setClawState(ClawStates state) {
+      m_clawState = state;
+    }
+
+  public String getStateString() {
+      switch(m_clawState) {
+  
+        default:
+        return "None Found";
+  
+        case CLOSING:
+        return "closeING";
+        case CLOSED:
+        return "closeED";
+        case OPENING:
+        return "openING";
+        case OPENED:
+        return "openED";
+        
+      }
+  
+    }
 
   @Override
   public void periodic() {
     if(m_timer.hasElapsed(3.0)){
       this.stopMotor();
     }
+
+
+    if(m_pneumatic.getPressure() > PneumaticConstants.kMinClawPSI) {
+
+      if(m_clawState == ClawStates.OPENING) {
+        Timer.delay(0.1);
+        setClawState(ClawStates.OPENED);
+      }
+      
+      else if (m_clawState == ClawStates.CLOSING) {
+        Timer.delay(0.1);
+        setClawState(ClawStates.CLOSED);
+      }
+      
+      } 
+
+
   }
 }
