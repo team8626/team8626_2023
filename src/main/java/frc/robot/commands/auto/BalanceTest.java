@@ -30,7 +30,7 @@ public class BalanceTest extends PIDCommand {
         0,
         // This uses the output
         output -> {
-          drivetrain.drive(-output, 0, 0, false, true);
+          drivetrain.drive(-output, 0, 0, true, true);
         });
         m_drivetrain = drivetrain;
         m_ledManager = ledManager;
