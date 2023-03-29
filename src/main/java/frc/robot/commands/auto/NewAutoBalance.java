@@ -20,10 +20,8 @@ import frc.robot.subsystems.SwerveDriveSubsystem;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class NewAutoBalance extends SequentialCommandGroup {
   
-  /** Creates a new NewAutoBalance. */
   public NewAutoBalance(SwerveDriveSubsystem swerve, ElevatorSubsystem elevator, LEDManagerSubsystem LEDs, ArmElbowSubsystem elbow, ArmExtensionSubsystem extender, ClawSubsystem claw) {
-    // Add your commands in the addCommands() call, e.g.
-    // addCommands(new FooCommand(), new BarCommand());
+
     addCommands(
       
       new SetStowPositionCommand(elevator, elbow, extender, claw, LEDs).withTimeout(1),
@@ -31,5 +29,6 @@ public class NewAutoBalance extends SequentialCommandGroup {
       new BalanceTest(swerve, LEDs).withTimeout(8),
       new InstantCommand(() -> swerve.setReverseStart(!(swerve.getReverseStart()))
       ));
+
   }
 }
