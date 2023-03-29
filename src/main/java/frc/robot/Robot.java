@@ -4,20 +4,14 @@
 
 package frc.robot;
 
-import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.cscore.UsbCamera;
-import edu.wpi.first.cscore.VideoException;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants.LEDManagerConstants;
 
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
-  DriverStation.Alliance m_allianceColor = DriverStation.getAlliance();
-  private Timer m_gameTimer = new Timer();
 
   public Command getAutonomousCommand() {
     return m_robotContainer.getAutonomousCommand();
@@ -29,17 +23,8 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // Instantiate our RobotContainer.
     // This will perform all our button bindings,
-    // and put ourmautonomous chooser on the dashboard.
+    // and put our autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-    
-    // Start the Camera Server
-    // try {
-    //   UsbCamera camera = CameraServer.startAutomaticCapture();
-    //   camera.setResolution(640, 480);
-    // } catch (VideoException e) {
-    //   // TODO Auto-generated catch block
-    //   e.printStackTrace();
-    // }
   }
 
   /**
@@ -76,14 +61,12 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    m_gameTimer.start();
     m_robotContainer.m_ledManager.setAllianceColor();
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
  
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
-    
   }
  
   /** 
@@ -91,8 +74,10 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
-    if(m_gameTimer.get() > 14.5) m_robotContainer.m_drive.setX();
-   
+    // Less than 0.5 seconds befor end of periodic forced the drivetrain to Cross to prevent any slidding of the Balance station
+    if(DriverStation.getMatchTime() < 0.5){
+      m_robotContainer.m_drive.setX();
+    }
   }
 
   /** 
@@ -128,7 +113,6 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopExit() {
     m_robotContainer.m_ledManager.setColor(LEDManagerConstants.kColorPINK); 
-    m_gameTimer.stop();
   }
 
   /**
