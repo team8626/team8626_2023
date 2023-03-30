@@ -188,7 +188,7 @@ public final class Constants {
         public static PneumaticsModuleType kPCMtype = PneumaticsModuleType.REVPH;
         public static double kMinPressure = 80;
         public static double kMaxPressure = 120;
-        public static double kMinArmPSI = 20;
+        public static double kMinArmPSI = 25;
     }
 
     // Claw subsystem constants

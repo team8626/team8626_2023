@@ -61,10 +61,12 @@ public class ClawSubsystem extends SubsystemBase {
 
   public void initDashboard(){
     SmartDashboard.putString("Claw State", getStateString());
+    SmartDashboard.putBoolean("Claw Motor", m_motorActive);
   }
 
   public void updateDashboard(){
     SmartDashboard.putString("Claw State", getStateString());
+    SmartDashboard.putBoolean("Claw Motor", m_motorActive);
   }
 
   public void close(){ 
