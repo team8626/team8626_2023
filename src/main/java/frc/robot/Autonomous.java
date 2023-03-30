@@ -57,6 +57,11 @@ public class Autonomous {
             m_robot.m_drive.setReverseStart(true);
 
             break;
+            case START1_EXIT_BALANCE:
+            startCommand = getStart1ExitBalanceCommand();
+            m_robot.m_drive.setReverseStart(true);
+
+            break;
             case DELIVER_STAY:
             startCommand = getDeliverStayCommand();
             m_robot.m_drive.setReverseStart(true);
@@ -216,6 +221,29 @@ public class Autonomous {
         Command startCommand = new InstantCommand();
 
         List<PathPlannerTrajectory> pathGroup = PathPlanner.loadPathGroup("Start9_Exit_Balance", new PathConstraints(1.5, 2));
+
+        startCommand = new SequentialCommandGroup(
+            // Starting the game. Make sure the claw is closed and get ready for delivery
+            new WaitCommand(7),
+            new CloseClawCommand(m_robot.m_claw),
+            new MiddleGridSetupCommand(m_robot.m_elevator, m_robot.m_elbow, m_robot.m_extender, m_robot.m_ledManager),
+            new WaitCommand(.25),
+            new OpenClawCommand(m_robot.m_claw, m_robot.m_elbow),
+            new WaitCommand(.5),
+            new SetStowPositionCommand(m_robot.m_elevator, m_robot.m_elbow, m_robot.m_extender, m_robot.m_claw, m_robot.m_ledManager),
+            new FollowPathWithEvents(m_robot.m_drive.followTrajectoryCommand( pathGroup.get(0), true),
+                                    pathGroup.get(0).getMarkers(),
+                                    m_robot.eventMap),
+            new PrintCommand("---------- AUTO Ready to Balance ----------"),
+            new BalanceTest(m_robot.m_drive, m_robot.m_ledManager, false)
+            );
+
+        return startCommand;
+    }
+    private Command getStart1ExitBalanceCommand(){
+        Command startCommand = new InstantCommand();
+
+        List<PathPlannerTrajectory> pathGroup = PathPlanner.loadPathGroup("Start1_Exit_Balance", new PathConstraints(1.5, 2));
 
         startCommand = new SequentialCommandGroup(
             // Starting the game. Make sure the claw is closed and get ready for delivery
