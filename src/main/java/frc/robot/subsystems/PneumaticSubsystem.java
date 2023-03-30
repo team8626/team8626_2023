@@ -20,12 +20,16 @@ public class PneumaticSubsystem extends SubsystemBase {
 
   // Initialize Dashboard
   public void initDashboard(){
-    SmartDashboard.putNumber("Pneumatic Pressure", m_hub.getPressure(0));
+    SmartDashboard.putNumber("Pneumatic Pressure", getPressure());
   }
 
   // Update Dashboard(Called Periodically)
   public void updateDashboard(){
-    SmartDashboard.putNumber("Pneumatic Pressure", m_hub.getPressure(0));
+    SmartDashboard.putNumber("Pneumatic Pressure", getPressure());
+  }
+
+  public double getPressure() {
+    return m_hub.getPressure(0);
   }
 }
 

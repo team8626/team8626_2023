@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.IOControlsConstants;
 import frc.robot.Constants.LEDManagerConstants;
@@ -31,7 +32,9 @@ import frc.robot.commands.presets.SetTraversePositionCommand;
 import frc.robot.commands.presets.TopGridSetupCommand;
 import frc.robot.commands.subsystems.CloseClawCommand;
 import frc.robot.commands.subsystems.DriveAdjustmentModeCommand;
+import frc.robot.commands.subsystems.ExtendArmCommand;
 import frc.robot.commands.subsystems.OpenClawCommand;
+import frc.robot.commands.subsystems.RetractArmCommand;
 import frc.robot.commands.subsystems.SetArmElbowCommand;
 import frc.robot.commands.subsystems.UpdateLEDsCommand;
 import frc.robot.subsystems.ClawSubsystem;
@@ -55,9 +58,9 @@ public class RobotContainer {
   public final SwerveDriveSubsystem m_drive = new SwerveDriveSubsystem();
   public final PneumaticSubsystem m_pneumatic = new PneumaticSubsystem();
   public final ElevatorSubsystem m_elevator = new ElevatorSubsystem();
-  public final ClawSubsystem m_claw = new ClawSubsystem();
+  public final ClawSubsystem m_claw = new ClawSubsystem(m_pneumatic);
   public final ArmElbowSubsystem m_elbow = new ArmElbowSubsystem();
-  public final ArmExtensionSubsystem m_extender = new ArmExtensionSubsystem();
+  public final ArmExtensionSubsystem m_extender = new ArmExtensionSubsystem(m_pneumatic);
   public final LEDManagerSubsystem m_ledManager = new LEDManagerSubsystem();
 
   // private final ArmExtensionSubsystem m_armExtension = new ArmExtensionSubsystem();
@@ -68,7 +71,7 @@ public class RobotContainer {
   // Define controllers
   private final CommandXboxController m_xboxController = new CommandXboxController(IOControlsConstants.kXboxControllerPort);
   private final CommandButtonController m_buttonBox = new CommandButtonController(IOControlsConstants.kButtonBoxPort);
-  // private final Joystick m_flightJoystick = new Joystick(IOControlsConstants.kJoystickControllerPort);
+  private final CommandJoystick m_flightJoystick = new CommandJoystick(IOControlsConstants.kJoystickControllerPort);
 
   // Declare Events Map
   public HashMap<String, Command> eventMap = new HashMap<>();
@@ -139,7 +142,13 @@ public class RobotContainer {
                                           new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorALLIANCEBLUE):
                                           new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorALLIANCERED));
     m_buttonBox.button_9().onTrue(new SetArmElbowCommand(m_elbow, m_ledManager, ItemType.CUBE));
+
+    m_flightJoystick.button(8).toggleOnTrue(new ExtendArmCommand(m_extender));
+    m_flightJoystick.button(7).toggleOnTrue(new RetractArmCommand(m_extender));
+
   }
+
+
 
   /**
    * Set Default Commands for Subsystems if needed...
