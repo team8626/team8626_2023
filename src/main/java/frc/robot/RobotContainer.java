@@ -155,6 +155,7 @@ public class RobotContainer {
       eventMap.put("MiddleGridSetupCommand", new MiddleGridSetupCommand(m_elevator, m_elbow, m_extender, m_ledManager));
       eventMap.put("SetupForIntake", new SetFloorPositionCommand(m_elevator, m_elbow, m_extender, m_claw, m_ledManager));
       eventMap.put("StowArm", new SetStowPositionCommand(m_elevator, m_elbow, m_extender, m_claw, m_ledManager));
+      eventMap.put("CloseClaw", new CloseClawCommand(m_claw));
   }
 
 
@@ -164,8 +165,8 @@ public class RobotContainer {
   
   /**
    * Set Default Commands for Subsystems 
-   * THis is called when robot enters in teleop mode.
-   * THis prevents controllers interfere with autonomous mode.
+   * This is called when robot enters in teleop mode.
+   * This prevents controllers interfere with autonomous mode.
    */
   public void configureTeleopDefaultCommands(){
 
@@ -189,8 +190,8 @@ public class RobotContainer {
                 true,
                 true),
             m_drive));     
-    // }
   }
+  
 
   private void toggleControls(){
     m_drive.setReverseStart(!m_drive.getReverseStart());
