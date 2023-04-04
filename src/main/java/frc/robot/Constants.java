@@ -180,12 +180,15 @@ public final class Constants {
         public static final float kSoftLimitBottom = 359;
         public static final float kSoftLimitTop = 220;
         public static final double kMaxOpenClawAngle = 305;
+       
     }
     
     public final static class PneumaticConstants {
+        public static final double kMinClawPSI = 20;
         public static PneumaticsModuleType kPCMtype = PneumaticsModuleType.REVPH;
         public static double kMinPressure = 80;
         public static double kMaxPressure = 120;
+        public static double kMinArmPSI = 25;
     }
 
     // Claw subsystem constants

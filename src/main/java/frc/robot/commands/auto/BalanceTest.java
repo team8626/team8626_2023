@@ -17,12 +17,12 @@ public class BalanceTest extends PIDCommand {
   private LEDManagerSubsystem m_ledManager;
   private SwerveDriveSubsystem m_drivetrain;
   private Timer m_timer;
-  //private boolean m_continuous;
+
   /** Creates a new BalanceCommandRemastered. */
-  public BalanceTest(SwerveDriveSubsystem drivetrain, LEDManagerSubsystem ledManager, boolean continuous) {
+  public BalanceTest(SwerveDriveSubsystem drivetrain, LEDManagerSubsystem ledManager) {
     super(
         // The controller that the command will use
-        //0.005 P 0.00001 D
+        // Greater Boston Values: 0.0055 P 0.0007 D
         new PIDController(0.0055, 0, 0.0007),
         // This should return the measurement
         () -> drivetrain.getPitch(),
@@ -30,12 +30,11 @@ public class BalanceTest extends PIDCommand {
         0,
         // This uses the output
         output -> {
-          drivetrain.drive(-output, 0, 0, false, true);
+          drivetrain.drive(-output, 0, 0, true, true);
         });
         m_drivetrain = drivetrain;
         m_ledManager = ledManager;
         m_timer = new Timer();
-        // m_continuous = continuous;
         addRequirements(m_drivetrain);
   }
 
@@ -55,21 +54,21 @@ public class BalanceTest extends PIDCommand {
     System.out.println("---------- END BalanceTest ---------");
   }
 
-
   @Override
-  // TODO: issue #7
-  public boolean isFinished() {
-    boolean retval = false;
-    if(m_PID.atSetpoint()){
-      if(m_timer.hasElapsed(1)){
-        retval = true;
-      } else {
-        // m_drivetrain.setX();
-      }
+  public void execute() {
+    if(m_PID.atSetpoint() && (m_timer.hasElapsed(1))){
+        m_drivetrain.setX();
     } else {
       m_timer.reset();
       m_timer.start();
     }
-    return retval;
+  }
+
+  @Override
+  public boolean isFinished() {
+    // Never Terminate.
+    // In Autonomous, this is the last command.
+    // In Teleoperated, it should be on a Trigger().toggleOnTrue()
+    return false;
   }
 }

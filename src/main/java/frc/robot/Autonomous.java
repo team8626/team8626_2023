@@ -13,7 +13,6 @@ import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.commands.FollowPathWithEvents;
 
-import edu.wpi.first.wpilibj.Timer;
 // WPI Libraries
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -52,8 +51,18 @@ public class Autonomous {
         Command startCommand = new InstantCommand();
 
         switch(m_autoStart) {
+            case START1_PICKUP_CONE:
+            startCommand = getStart1PickupCone();
+            m_robot.m_drive.setReverseStart(true);
+
+            break;
             case START9_EXIT_BALANCE:
             startCommand = getStart9ExitBalanceCommand();
+            m_robot.m_drive.setReverseStart(true);
+
+            break;
+            case START1_EXIT_BALANCE:
+            startCommand = getStart1ExitBalanceCommand();
             m_robot.m_drive.setReverseStart(true);
 
             break;
@@ -206,7 +215,7 @@ public class Autonomous {
             pathGroup.get(0).getMarkers(),
             m_robot.eventMap),
             new PrintCommand("---------- AUTO Ready to Balance ----------"),
-            new BalanceTest(m_robot.m_drive, m_robot.m_ledManager, false)
+            new BalanceTest(m_robot.m_drive, m_robot.m_ledManager)
             );
 
         return startCommand;
@@ -230,7 +239,55 @@ public class Autonomous {
                                     pathGroup.get(0).getMarkers(),
                                     m_robot.eventMap),
             new PrintCommand("---------- AUTO Ready to Balance ----------"),
+            new BalanceTest(m_robot.m_drive, m_robot.m_ledManager)
+            );
+
+        return startCommand;
+    }
+    private Command getStart1ExitBalanceCommand(){
+        Command startCommand = new InstantCommand();
+
+        List<PathPlannerTrajectory> pathGroup = PathPlanner.loadPathGroup("Start1_Exit_Balance", new PathConstraints(1.5, 2));
+
+        startCommand = new SequentialCommandGroup(
+            // Starting the game. Make sure the claw is closed and get ready for delivery
+            new WaitCommand(7),
+            new CloseClawCommand(m_robot.m_claw),
+            new MiddleGridSetupCommand(m_robot.m_elevator, m_robot.m_elbow, m_robot.m_extender, m_robot.m_ledManager),
+            new WaitCommand(.25),
+            new OpenClawCommand(m_robot.m_claw, m_robot.m_elbow),
+            new WaitCommand(.5),
+            new SetStowPositionCommand(m_robot.m_elevator, m_robot.m_elbow, m_robot.m_extender, m_robot.m_claw, m_robot.m_ledManager),
+            new FollowPathWithEvents(m_robot.m_drive.followTrajectoryCommand( pathGroup.get(0), true),
+                                    pathGroup.get(0).getMarkers(),
+                                    m_robot.eventMap),
+            new PrintCommand("---------- AUTO Ready to Balance ----------"),
             new BalanceTest(m_robot.m_drive, m_robot.m_ledManager, false)
+            );
+
+        return startCommand;
+    }
+    private Command getStart1PickupConeCommand(){
+        Command startCommand = new InstantCommand();
+
+        List<PathPlannerTrajectory> pathGroup = PathPlanner.loadPathGroup("Start1_Exit_Balance", new PathConstraints(1.5, 2));
+
+        startCommand = new SequentialCommandGroup(
+            // Starting the game. Make sure the claw is closed and get ready for delivery
+            new WaitCommand(7),
+            new CloseClawCommand(m_robot.m_claw),
+            new MiddleGridSetupCommand(m_robot.m_elevator, m_robot.m_elbow, m_robot.m_extender, m_robot.m_ledManager),
+            new WaitCommand(.25),
+            new OpenClawCommand(m_robot.m_claw, m_robot.m_elbow),
+            new WaitCommand(.5),
+            new SetStowPositionCommand(m_robot.m_elevator, m_robot.m_elbow, m_robot.m_extender, m_robot.m_claw, m_robot.m_ledManager),
+            new FollowPathWithEvents(m_robot.m_drive.followTrajectoryCommand( pathGroup.get(0), true),
+                                    pathGroup.get(0).getMarkers(),
+                                    m_robot.eventMap),
+            new PrintCommand("---------- AUTO Ready to Balance ----------"),
+            new MiddleGridSetupCommand(m_robot.m_elevator, m_robot.m_elbow, m_robot.m_extender, m_robot.m_ledManager),
+            new WaitCommand(.25),
+            new OpenClawCommand(m_robot.m_claw, m_robot.m_elbow),
             );
 
         return startCommand;

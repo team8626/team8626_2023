@@ -5,10 +5,10 @@
 package frc.robot.commands.subsystems;
 
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ArmExtensionSubsystem;
 
-public class ExtendArmCommand extends InstantCommand {
+public class ExtendArmCommand extends CommandBase {
   
   private final ArmExtensionSubsystem m_extender;
 
@@ -22,7 +22,12 @@ public class ExtendArmCommand extends InstantCommand {
   @Override
   public void initialize() {
   m_extender.extend();
-  Timer.delay(0.5);
+
+  }
+
+  @Override
+  public boolean isFinished() {
+    return m_extender.isExtended();
   }
 
   }
