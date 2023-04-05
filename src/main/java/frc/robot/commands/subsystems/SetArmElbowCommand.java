@@ -44,8 +44,6 @@ public class SetArmElbowCommand extends InstantCommand {
     m_ledManager = LEDManager;
     m_angle = angle;
 
-    
-
     m_isBasicCall = false;
     m_isDeliveryCall = true;
     m_isLEDCall = false;
@@ -61,7 +59,7 @@ public class SetArmElbowCommand extends InstantCommand {
     m_angle = m_elbow.getDesiredAngle();
     m_newDesiredItem = newItem;
 
-    m_isBasicCall = true;
+    m_isBasicCall = false;
     m_isDeliveryCall = false;
     m_isLEDCall = true;
     addRequirements(elbow);
@@ -74,7 +72,16 @@ public class SetArmElbowCommand extends InstantCommand {
     // LED Call, we adjust angle based on Item Type
     // -- Higher for cones (Smaller Angle)
     // -- Lower for Cubes (Larger Angle)
-    if(m_isLEDCall) {
+
+    // Basic Call (not delivery... Do nothing to adjust)
+    if(m_isBasicCall) {
+      incrementAngle = 0;
+      m_elbow.setDeliveryStatus(false);
+
+      System.out.printf("[SetArmElbowCommand] BASIC CALL - Set angle to  (%.1f) degrees\n", m_angle);
+      m_elbow.setAngle(m_angle);
+    }
+    else if(m_isLEDCall) {
       // Not a delivery, just change LEDS
       if(!m_elbow.isSetDelivery()){
         switch(m_newDesiredItem) {
@@ -111,35 +118,32 @@ public class SetArmElbowCommand extends InstantCommand {
               System.out.printf("[SetArmElbowCommand] Rainbow while delivering... Do Nothing...\n"); 
           }
           m_elbow.setDesiredItem(m_newDesiredItem);
+
+          System.out.printf("[SetArmElbowCommand] DELIVERY and LED (%.1f + %.1f) degrees\n", m_angle, incrementAngle); 
+          m_elbow.setAngle(m_angle + (m_elbow.isSetDelivery()? incrementAngle : 0));
+
         } else {
           System.out.printf("[SetArmElbowCommand] Same Item - Do Nothing\n"); 
         }
       }
-
     } else if(m_isDeliveryCall) {
       switch(m_elbow.getDesiredItem()) {
         case CUBE: // Setting up for Cube delivery, adjust angle (We received Cone angle)
           incrementAngle = +ArmConstants.kCubeAngleIncrement; // +10
           m_ledManager.setColor(LEDManagerConstants.kColorCUBE);
-          System.out.printf("[SetArmElbowCommand] Delivery Call: Cube\n"); 
-      break;
+          System.out.printf("[SetArmElbowCommand] Delivery Call: CUBE\n"); 
+          break;
         case NONE:
           System.out.printf("[SetArmElbowCommand] Using Default Item (CONE)\n"); 
         case CONE: // Setting up for Cone delivery, no need to adjust angle (We received Cone angle
           incrementAngle = 0;
-          System.out.printf("[SetArmElbowCommand] Delivery Call: Cone\n");
+          System.out.printf("[SetArmElbowCommand] Delivery Call: CONE\n");
           m_ledManager.setColor(LEDManagerConstants.kColorCONE);
           break;
       }
       m_elbow.setDeliveryStatus(true);
+      System.out.printf("[SetArmElbowCommand] FIRST DELIVERY (%.1f + %.1f) degrees\n", m_angle, incrementAngle); 
+      m_elbow.setAngle(m_angle + (m_elbow.isSetDelivery()? incrementAngle : 0));
     }
-    // Basic Call (not delivery... Do nothing to adjust)
-    else if(m_isBasicCall) {
-      System.out.printf("[SetArmElbowCommand] Basic Call\n"); 
-      incrementAngle = 0;
-      m_elbow.setDeliveryStatus(false);
-    }
-    System.out.printf("[SetArmElbowCommand] Set angle to  (%.1f + %.1f) degrees\n", m_angle, incrementAngle); 
-    m_elbow.setAngle(m_angle + (m_elbow.isSetDelivery()? incrementAngle : 0));
   }
 }
