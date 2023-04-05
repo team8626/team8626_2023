@@ -7,6 +7,7 @@ package frc.robot.commands.presets;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.ArmConstants;
+import frc.robot.commands.SetAllianceColorCommand;
 import frc.robot.commands.subsystems.CloseClawCommand;
 import frc.robot.commands.subsystems.ExtendArmCommand;
 import frc.robot.commands.subsystems.MoveElevatorTopCommand;
@@ -25,20 +26,22 @@ public class LockArmCommand  extends SequentialCommandGroup {
   ClawSubsystem m_claw;
   LEDManagerSubsystem m_ledManager;
 
-public LockArmCommand (ElevatorSubsystem elevator, ArmElbowSubsystem elbow, ArmExtensionSubsystem extender, ClawSubsystem claw, LEDManagerSubsystem LEDManager) {
-  m_elbow = elbow;
-  m_extender = extender;
-  m_elevator = elevator;
-  m_ledManager = LEDManager;
-  m_claw = claw;
-  
+  public LockArmCommand (ElevatorSubsystem elevator, ArmElbowSubsystem elbow, ArmExtensionSubsystem extender, ClawSubsystem claw, LEDManagerSubsystem LEDManager) {
+    m_elbow = elbow;
+    m_extender = extender;
+    m_elevator = elevator;
+    m_ledManager = LEDManager;
+    m_claw = claw;
+    
 
-  addCommands(
-      new CloseClawCommand(m_claw),
-      new RetractArmCommand(m_extender),
+    addCommands(
+      new SetAllianceColorCommand(m_ledManager),
+      new SequentialCommandGroup(
+        new CloseClawCommand(m_claw),
+        new RetractArmCommand(m_extender)).withTimeout(3),
       new MoveElevatorTopCommand(m_elevator),
-      new SetArmElbowCommand(m_elbow, m_ledManager, ArmConstants.kLockArmElbowAngle, true),
-      new WaitCommand(3),
+      new SetArmElbowCommand(m_elbow, m_ledManager, ArmConstants.kLockArmElbowAngle),
+      new WaitCommand(.5), // Make sure Arm Elbow is Stabilized
       new ExtendArmCommand(m_extender)
     );
   }

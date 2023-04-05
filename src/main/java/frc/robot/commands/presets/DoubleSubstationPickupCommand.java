@@ -32,7 +32,7 @@ public class DoubleSubstationPickupCommand extends ParallelCommandGroup {
     addCommands(
       new RetractArmCommand(m_extender),
       new MoveElevatorTopCommand(m_elevator),
-      new SetArmElbowCommand(m_elbow, m_ledManager, ArmConstants.kSubstationlbowAngle, false)
+      new SetArmElbowCommand(m_elbow, m_ledManager, ArmConstants.kSubstationlbowAngle)
     );
   }
 }

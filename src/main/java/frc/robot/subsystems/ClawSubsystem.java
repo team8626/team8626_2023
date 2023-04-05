@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
+import frc.robot.Robot;
 import frc.robot.Constants.ClawConstants;
 import frc.robot.Constants.PneumaticConstants;
 
@@ -175,8 +175,15 @@ public class ClawSubsystem extends SubsystemBase {
         setClawState(ClawStates.CLOSED);
       }
       
-      } 
-
-
+    }
+    
+    if(Robot.isSimulation()){
+      if(m_clawState == ClawStates.OPENING) {
+        setClawState(ClawStates.OPENED);
+      }
+      else if (m_clawState == ClawStates.CLOSING) {
+        setClawState(ClawStates.CLOSED);
+      }
+    } 
   }
 }

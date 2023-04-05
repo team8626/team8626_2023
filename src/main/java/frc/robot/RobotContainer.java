@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.IOControlsConstants;
 import frc.robot.Constants.LEDManagerConstants;
+import frc.robot.commands.SetAllianceColorCommand;
 import frc.robot.commands.auto.BalanceTest;
 import frc.robot.commands.presets.MiddleGridSetupCommand;
 import frc.robot.commands.presets.BottomGridSetupCommand;
@@ -124,6 +125,7 @@ public class RobotContainer {
     m_xboxController.back().onTrue(new InstantCommand(this::toggleControls));
 
     // Speed Adjustment
+    m_xboxController.rightTrigger().toggleOnTrue(new DriveAdjustmentModeCommand(m_drive, DriveSpeed.LOW_SPEED));
     m_xboxController.b().toggleOnTrue(new DriveAdjustmentModeCommand(m_drive, DriveSpeed.LOW_SPEED));
     m_xboxController.a().toggleOnTrue(new DriveAdjustmentModeCommand(m_drive, DriveSpeed.LOWEST_SPEED));
 
@@ -138,14 +140,8 @@ public class RobotContainer {
     m_buttonBox.button_6().onTrue(new SetTraversePositionCommand(m_elevator, m_elbow, m_extender, m_ledManager));
 
     m_buttonBox.button_7().onTrue(new SetArmElbowCommand(m_elbow, m_ledManager, ItemType.CONE));
-    m_buttonBox.button_8().onTrue(m_allianceColor == DriverStation.Alliance.Blue? 
-                                          new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorALLIANCEBLUE):
-                                          new UpdateLEDsCommand(m_ledManager, LEDManagerConstants.kColorALLIANCERED));
+    m_buttonBox.button_8().onTrue(new SetAllianceColorCommand(m_ledManager));
     m_buttonBox.button_9().onTrue(new SetArmElbowCommand(m_elbow, m_ledManager, ItemType.CUBE));
-
-    m_flightJoystick.button(8).toggleOnTrue(new ExtendArmCommand(m_extender));
-    m_flightJoystick.button(7).toggleOnTrue(new RetractArmCommand(m_extender));
-
   }
 
 
@@ -161,9 +157,9 @@ public class RobotContainer {
   private void configureEventsMaps() {
     
       // Populate Autonomous Event map
-      eventMap.put("MiddleGridSetupCommand", new MiddleGridSetupCommand(m_elevator, m_elbow, m_extender, m_ledManager));
-      eventMap.put("SetupForIntake", new SetFloorPositionCommand(m_elevator, m_elbow, m_extender, m_claw, m_ledManager));
-      eventMap.put("StowArm", new SetStowPositionCommand(m_elevator, m_elbow, m_extender, m_claw, m_ledManager));
+      // eventMap.put("MiddleGridSetupCommand", new MiddleGridSetupCommand(m_elevator, m_elbow, m_extender, m_ledManager));
+      // eventMap.put("SetupForIntake", new SetFloorPositionCommand(m_elevator, m_elbow, m_extender, m_claw, m_ledManager));
+      // eventMap.put("StowArm", new SetStowPositionCommand(m_elevator, m_elbow, m_extender, m_claw, m_ledManager));
   }
 
 

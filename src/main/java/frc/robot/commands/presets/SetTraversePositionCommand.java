@@ -7,6 +7,7 @@ package frc.robot.commands.presets;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.ArmConstants;
+import frc.robot.commands.SetAllianceColorCommand;
 import frc.robot.commands.subsystems.MoveElevatorTopCommand;
 import frc.robot.commands.subsystems.RetractArmCommand;
 import frc.robot.commands.subsystems.SetArmElbowCommand;
@@ -29,6 +30,7 @@ LEDManagerSubsystem m_ledManager;
     m_ledManager = LEDManager;
 
     addCommands(
+        new SetAllianceColorCommand(m_ledManager),
         new RetractArmCommand(m_extender),
         new MoveElevatorTopCommand(m_elevator),
         new SetArmElbowCommand(m_elbow, m_ledManager, ArmConstants.kTraverseElbowAngle)
