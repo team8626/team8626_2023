@@ -90,8 +90,8 @@ public class Autonomous {
                 startCommand = getTwoMeterIntakeCommand();
                 m_robot.m_drive.setReverseStart(false);
                 break;
-            case TWO_M_BALANCE:
-                startCommand = getTwoMeterBalanceCommand();
+            case REVERE_BALANCE:
+                startCommand = getRevereBalanceCommand();
                 m_robot.m_drive.setReverseStart(false);
                 break;  
             case DO_NOTHING:
@@ -315,7 +315,7 @@ public class Autonomous {
         return startCommand;
     }
     
-    private Command getTwoMeterBalanceCommand(){
+    private Command getRevereBalanceCommand(){
         return new NewAutoBalance(m_robot.m_drive, m_robot.m_elevator, m_robot.m_ledManager, m_robot.m_elbow, m_robot.m_extender, m_robot.m_claw);
     }
 }
