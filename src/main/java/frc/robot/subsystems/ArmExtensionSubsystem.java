@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Robot;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.PneumaticConstants;
 
@@ -105,19 +106,27 @@ public boolean isRetracted() {
   @Override
   public void periodic() {
 
-if(m_pneumatic.getPressure() > PneumaticConstants.kMinArmPSI) {
+    if(m_pneumatic.getPressure() > PneumaticConstants.kMinArmPSI) {
 
-if(m_extensionState == ExtensionStates.EXTENDING) {
-  Timer.delay(0.1);
-  setExtensionState(ExtensionStates.EXTENDED);
-}
+      if(m_extensionState == ExtensionStates.EXTENDING) {
+        Timer.delay(0.1);
+        setExtensionState(ExtensionStates.EXTENDED);
+      }
 
-else if (m_extensionState == ExtensionStates.RETRACTING) {
-  Timer.delay(0.1);
-  setExtensionState(ExtensionStates.RETRACTED);
-}
+      else if (m_extensionState == ExtensionStates.RETRACTING) {
+        Timer.delay(0.1);
+        setExtensionState(ExtensionStates.RETRACTED);
+      }
+    } 
 
-} 
+    if(Robot.isSimulation()){
+      if(m_extensionState == ExtensionStates.EXTENDING) {
+        setExtensionState(ExtensionStates.EXTENDED);
+      }
+      else if (m_extensionState == ExtensionStates.RETRACTING) {
+        setExtensionState(ExtensionStates.RETRACTED);
+      }
+    } 
 
 }
 
