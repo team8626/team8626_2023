@@ -156,8 +156,8 @@ public final class Constants {
         public static final double kElbowI = 0;
         public static final double kElbowD = 0;
         public static final double kElbowFF = 0;
-        public static final double kElbowMinOutput = -.6; // Upwards
-        public static final double kElbowMaxOutput = 0.1; // Downwards
+        public static final double kElbowMinOutput = -.75; // Upwards
+        public static final double kElbowMaxOutput = 0.25; // Downwards
     
         
         public static final IdleMode kElbowMotorIdleMode = IdleMode.kBrake;
@@ -188,7 +188,7 @@ public final class Constants {
         public static PneumaticsModuleType kPCMtype = PneumaticsModuleType.REVPH;
         public static double kMinPressure = 80;
         public static double kMaxPressure = 120;
-        public static double kMinArmPSI = 25;
+        public static double kMinArmPSI = 40;
     }
 
     // Claw subsystem constants

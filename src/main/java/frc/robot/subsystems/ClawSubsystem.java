@@ -36,6 +36,8 @@ public class ClawSubsystem extends SubsystemBase {
 
   private boolean m_isClosed = true;
   private Timer m_timer = new Timer();
+  private Timer m_motorTimer = new Timer();
+  private boolean m_pressureOK = false;
   private boolean m_motorActive = true;
   private boolean m_activeIntake = true;
 
@@ -55,9 +57,9 @@ public class ClawSubsystem extends SubsystemBase {
     }
 
     m_timer.reset();
+    m_motorTimer.reset();
     this.close();
   }
-
 
   public void initDashboard(){
     SmartDashboard.putString("Claw State", getStateString());
@@ -70,6 +72,9 @@ public class ClawSubsystem extends SubsystemBase {
   }
 
   public void close(){ 
+    m_motorTimer.reset();
+    m_motorTimer.start();
+
     m_timer.reset();
     m_timer.start();
 
@@ -81,6 +86,9 @@ public class ClawSubsystem extends SubsystemBase {
   }
 
   public void open(){ 
+    m_motorTimer.reset();
+    m_motorTimer.start();
+
     m_timer.reset();
     m_timer.start();
 
@@ -92,9 +100,6 @@ public class ClawSubsystem extends SubsystemBase {
   }
 
   private void stopMotor(){ 
-    m_timer.stop();
-    m_timer.reset();
-    
     m_clawMotor.set(0);
     m_motorActive = false;
 
@@ -158,31 +163,46 @@ public class ClawSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    if(m_timer.hasElapsed(3.0)){
+    if(m_motorTimer.hasElapsed(3.0)){
       this.stopMotor();
     }
 
-
-    if(m_pneumatic.getPressure() > PneumaticConstants.kMinClawPSI) {
-
-      if(m_clawState == ClawStates.OPENING) {
-        Timer.delay(0.1);
-        setClawState(ClawStates.OPENED);
-      }
-      
-      else if (m_clawState == ClawStates.CLOSING) {
-        Timer.delay(0.1);
-        setClawState(ClawStates.CLOSED);
-      }
-      
+    // Check current Pressure.
+    if(m_pneumatic.getPressure() > PneumaticConstants.kMinClawPSI){
+      m_pressureOK = true;
+    } else {
+      m_pressureOK = false;
     }
-    
-    if(Robot.isSimulation()){
-      if(m_clawState == ClawStates.OPENING) {
-        setClawState(ClawStates.OPENED);
+
+    // Pressure OK? Start a timer is not done yet.
+    if(m_pressureOK && ((m_clawState == ClawStates.OPENING))||(m_clawState == ClawStates.CLOSING)){
+      if (m_timer.get() == 0) {
+        m_timer.reset();
+        m_timer.start();
       }
+    } 
+    // Low Pressure? Stop timer
+    else {
+      m_timer.stop();
+      m_timer.reset();
+    }
+        
+    // Pressure is up, wait for the air to go through the cylinders
+    if(m_pressureOK) {
+      if(m_clawState == ClawStates.OPENING) {
+        if(m_timer.hasElapsed(0.25)){
+          setClawState(ClawStates.OPENED);
+          m_timer.stop();
+          m_timer.reset();
+        }
+      }
+
       else if (m_clawState == ClawStates.CLOSING) {
-        setClawState(ClawStates.CLOSED);
+        if(m_timer.hasElapsed(.2)){
+          setClawState(ClawStates.CLOSED);
+          m_timer.stop();
+          m_timer.reset();
+       }
       }
     } 
   }

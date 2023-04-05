@@ -14,24 +14,25 @@ import frc.robot.Constants.PneumaticConstants;
 
 public class ArmExtensionSubsystem extends SubsystemBase {
 
-private enum ExtensionStates {
-  RETRACTING, RETRACTED, 
-  EXTENDING, EXTENDED,
-  PASSIVE
-}
+  private enum ExtensionStates {
+    RETRACTING, RETRACTED, 
+    EXTENDING, EXTENDED,
+    PASSIVE
+  }
 
   private ExtensionStates m_extensionState = ExtensionStates.PASSIVE;
-
+  private Timer m_timer = new Timer();
+  private boolean m_pressureOK = false;
   // Pneumatics
   private final Solenoid m_armCylinder = new Solenoid(PneumaticConstants.kPCMtype, ArmConstants.kSolenoidChannel);
   private final PneumaticSubsystem m_pneumatic;
 
 
   public ArmExtensionSubsystem(PneumaticSubsystem pneumatic) {
-  m_pneumatic = pneumatic;
-
+    m_pneumatic = pneumatic;
 
      // Initialize Start-Up State
+     m_timer.reset();
      this.retract();
   
   }
@@ -39,20 +40,22 @@ private enum ExtensionStates {
   // Initialize Dashboard
   public void initDashboard(){
     SmartDashboard.putString("Arm Length", getStateString());
+    SmartDashboard.putBoolean("Pressure OK", m_pressureOK);
+
   }
 
   // Update Dashboard(Called Periodically)
   public void updateDashboard(){
       SmartDashboard.putString("Arm Length", getStateString());
-   
+      SmartDashboard.putBoolean("Pressure OK", m_pressureOK);
   } 
   
   public ExtensionStates getExtensionState() {
    return m_extensionState;
     }
 
-  public void setExtensionState(ExtensionStates state) {
-  m_extensionState = state;
+  private void setExtensionState(ExtensionStates state) {
+    m_extensionState = state;
   }
 
   public String getStateString() {
@@ -81,6 +84,9 @@ private enum ExtensionStates {
     // Extend Cylinders
     m_armCylinder.set(true);
 
+    m_timer.reset();
+    m_timer.start();
+
     // Update Subsytem Status
     setExtensionState(ExtensionStates.EXTENDING);
   }
@@ -90,43 +96,80 @@ private enum ExtensionStates {
     
     // Retract Cylinders
     m_armCylinder.set(false);
- 
-  // Update Subsytem Status
-  setExtensionState(ExtensionStates.RETRACTING);
+     
+    m_timer.reset();
+    m_timer.start();
+  
+    // Update Subsytem Status
+    setExtensionState(ExtensionStates.RETRACTING);
   }
 
 public boolean isExtended() {
-  return (m_extensionState == ExtensionStates.EXTENDED);
+  boolean retval = false;
+  if(m_extensionState == ExtensionStates.EXTENDED){
+    retval = true;
+  }
+  return retval;
 }
 
 public boolean isRetracted() {
-  return (m_extensionState == ExtensionStates.RETRACTED);
+  boolean retval = false;
+  if(m_extensionState == ExtensionStates.RETRACTED){
+    retval = true;
+  }
+  return retval;
 }
 
   @Override
   public void periodic() {
+    
+    // Check current Pressure.
+    if(m_pneumatic.getPressure() > PneumaticConstants.kMinArmPSI){
+      m_pressureOK = true;
+    } else {
+      m_pressureOK = false;
+    }
 
-    if(m_pneumatic.getPressure() > PneumaticConstants.kMinArmPSI) {
-
+    // Pressure OK? Start a timer is not done yet.
+    if(m_pressureOK && ((m_extensionState == ExtensionStates.EXTENDING))||(m_extensionState == ExtensionStates.RETRACTING)){
+      if (m_timer.get() == 0) {
+        m_timer.reset();
+        m_timer.start();
+      }
+    } 
+    // Low Pressure? Stop timer
+    else {
+      m_timer.stop();
+      m_timer.reset();
+    }
+    
+    // Pressure is up, wait for the air to go through the cylinders
+    if(m_pressureOK) {
       if(m_extensionState == ExtensionStates.EXTENDING) {
-        Timer.delay(0.1);
-        setExtensionState(ExtensionStates.EXTENDED);
+        if(m_timer.hasElapsed(.4)){
+          setExtensionState(ExtensionStates.EXTENDED);
+          m_timer.stop();
+          m_timer.reset();
+        }
       }
 
       else if (m_extensionState == ExtensionStates.RETRACTING) {
-        Timer.delay(0.1);
-        setExtensionState(ExtensionStates.RETRACTED);
+        if(m_timer.hasElapsed(.4)){
+          setExtensionState(ExtensionStates.RETRACTED);
+          m_timer.stop();
+          m_timer.reset();
+       }
       }
     } 
 
-    if(Robot.isSimulation()){
-      if(m_extensionState == ExtensionStates.EXTENDING) {
-        setExtensionState(ExtensionStates.EXTENDED);
-      }
-      else if (m_extensionState == ExtensionStates.RETRACTING) {
-        setExtensionState(ExtensionStates.RETRACTED);
-      }
-    } 
+    // if(Robot.isSimulation()){
+    //   if(m_extensionState == ExtensionStates.EXTENDING) {
+    //     setExtensionState(ExtensionStates.EXTENDED);
+    //   }
+    //   else if (m_extensionState == ExtensionStates.RETRACTING) {
+    //     setExtensionState(ExtensionStates.RETRACTED);
+    //   }
+    // } 
 
 }
 

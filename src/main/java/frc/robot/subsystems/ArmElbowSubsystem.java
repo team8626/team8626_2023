@@ -24,7 +24,7 @@ public class ArmElbowSubsystem extends SubsystemBase {
   private final AbsoluteEncoder m_elbowEncoder;
   private final SparkMaxPIDController m_elbowPIDController;
 
-private boolean m_setDelivery;
+  private boolean m_setDelivery;
   private double m_desiredAngle = 359.00;
 
   public enum ItemType {
@@ -56,7 +56,7 @@ private boolean m_setDelivery;
     m_elbowEncoder.setVelocityConversionFactor(ArmConstants.kElbowEncoderVelocityFactor);
 
     m_elbowEncoder.setInverted(ArmConstants.kElbowEncoderInverted);
-    m_elbowPIDController.setPositionPIDWrappingEnabled(false);
+    m_elbowPIDController.setPositionPIDWrappingEnabled(true);
 
     // Set the PID gains for the turning motor. Note these are example gains, and you
     // may need to tune them for your own robot!
