@@ -55,21 +55,18 @@ public class BalanceTest extends PIDCommand {
   }
 
   @Override
-  public void execute() {
-    System.out.printf("---------- Current Pitch: %.1f\n", m_drivetrain.getPitch());
-    if(m_PID.atSetpoint() && (m_timer.hasElapsed(1))){
-        m_drivetrain.setX();
+  public boolean isFinished() {
+    boolean retval = false;
+    if(m_PID.atSetpoint()){
+      if(m_timer.hasElapsed(1)){
+        retval = true;
+      } else {
+        // m_drivetrain.setX();
+      }
     } else {
       m_timer.reset();
       m_timer.start();
     }
-  }
-
-  @Override
-  public boolean isFinished() {
-    // Never Terminate.
-    // In Autonomous, this is the last command.
-    // In Teleoperated, it should be on a Trigger().toggleOnTrue()
-    return false;
+    return retval;
   }
 }

@@ -23,16 +23,21 @@ import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
+import frc.robot.Constants.ArmConstants;
 // Team8626 Libraries
 import frc.robot.DashBoard.TrajectoryEnum;
 import frc.robot.commands.auto.BalanceLockCommand;
 import frc.robot.commands.auto.BalanceTest;
 import frc.robot.commands.auto.NewAutoBalance;
+import frc.robot.commands.presets.BottomGridSetupCommand;
 import frc.robot.commands.presets.LockArmCommand;
 import frc.robot.commands.presets.MiddleGridSetupCommand;
 import frc.robot.commands.presets.SetStowPositionCommand;
 import frc.robot.commands.subsystems.CloseClawCommand;
 import frc.robot.commands.subsystems.OpenClawCommand;
+import frc.robot.commands.subsystems.SetArmElbowCommand;
 
 public class Autonomous {
 
@@ -357,13 +362,17 @@ public class Autonomous {
         
         startCommand = new SequentialCommandGroup(
             // Starting the game. Make sure the claw is closed and get ready for delivery
-            new CloseClawCommand(m_robot.m_claw),
-            new MiddleGridSetupCommand(m_robot.m_elevator, m_robot.m_elbow, m_robot.m_extender, m_robot.m_ledManager),
-            new OpenClawCommand(m_robot.m_claw, m_robot.m_elbow),
-            //new LockArmCommand(m_robot.m_elevator, m_robot.m_elbow, m_robot.m_extender, m_robot.m_claw, m_robot.m_ledManager),
-            new SetStowPositionCommand(m_robot.m_elevator, m_robot.m_elbow, m_robot.m_extender, m_robot.m_claw, m_robot.m_ledManager),
-            // Go Balance - Note: This autobalance reverses the drive after balancing.
-            new RunCommand(() -> m_robot.m_drive.drive(-0.2, 0, 0, true, false), m_robot.m_drive).withTimeout(3),
+            //new CloseClawCommand(m_robot.m_claw),
+            //new BottomGridSetupCommand(m_robot.m_elevator, m_robot.m_elbow, m_robot.m_extender, m_robot.m_ledManager),
+            //new OpenClawCommand(m_robot.m_claw, m_robot.m_elbow),
+            new SetArmElbowCommand(m_robot.m_elbow, m_robot.m_ledManager, ArmConstants.kBottomGridElbowAngle),
+            new WaitCommand(1),
+            new ParallelCommandGroup(
+                //new LockArmCommand(m_robot.m_elevator, m_robot.m_elbow, m_robot.m_extender, m_robot.m_claw, m_robot.m_ledManager),
+                new SetStowPositionCommand(m_robot.m_elevator, m_robot.m_elbow, m_robot.m_extender, m_robot.m_claw, m_robot.m_ledManager),
+                // Go Balance - Note: This autobalance reverses the drive after balancing.
+                new RunCommand(() -> m_robot.m_drive.drive(-0.2, 0, 0, true, false), m_robot.m_drive).withTimeout(3)
+            ),
             new BalanceTest(m_robot.m_drive, m_robot.m_ledManager).withTimeout(8),
             new InstantCommand(() -> m_robot.m_drive.setReverseStart(!(m_robot.m_drive.getReverseStart())))
         );
