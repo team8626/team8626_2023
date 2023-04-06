@@ -36,9 +36,8 @@ public class LockArmCommand  extends SequentialCommandGroup {
 
     addCommands(
       new SetAllianceColorCommand(m_ledManager),
-      new SequentialCommandGroup(
-        new CloseClawCommand(m_claw),
-        new RetractArmCommand(m_extender)).withTimeout(3),
+      new CloseClawCommand(m_claw),
+      new RetractArmCommand(m_extender),
       new MoveElevatorTopCommand(m_elevator),
       new SetArmElbowCommand(m_elbow, m_ledManager, ArmConstants.kLockArmElbowAngle),
       new WaitCommand(.5), // Make sure Arm Elbow is Stabilized

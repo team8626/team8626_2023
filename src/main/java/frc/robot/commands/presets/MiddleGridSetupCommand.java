@@ -30,7 +30,7 @@ public class MiddleGridSetupCommand  extends SequentialCommandGroup {
     addCommands(
         new MoveElevatorTopCommand(m_elevator),
         new SetArmElbowCommand(m_elbow, m_ledManager, ArmConstants.kMiddleGridElbowAngle, true),
-        new WaitCommand(1),
+        //new WaitCommand(1),
         new ExtendArmCommand(m_extender)
     );
   }

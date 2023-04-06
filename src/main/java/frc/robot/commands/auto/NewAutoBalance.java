@@ -23,12 +23,11 @@ public class NewAutoBalance extends SequentialCommandGroup {
   public NewAutoBalance(SwerveDriveSubsystem swerve, ElevatorSubsystem elevator, LEDManagerSubsystem LEDs, ArmElbowSubsystem elbow, ArmExtensionSubsystem extender, ClawSubsystem claw) {
 
     addCommands(
-      
       new SetStowPositionCommand(elevator, elbow, extender, claw, LEDs).withTimeout(1),
       new RunCommand(() -> swerve.drive(-0.2, 0, 0, true, false), swerve).withTimeout(3),
       new BalanceTest(swerve, LEDs).withTimeout(8),
       new InstantCommand(() -> swerve.setReverseStart(!(swerve.getReverseStart()))
-      ));
-
+      )
+    );
   }
 }

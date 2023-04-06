@@ -2,46 +2,18 @@
   "waypoints": [
     {
       "anchorPoint": {
-        "x": 1.74,
-        "y": 4.98
+        "x": 1.8544048679351701,
+        "y": 0.51
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.055930892996992,
-        "y": 4.98
+        "x": 5.722843116407578,
+        "y": 0.51
       },
       "holonomicAngle": 180.0,
       "isReversal": false,
       "velOverride": null,
-      "isLocked": true,
-      "isStopPoint": false,
-      "stopEvent": {
-        "names": [
-          "MiddleGridSetupCommand",
-          "releaseGamePiece"
-        ],
-        "executionBehavior": "sequential",
-        "waitBehavior": "none",
-        "waitTime": 0
-      }
-    },
-    {
-      "anchorPoint": {
-        "x": 6.0,
-        "y": 4.23027809114429
-      },
-      "prevControl": {
-        "x": 6.0,
-        "y": 5.141322428026715
-      },
-      "nextControl": {
-        "x": 6.0,
-        "y": 2.615321789270321
-      },
-      "holonomicAngle": -180.0,
-      "isReversal": false,
-      "velOverride": null,
-      "isLocked": true,
+      "isLocked": false,
       "isStopPoint": false,
       "stopEvent": {
         "names": [],
@@ -52,18 +24,43 @@
     },
     {
       "anchorPoint": {
-        "x": 3.9658816112065822,
-        "y": 2.687787397330437
+        "x": 6.0,
+        "y": 1.5171916327448105
       },
       "prevControl": {
-        "x": 6.06906376761056,
-        "y": 2.6877873973304367
+        "x": 6.0,
+        "y": 0.37191103021000016
+      },
+      "nextControl": {
+        "x": 6.0,
+        "y": 3.266777468382616
+      },
+      "holonomicAngle": 180.0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 4.0,
+        "y": 3.0
+      },
+      "prevControl": {
+        "x": 4.52051435293415,
+        "y": 3.0
       },
       "nextControl": null,
       "holonomicAngle": 180.0,
       "isReversal": false,
       "velOverride": null,
-      "isLocked": true,
+      "isLocked": false,
       "isStopPoint": false,
       "stopEvent": {
         "names": [],
