@@ -109,8 +109,8 @@ public class Autonomous {
                 m_robot.m_drive.setReverseStart(false);
                 break;  
 
-            case DELIVER_REVERE_BALANCE:
-                startCommand = getDeliverBalanceCommand();
+            case KICK_REVERE_BALANCE:
+                startCommand = getKickBalanceCommand();
                 // startCommand = getDeliverRevereBalanceCommand();
                 m_robot.m_drive.setReverseStart(false);
                 break;  
@@ -357,7 +357,7 @@ public class Autonomous {
         return startCommand;
     }
 
-    private Command getDeliverBalanceCommand(){
+    private Command getKickBalanceCommand(){
         Command startCommand = new InstantCommand();
         
         startCommand = new SequentialCommandGroup(
@@ -369,7 +369,7 @@ public class Autonomous {
             new WaitCommand(1),
             new ParallelCommandGroup(
                 //new LockArmCommand(m_robot.m_elevator, m_robot.m_elbow, m_robot.m_extender, m_robot.m_claw, m_robot.m_ledManager),
-                new SetStowPositionCommand(m_robot.m_elevator, m_robot.m_elbow, m_robot.m_extender, m_robot.m_claw, m_robot.m_ledManager),
+                new SetArmElbowCommand(m_robot.m_elbow, m_robot.m_ledManager, ArmConstants.kLockArmElbowAngle),
                 // Go Balance - Note: This autobalance reverses the drive after balancing.
                 new RunCommand(() -> m_robot.m_drive.drive(-0.2, 0, 0, true, false), m_robot.m_drive).withTimeout(3)
             ),

@@ -14,7 +14,7 @@ public class DashBoard {
     enum TrajectoryEnum  {
         // BOTTOM_DELIVER, MIDDLE_DELIVER_BALANCE, TOP_DELIVER,
         REVERE_BALANCE,
-        DELIVER_REVERE_BALANCE,
+        KICK_REVERE_BALANCE,
         DELIVER_STAY,
 
         START9_EXIT,
@@ -79,7 +79,7 @@ public class DashBoard {
         // m_autonomousModeChooser.addOption("TEST - 2m Intake", TrajectoryEnum.TWO_M_INTAKE);
         
         m_autonomousModeChooser.addOption("Revere Balance", TrajectoryEnum.REVERE_BALANCE);
-        m_autonomousModeChooser.setDefaultOption("Deliver - Revere Balance", TrajectoryEnum.DELIVER_REVERE_BALANCE);
+        m_autonomousModeChooser.setDefaultOption("Kick - Revere Balance", TrajectoryEnum.KICK_REVERE_BALANCE);
         m_autonomousModeChooser.addOption("Deliver - Stay", TrajectoryEnum.DELIVER_STAY);
         m_autonomousModeChooser.addOption("Do Nothing", TrajectoryEnum.DO_NOTHING);
 
