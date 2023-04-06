@@ -56,6 +56,7 @@ public class BalanceTest extends PIDCommand {
 
   @Override
   public void execute() {
+    System.out.printf("---------- Current Pitch: %.1f\n", m_drivetrain.getPitch());
     if(m_PID.atSetpoint() && (m_timer.hasElapsed(1))){
         m_drivetrain.setX();
     } else {
