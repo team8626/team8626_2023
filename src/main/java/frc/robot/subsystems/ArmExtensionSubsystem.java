@@ -146,7 +146,7 @@ public boolean isRetracted() {
     // Pressure is up, wait for the air to go through the cylinders
     if(m_pressureOK) {
       if(m_extensionState == ExtensionStates.EXTENDING) {
-        if(m_timer.hasElapsed(.4)){
+        if(m_timer.hasElapsed(.75)){
           setExtensionState(ExtensionStates.EXTENDED);
           m_timer.stop();
           m_timer.reset();
@@ -154,7 +154,7 @@ public boolean isRetracted() {
       }
 
       else if (m_extensionState == ExtensionStates.RETRACTING) {
-        if(m_timer.hasElapsed(.4)){
+        if(m_timer.hasElapsed(.25)){
           setExtensionState(ExtensionStates.RETRACTED);
           m_timer.stop();
           m_timer.reset();
