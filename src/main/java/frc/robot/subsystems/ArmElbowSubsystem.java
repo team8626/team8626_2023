@@ -57,6 +57,8 @@ public class ArmElbowSubsystem extends SubsystemBase {
 
     m_elbowEncoder.setInverted(ArmConstants.kElbowEncoderInverted);
     m_elbowPIDController.setPositionPIDWrappingEnabled(true);
+    m_elbowPIDController.setPositionPIDWrappingMinInput(0);
+    m_elbowPIDController.setPositionPIDWrappingMaxInput(360);
 
     // Set the PID gains for the turning motor. Note these are example gains, and you
     // may need to tune them for your own robot!
