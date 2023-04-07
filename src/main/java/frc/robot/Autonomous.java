@@ -120,7 +120,15 @@ public class Autonomous {
                 // startCommand = getDeliverRevereBalanceCommand();
                 m_robot.m_drive.setReverseStart(false);
                 break;  
+                
+            
+            case KICK_EXIT_REVERE_BALANCE:
+                startCommand = getKickExitBalanceCommand();
+                // startCommand = getDeliverRevereBalanceCommand();
+                m_robot.m_drive.setReverseStart(false);
+                break;  
 
+                
             case DO_NOTHING:
                 startCommand = new InstantCommand();
                 m_robot.m_drive.setReverseStart(false);
@@ -407,6 +415,33 @@ public class Autonomous {
 
         return startCommand;
     }
+
+    private Command getKickExitBalanceCommand(){
+        Command startCommand = new InstantCommand();
+        
+        startCommand = new SequentialCommandGroup(
+            // Starting the game. Make sure the claw is closed and get ready for delivery
+            //new CloseClawCommand(m_robot.m_claw),
+            //new BottomGridSetupCommand(m_robot.m_elevator, m_robot.m_elbow, m_robot.m_extender, m_robot.m_ledManager),
+            //new OpenClawCommand(m_robot.m_claw, m_robot.m_elbow),
+            new MoveElevatorTopCommand(m_robot.m_elevator),
+            new SetArmElbowCommand(m_robot.m_elbow, m_robot.m_ledManager, ArmConstants.kBottomGridElbowAngle),
+            new WaitCommand(1),
+            new ParallelCommandGroup(
+                //new LockArmCommand(m_robot.m_elevator, m_robot.m_elbow, m_robot.m_extender, m_robot.m_claw, m_robot.m_ledManager),
+                new SetArmElbowCommand(m_robot.m_elbow, m_robot.m_ledManager, ArmConstants.kLockArmElbowAngle),
+                // Go Balance - Note: This autobalance reverses the drive after balancing.
+                new RunCommand(() -> m_robot.m_drive.drive(-0.3, 0, 0, true, false), m_robot.m_drive).withTimeout(3)
+            ),
+            new RunCommand(() -> m_robot.m_drive.drive(-0.3, 0, 0, true, false), m_robot.m_drive).withTimeout(1.5),
+            new RunCommand(() -> m_robot.m_drive.drive(0.3, 0, 0, true, false), m_robot.m_drive).withTimeout(2.5),
+            new BalanceTest(m_robot.m_drive, m_robot.m_ledManager).withTimeout(8),
+            new InstantCommand(() -> m_robot.m_drive.setReverseStart(!(m_robot.m_drive.getReverseStart())))
+        );
+
+        return startCommand;
+    }
+
     private Command getStart9ExitBalanceStraightCommand(){
         Command startCommand = new InstantCommand();
         
