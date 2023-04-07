@@ -36,6 +36,7 @@ import frc.robot.commands.presets.LockArmCommand;
 import frc.robot.commands.presets.MiddleGridSetupCommand;
 import frc.robot.commands.presets.SetStowPositionCommand;
 import frc.robot.commands.subsystems.CloseClawCommand;
+import frc.robot.commands.subsystems.MoveElevatorTopCommand;
 import frc.robot.commands.subsystems.OpenClawCommand;
 import frc.robot.commands.subsystems.SetArmElbowCommand;
 
@@ -97,6 +98,11 @@ public class Autonomous {
             case START1_EXIT:
                 startCommand = getStart1ExitCommand();
                 m_robot.m_drive.setReverseStart(true);
+                break;
+
+            case DELIVER_EXIT_STRAIGHT:
+                startCommand = getDeliverExitStraightCommand();
+                m_robot.m_drive.setReverseStart(false);
                 break;
 
             case START9_EXIT_BALANCE_STRAIGHT:
@@ -304,6 +310,8 @@ public class Autonomous {
 
         startCommand = new SequentialCommandGroup(
             // Starting the game. Make sure the claw is closed and get ready for delivery
+            new SetArmElbowCommand(m_robot.m_elbow, m_robot.m_ledManager, ArmConstants.kLockArmElbowAngle),
+            //new WaitCommand(3),
             new CloseClawCommand(m_robot.m_claw),
             new MiddleGridSetupCommand(m_robot.m_elevator, m_robot.m_elbow, m_robot.m_extender, m_robot.m_ledManager),
             new OpenClawCommand(m_robot.m_claw, m_robot.m_elbow),
@@ -340,6 +348,25 @@ public class Autonomous {
         return startCommand;
     }
 
+    private Command getDeliverExitStraightCommand(){
+        Command startCommand = new InstantCommand();
+        
+        startCommand = new SequentialCommandGroup(
+            // Starting the game. Make sure the claw is closed and get ready for delivery
+            new SetArmElbowCommand(m_robot.m_elbow, m_robot.m_ledManager, ArmConstants.kLockArmElbowAngle),
+            new CloseClawCommand(m_robot.m_claw),
+            new MiddleGridSetupCommand(m_robot.m_elevator, m_robot.m_elbow, m_robot.m_extender, m_robot.m_ledManager),
+            new OpenClawCommand(m_robot.m_claw, m_robot.m_elbow),
+            //new LockArmCommand(m_robot.m_elevator, m_robot.m_elbow, m_robot.m_extender, m_robot.m_claw, m_robot.m_ledManager),
+            new SetStowPositionCommand(m_robot.m_elevator, m_robot.m_elbow, m_robot.m_extender, m_robot.m_claw, m_robot.m_ledManager),
+            // Go Balance - Note: This autobalance reverses the drive after balancing.
+            new RunCommand(() -> m_robot.m_drive.drive(-0.3, 0, 0, true, false), m_robot.m_drive).withTimeout(3.45),
+            new InstantCommand(() -> m_robot.m_drive.setReverseStart(!(m_robot.m_drive.getReverseStart())))
+        );
+
+        return startCommand;
+    }
+
     private Command getDeliverRevereBalanceCommand(){
         Command startCommand = new InstantCommand();
         
@@ -365,6 +392,7 @@ public class Autonomous {
             //new CloseClawCommand(m_robot.m_claw),
             //new BottomGridSetupCommand(m_robot.m_elevator, m_robot.m_elbow, m_robot.m_extender, m_robot.m_ledManager),
             //new OpenClawCommand(m_robot.m_claw, m_robot.m_elbow),
+            new MoveElevatorTopCommand(m_robot.m_elevator),
             new SetArmElbowCommand(m_robot.m_elbow, m_robot.m_ledManager, ArmConstants.kBottomGridElbowAngle),
             new WaitCommand(1),
             new ParallelCommandGroup(

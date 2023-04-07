@@ -27,6 +27,7 @@ public class DashBoard {
         START6_EXIT_BALANCE,
 
         START1_EXIT,
+        DELIVER_EXIT_STRAIGHT,
         START1_EXIT_BALANCE,
 
         DO_NOTHING
@@ -73,7 +74,7 @@ public class DashBoard {
         m_autonomousModeChooser.addOption("Start9 - Exit - Balance __STRAIGHT__", TrajectoryEnum.START9_EXIT_BALANCE_STRAIGHT);
 
         //m_autonomousModeChooser.addOption("Start6 - Exit - Balance", TrajectoryEnum.START6_EXIT_BALANCE);
-
+    
         m_autonomousModeChooser.addOption("Start1 - Exit", TrajectoryEnum.START1_EXIT);
         m_autonomousModeChooser.addOption("Start1 - Exit - Balance", TrajectoryEnum.START1_EXIT_BALANCE);
         // m_autonomousModeChooser.addOption("TEST - 2m Intake", TrajectoryEnum.TWO_M_INTAKE);
@@ -81,6 +82,7 @@ public class DashBoard {
         m_autonomousModeChooser.addOption("Revere Balance", TrajectoryEnum.REVERE_BALANCE);
         m_autonomousModeChooser.setDefaultOption("Kick - Revere Balance", TrajectoryEnum.KICK_REVERE_BALANCE);
         m_autonomousModeChooser.addOption("Deliver - Stay", TrajectoryEnum.DELIVER_STAY);
+        m_autonomousModeChooser.addOption("Deliver - Exit Straight", TrajectoryEnum.DELIVER_EXIT_STRAIGHT);
         m_autonomousModeChooser.addOption("Do Nothing", TrajectoryEnum.DO_NOTHING);
 
         SmartDashboard.putData("Auto Mode", m_autonomousModeChooser);
