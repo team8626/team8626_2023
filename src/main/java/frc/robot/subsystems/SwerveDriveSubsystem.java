@@ -20,6 +20,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.util.WPIUtilJNI;
 import edu.wpi.first.wpilibj.ADIS16470_IMU;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.SwerveDriveConstants;
 import frc.utils.SwerveUtils;
@@ -83,6 +84,7 @@ public class SwerveDriveSubsystem extends SubsystemBase /*implements DriveSubsys
           m_rearLeft.getPosition(),
           m_rearRight.getPosition()
       });
+  private final Field2d m_field = new Field2d();
 
   /** Creates a new SwerveDriveSubsystem. */
   public SwerveDriveSubsystem() {
@@ -328,10 +330,13 @@ public class SwerveDriveSubsystem extends SubsystemBase /*implements DriveSubsys
     SmartDashboard.putNumber("Pitch Angle", getPitch()); 
     SmartDashboard.putNumber("Roll Angle", m_gyro.getRoll()); 
     SmartDashboard.putBoolean("Reversed Drive", getReverseStart());
+    SmartDashboard.putData("Field", m_field);
   }
+
   public void updateDashboard() {
    SmartDashboard.putNumber("Pitch Angle", getPitch()); 
    SmartDashboard.putNumber("Roll Angle", m_gyro.getRoll()); 
    SmartDashboard.putBoolean("Reversed Drive", getReverseStart());
+   m_field.setRobotPose(this.getPose());
   }
 }
