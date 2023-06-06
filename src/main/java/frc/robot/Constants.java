@@ -2,7 +2,10 @@ package frc.robot;
 
 import com.revrobotics.CANSparkMax.IdleMode;
 
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
@@ -214,6 +217,18 @@ public final class Constants {
         public static byte kColorRAINBOW      = 0b111;
     }
 
+    // Photon Vision Constants
+    public final static class PhotonVisionConstants{
+        public static final String camera1Name = "FrontCamera";
+        public static final Transform3d frontCameraRobotToCam =
+            new Transform3d(
+                new Translation3d(0.5, 0.0, 0.5),
+                new Rotation3d(
+                    0, 0,
+                    0)); // Cam mounted facing forward, half a meter forward of center, half a meter up
+// from center.
+        
+    }
     // IO Controls
     public final static class IOControlsConstants {
         public static final int kXboxControllerPort = 0;

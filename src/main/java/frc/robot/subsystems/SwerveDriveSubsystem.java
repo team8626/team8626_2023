@@ -4,11 +4,17 @@
 
 package frc.robot.subsystems;
 
+import java.util.Optional;
+
+import org.photonvision.EstimatedRobotPose;
+
 import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.estimator.DifferentialDrivePoseEstimator;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -22,6 +28,7 @@ import edu.wpi.first.wpilibj.ADIS16470_IMU;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.PhotonCameraWrapper;
 import frc.robot.Constants.SwerveDriveConstants;
 import frc.utils.SwerveUtils;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -60,6 +67,9 @@ public class SwerveDriveSubsystem extends SubsystemBase /*implements DriveSubsys
 
   private boolean m_reverseStart = false;
 
+  public PhotonCameraWrapper pcw;
+
+
   public enum DriveSpeed {
   LOWEST_SPEED, 
   LOW_SPEED
@@ -93,14 +103,15 @@ public class SwerveDriveSubsystem extends SubsystemBase /*implements DriveSubsys
   @Override
   public void periodic() {
     // Update the odometry in the periodic block
-    m_odometry.update(
-        Rotation2d.fromDegrees(m_gyro.getAngle()),
-        new SwerveModulePosition[] {
-            m_frontLeft.getPosition(),
-            m_frontRight.getPosition(),
-            m_rearLeft.getPosition(),
-            m_rearRight.getPosition()
-        });
+    updateOdometry();
+    // m_odometry.update(
+    //     Rotation2d.fromDegrees(m_gyro.getAngle()),
+    //     new SwerveModulePosition[] {
+    //         m_frontLeft.getPosition(),
+    //         m_frontRight.getPosition(),
+    //         m_rearLeft.getPosition(),
+    //         m_rearRight.getPosition()
+    //     });
   }
 
   /**
@@ -339,4 +350,43 @@ public class SwerveDriveSubsystem extends SubsystemBase /*implements DriveSubsys
    SmartDashboard.putBoolean("Reversed Drive", getReverseStart());
    m_field.setRobotPose(this.getPose());
   }
-}
+
+  //Photon Vision Junk
+
+  private final SwerveDrivePoseEstimator m_poseEstimator =
+            new SwerveDrivePoseEstimator(
+              SwerveDriveConstants.kDriveKinematics, m_gyro.getRotation2d(), new SwerveModulePosition[] {
+                m_frontLeft.getPosition(),
+                m_frontRight.getPosition(),
+                m_rearLeft.getPosition(),
+                m_rearRight.getPosition()
+            } , new Pose2d());
+
+  private Field2d m_fieldSim;
+                 
+  public void updateOdometry() {
+    m_poseEstimator.update(
+                m_gyro.getRotation2d(),new SwerveModulePosition[] {
+                  m_frontLeft.getPosition(),
+                  m_frontRight.getPosition(),
+                  m_rearLeft.getPosition(),
+                  m_rearRight.getPosition()});
+
+        Optional<EstimatedRobotPose> result =
+                pcw.getEstimatedGlobalPose(m_poseEstimator.getEstimatedPosition());
+
+        if (result.isPresent()) {
+            EstimatedRobotPose camPose = result.get();
+            m_poseEstimator.addVisionMeasurement(
+                    camPose.estimatedPose.toPose2d(), camPose.timestampSeconds);
+            m_fieldSim.getObject("Cam Est Pos").setPose(camPose.estimatedPose.toPose2d());
+        } else {
+            // move it way off the screen to make it disappear
+            m_fieldSim.getObject("Cam Est Pos").setPose(new Pose2d(-100, -100, new Rotation2d()));
+        }
+
+        m_fieldSim.getObject("Actual Pos").setPose(0,0, new Rotation2d(0,0));
+        m_fieldSim.setRobotPose(m_poseEstimator.getEstimatedPosition());
+    }
+  }
+
