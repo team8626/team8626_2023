@@ -222,11 +222,11 @@ public final class Constants {
         public static final String camera1Name = "FrontCamera";
         public static final Transform3d frontCameraRobotToCam =
             new Transform3d(
-                new Translation3d(0.5, 0.0, 0.5),
+                new Translation3d(0.26768,-0.26035, 0.24860),
                 new Rotation3d(
                     0, 0,
-                    0)); // Cam mounted facing forward, half a meter forward of center, half a meter up
-// from center.
+                    0)); // Cam mounted facing forward, 0.26768 meter forward of center, 0.24860 meter up
+// from center, 0.26035 to the right from center. 155.448028 from looking forward
         
     }
     // IO Controls

@@ -35,6 +35,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+
 
 public class SwerveDriveSubsystem extends SubsystemBase /*implements DriveSubsystem*/  {
 // public class SwerveDriveSubsystem extends DriveSubsystem   {
@@ -67,7 +69,7 @@ public class SwerveDriveSubsystem extends SubsystemBase /*implements DriveSubsys
 
   private boolean m_reverseStart = false;
 
-  public PhotonCameraWrapper pcw;
+  public PhotonCameraWrapper pcw = new PhotonCameraWrapper();
 
 
   public enum DriveSpeed {
@@ -120,7 +122,7 @@ public class SwerveDriveSubsystem extends SubsystemBase /*implements DriveSubsys
    * @return The pose.
    */
   public Pose2d getPose() {
-    return m_odometry.getPoseMeters();
+    return m_poseEstimator.getEstimatedPosition();
   }
 
   /**
@@ -348,10 +350,12 @@ public class SwerveDriveSubsystem extends SubsystemBase /*implements DriveSubsys
    SmartDashboard.putNumber("Pitch Angle", getPitch()); 
    SmartDashboard.putNumber("Roll Angle", m_gyro.getRoll()); 
    SmartDashboard.putBoolean("Reversed Drive", getReverseStart());
+
    m_field.setRobotPose(this.getPose());
+   SmartDashboard.putNumberArray("April Tag ID", pcw.getBestTarget());
   }
 
-  //Photon Vision Junk
+  //Photon Vision and Advantage Scope Junk
 
   private final SwerveDrivePoseEstimator m_poseEstimator =
             new SwerveDrivePoseEstimator(
@@ -362,7 +366,7 @@ public class SwerveDriveSubsystem extends SubsystemBase /*implements DriveSubsys
                 m_rearRight.getPosition()
             } , new Pose2d());
 
-  private Field2d m_fieldSim;
+  private Field2d m_fieldSim = new Field2d();
                  
   public void updateOdometry() {
     m_poseEstimator.update(
@@ -390,3 +394,4 @@ public class SwerveDriveSubsystem extends SubsystemBase /*implements DriveSubsys
     }
   }
 
+  
