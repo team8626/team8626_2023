@@ -52,8 +52,8 @@ public class SwerveDriveSubsystem extends SubsystemBase /*implements DriveSubsys
       SwerveDriveConstants.kBackRightChassisAngularOffset);
 
   // Gyro Sensor (Unsing NAVx Module)
-  private final AHRS m_gyro = new AHRS(SPI.Port.kMXP);
-  // private final ADIS16470_IMU m_gyro = new ADIS16470_IMU();
+  //private final AHRS m_gyro = new AHRS(SPI.Port.kMXP);
+  private final ADIS16470_IMU m_gyro = new ADIS16470_IMU();
 
   private static double m_powerFactor = 1;
 
@@ -280,11 +280,13 @@ public class SwerveDriveSubsystem extends SubsystemBase /*implements DriveSubsys
   }
 
   public double getPitchRate() {
-    return m_gyro.getRawGyroY();
+    //return m_gyro.getRawGyroY();
+    return 0.0; //TODO this aint right
   }
   
   public double getPitch() {
-  return m_gyro.getPitch();
+  //return m_gyro.getPitch();
+  return 0.0; //TODO this aint right
   }
 
   public double getPitchRadians() {
@@ -326,12 +328,12 @@ public class SwerveDriveSubsystem extends SubsystemBase /*implements DriveSubsys
 
   public void initDashboard() {
     SmartDashboard.putNumber("Pitch Angle", getPitch()); 
-    SmartDashboard.putNumber("Roll Angle", m_gyro.getRoll()); 
+    //SmartDashboard.putNumber("Roll Angle", m_gyro.getRoll()); //TODO figure out roll too
     SmartDashboard.putBoolean("Reversed Drive", getReverseStart());
   }
   public void updateDashboard() {
    SmartDashboard.putNumber("Pitch Angle", getPitch()); 
-   SmartDashboard.putNumber("Roll Angle", m_gyro.getRoll()); 
+  // SmartDashboard.putNumber("Roll Angle", m_gyro.getRoll()); //TODO figure out roll too
    SmartDashboard.putBoolean("Reversed Drive", getReverseStart());
   }
 }
