@@ -62,7 +62,8 @@
         },
         ".recording": {
           "open": true
-        }
+        },
+        "open": true
       },
       "SmartDashboard": {
         "Auto Mode": {
